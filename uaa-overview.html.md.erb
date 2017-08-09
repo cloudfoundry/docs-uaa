@@ -1,0 +1,82 @@
+---
+title: UAA Overview
+owner: UAA
+---
+User Account and Authentication (UAA) is an open source identity server [project](https://github.com/cloudfoundry/uaa) under the Cloud Foundry foundation. 
+
+UAA provides enterprise scale identity management features. It is part of: 
+
+* [Pivotal Single Sign-On Service](https://pivotal.io/platform/services/identity-and-security/sso): Identity Services for Apps and APIs running on Pivotal Cloud Foundry
+* [GE Predix Identity Services](https://docs.predix.io/en-US/content/service/security/user_account_and_authentication/uaa-service-overview)
+* [SAP HANA Identity Services](https://help.sap.com/viewer/4505d0bdaf4948449b7f7379d24d0f0d/2.0.01/en-US/c6f36d5d49844bd790798ea36538e024.html)
+
+## What is UAA?
+
+UAA provides identity based security for applications and APIs. It supports open standards for authentication and authorization, including 
+* OAuth 
+* OpenID Connect
+* SAML
+* LDAP 
+* SCIM
+
+UAA's major features include:
+<ol>
+	<li>User Single Sign-On (SSO) using federated identity protocols</li>
+	<li>API security with OAuth</li>
+	<li>User and group management</li>
+	<li>Multitenancy support</li>
+	<li>Support for <a href="https://jwt.io/">JWT</a> and opaque as a token format</li>
+	<li>Token revocation</li>
+	<li>Operational flexibility<br/>
+	<ul>
+		<li>Operate and run as a <a href="http://bosh.io/releases/github.com/cloudfoundry/uaa-release?all=1">BOSH release</a>, which allows multi-cloud deployment capabilities</li>
+		<li>Push as an app to Cloud Foundry</li>
+	</ul>
+	</li>
+	<li>Database flexibility, including support for MySQL, Postgres, and SQL Server</li>
+	<li>Auditing, logging, and monitoring</li>
+	<li>Token exchange for SAML and JWT bearers</li>
+	<li><a href="https://docs.cloudfoundry.org/api/uaa/index.html">Rest APIs</a> for authentication, authorization, and configuration management</li>
+</ol>
+
+## UAA Architecture
+
+![UAA architecture diagram][../images/uaa-architecture.png]
+
+<table class="nice">
+	<th>Protocol</th>
+	<th>Purpose</th>
+	<th>Profiles</th>
+	<tr>
+		<td>OAuth 2.0</td>
+		<td>Authorizes apps and APIs</td>
+		<td>Authoritzation Server<br/>
+		Relying Party</td>
+	</tr>
+	<tr>
+		<td>OpenID Connect 1.0</td>
+		<td>Federates to external identity providers for SSO<br/>
+		Acts as an identity provider for SSO</td>
+		<td>Identity Provider<br/>
+		Relying Party</td>
+	</tr>
+	<tr>
+		<td>SAML 2.0</td>
+		<td>Federates to external identity providers for SSO<br/>
+		Acts as an identity provider for SSO</td>
+		<td>Identity Provider<br/>
+		Service Provider</td>
+	</tr>
+	<tr>
+		<td>LDAP</td>
+		<td>Authenticate users in external user store</td>
+		<td>LDAP Client</td>
+	</tr>
+	<tr>
+		<td>SCIM 1.0</td>
+		<td>User and group management</td>
+		<td>Identity Provisioning</td>
+	</tr>
+</table>
+
+## Client side tools and libraries
