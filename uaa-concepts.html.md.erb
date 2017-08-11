@@ -161,3 +161,86 @@ The table below is intended to help you choose a grant type for your use case.
 		<td>Actions where a <code>client_credentials</code> grant type might be appropriate include creating or destroying user groups, managing user group membership, or creating or destroying other clients. The <code>client_credentials</code> grant can be likened to service accounts in legacy application ecosystems.</td>
 	</tr>
 </table>
+
+### <a name="#clientid">Client.client_id</a>
+
+A client is identified with a value up to 255 characters. Unlike the user.id, the client_id is often a human readable identifier. For example, an application’s name could be it’s client_id. This identifier is unique within the identity zone.
+
+### Client.secret
+
+Client authentication occurs via  a password mechanism referred to as a client_secret. UAA allows client credentials to be asserted in [two different ways](https://tools.ietf.org/html/rfc6749#section-2.3.1):  
+* With an HTTP authorization header using  Basic authentication, or 
+* By passing the `client_id` and `client_secret` as request parameters as part of an HTTP POST body using content type application/x-www-form-urlencoded.
+
+### Client.redirect-uri
+
+The authorization_code and implicit grant types rely on a user-agent. A user agent like a web browser is responsible for performing HTTP redirects to UAA and receiving a response from UAA. That response can be in the form of an access token or a code that is exchanged for an access token later.
+
+A client that supports either of these two flows must have at least one URL in the client configuration. Alternatively, you can use multiple URLs and wildcards (*) for [ant path matching](http://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/AntPathMatcher.html).
+
+URLs are registered using a comma delimited string.
+
+### Client.access-token-validity
+
+UAA validates access tokens up to the time those tokens expire. Clients will do the same, if they can validate tokens offline. The access token validity is the the value in seconds from the time the token was created to when it expires. 
+
+### Client.refresh-token-validity
+
+UAA validates access tokens up to the time those tokens expire. Clients will do the same, if they can validate tokens offline. The access token validity is the the value in seconds from the time the token was created to when it expires. 
+
+## <a id="scopes">Choosing Scopes and Authorities</a>
+
+Client scopes are used to populate the `scope` claim when constructing an access token where the client acts on behalf of the user. 
+
+When an access token is created, UAA takes the user groups and intersects them with the client scopes. The intersection of these two fields are scopes that are eligible to be populated in the access token. There are two more validations that can further limit the scopes that get populated in the access token after the intersection has been decided:
+
+1. Did the user approve these scopes?
+1. Did the client request these scopes in the authorization request?
+
+The token can never contain more scopes than the intersection between client scopes and user groups. 
+
+### Client.autoapprove
+
+Scopes in an access token have to be approved by the granting entity. 
+
+During a client_credentials grant, the client itself is the granting entity and the client authorities are automatically assumed to be approved.
+
+During a password grant, the user shares their password with the client application. This sharing is considered the implicit approval of the scopes that the client wish to be populated in the access token.
+
+Two grant types, authorization_code and implicit, require explicit user approval for the scopes to populate in the access token. UAA provides a UI that lets the user approve or deny scopes from being populated in the access token.
+
+During client registration, the operator can configure the client to bypass this approval process by setting the autoapprove values to a single string with the value of `true.` This results  in any requested scope being approved automatically. 
+
+The value can also be a comma delimited list of selected scopes that would not require user approval.
+
+### Client.additional_information
+
+Clients can store custom attributes in a field called additional_information. This is a simple key value store. 
+
+<table class="nice">
+	<th>Key</th>
+	<th>Value</th>
+	<tr>
+		<td>allowed providers</td>
+		<td>You can limit what applications can be used by what users. For example, in a Cloud Foundry deployment, you may have set up multiple identity providers. For example, you could be using Facebook and your organization’s LDAP system.<br/>
+
+		You can limit UAA to only issue an application tokens if the users are from a certain provider. You would configure the application’s client to have <code>allowed providers=”ldap”</code>. The value is a comma delimited string of <a href="#idporigin">Identity Provider.origin</a>values.</td>
+	</tr>
+	<tr>
+		<td>created with</td>
+		<td>UAA stores the scope <code>zones.write</code> in this field if the client was created using the <code>\/identity-zones</code> endpoint. This field is used by the UAA to allow clients to be deleted by the same endpoint. It is not a configurable field, instead used by the UAA.</td>
+	</tr>
+	<tr>
+		<td>name</td>
+		<td>Various tooling in the Cloud Foundry ecosystem creates clients with generated <a href=
+		"#clientid">Client.client_id</a> values. These tools often store a human readable name in this field. </td>
+	</tr>
+	<tr>
+		<td>approvals_deleted</td>
+		<td>Contains a boolean value if performing an operation on the client resulted in all the client’s user approvals were deleted. For example, changing the Client.client_secret value will cause UAA to delete all the approvals. UAA will then store a value of true in this field.</td>
+	</tr>
+	<tr>
+		<td>token_salt</td>
+		<td>Tokens, even stateless JSON Web Tokens (JWT), can be revoked. By revoked we mean they will not pass a UAA token validation when the token is passed to the /check_token endpoint. UAA will revoke a token if the client’s secret has changed. There may be instances to revoke all tokens for a certain client without having to change the client secret. This can be achieved by changing the token_salt. token_salt is an arbitrary string value that is used to generate a hash.</td>
+	</tr>
+</table>
