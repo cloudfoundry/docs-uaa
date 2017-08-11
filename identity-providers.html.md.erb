@@ -1,0 +1,40 @@
+---
+title: Identity Providers in UAA
+owner: UAA
+---
+
+## <a id="ldap">LDAP Providers</a>
+
+The [lightweight directory access protocol](https://tools.ietf.org/html/rfc4511) communicates with directory servers. In comparison with the other external identity providers, LDAP is a very simple integration. It only requires configuration on UAA. Other types of provider require configuration changes be made on both UAA and on the external provider.
+
+LDAP supports three different connection types:
+1. <code>ldap://</code>: cleartext LDAP, typically over port 389
+1. <code>ldaps://</code>: an SSL/TLS connection, typically over port 636
+1. <code>ldap://</code> with StartTLS: a TLS handshake performed on a cleartext LDAP connection, typically over port 389
+
+For more information, see the [LDAP documentation](https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-LDAP.md).
+
+## <a id="saml">SAML Providers</a>
+
+The [SAML v2 standard](http://saml.xml.org/saml-specifications) is a dominant player in the federated authentication space. It is also one of the harder integrations to configure. When configuring SAML integration on UAA, you must configure both UAA and the SAML identity provider. A mistake on either side will cause assertions to be rejected and authentication to fail.
+
+## <a id="service-identity">Service Provider versus Identity Provider</a>
+
+The SAML specification defines two players in a SAML interaction.
+
+* **Service Provider (SP)**, the server that receives the assertion. This is typically UAA.
+* **Identity Provider (IDP)**, the server that receives the authentication request, authenticates the user and sends the assertion to the SP.
+
+UAA can be configured to act as an SP or IDP. In most scenarios, UAA is the SP, and an external provider, such as Okta or ADFS, is the IDP.
+
+### Metadata
+
+A SAML provider, SP or IDP, presents a set of metadata. This metadata contains information about the server and is used to configure the opposing provider.
+
+Download the UAA SP metadata through the <code><a href="http://login.run.pivotal.io/saml/metadata">/saml/metadata</a></code> endpoint. Metadata is in XML format. Using this information, you can configure the IDP.
+
+If you’re using the UAA as an IDP, fetch the metadata from <code><a href="http://login.run.pivotal.io/saml/idp/metadata">/saml/idp/metadata</a></code>.
+
+### Identity Provider Workflow
+
+SAML provides two commonly used flows, SP initiated and IDP initiated.
