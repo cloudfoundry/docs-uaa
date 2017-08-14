@@ -8,9 +8,11 @@ owner: UAA
 The [lightweight directory access protocol](https://tools.ietf.org/html/rfc4511) communicates with directory servers. In comparison with the other external identity providers, LDAP is a very simple integration. It only requires configuration on UAA. Other types of provider require configuration changes be made on both UAA and on the external provider.
 
 LDAP supports three different connection types:
-1. <code>ldap://</code>: cleartext LDAP, typically over port 389
-1. <code>ldaps://</code>: an SSL/TLS connection, typically over port 636
-1. <code>ldap://</code> with StartTLS: a TLS handshake performed on a cleartext LDAP connection, typically over port 389
+<ol>
+<li><code>ldap://</code>: cleartext LDAP, typically over port 389</li>
+<li><code>ldaps://</code>: an SSL/TLS connection, typically over port 636</li>
+<li><code>ldap://</code> with StartTLS: a TLS handshake performed on a cleartext LDAP connection, typically over port 389</li>
+</ol>
 
 For more information, see the [LDAP documentation](https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-LDAP.md).
 
@@ -31,9 +33,9 @@ UAA can be configured to act as an SP or IDP. In most scenarios, UAA is the SP, 
 
 A SAML provider, SP or IDP, presents a set of metadata. This metadata contains information about the server and is used to configure the opposing provider.
 
-Download the UAA SP metadata through the <code><a href="http://login.run.pivotal.io/saml/metadata">/saml/metadata</a></code> endpoint. Metadata is in XML format. Using this information, you can configure the IDP.
+Download the UAA SP metadata through the <a href="http://login.run.pivotal.io/saml/metadata">/saml/metadata</a> endpoint. Metadata is in XML format. Using this information, you can configure the IDP.
 
-If you’re using the UAA as an IDP, fetch the metadata from <code><a href="http://login.run.pivotal.io/saml/idp/metadata">/saml/idp/metadata</a></code>.
+If you’re using the UAA as an IDP, fetch the metadata from <a href="http://login.run.pivotal.io/saml/idp/metadata">/saml/idp/metadata</a>.
 
 ## <a id="id-flow">Identity Provider Workflow</a>
 
@@ -66,7 +68,7 @@ The authentication request sent from the SP to the IDP follows:
 
 Once the IDP has authenticated the user, it sends an assertion back to the user. This step takes place in both SP initiated and IDP initiated flows. We will cover the SAML response containing the assertion in the next section.
 
-![SP Initiated Flow][../images/sp-flow.png]
+<img src="../images/sp-flow.png" alt="An SP-initiated flow.">
 
 ### IDP Initiated
 
@@ -202,7 +204,7 @@ UAA provides a limited set of attributes to configure when setting up an externa
 
 The nameID is the element that provides the username in the SAML assertion. We sometimes refer to this as the subject of the assertion. UAA links the external user to the internal shadow user record by matching the nameID to the user.username. 
 
-Examples:
+Examples:<br/>
 <code>nameID: urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</code>
 <code>nameID: urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</code>
 <code>nameID: urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</code>
@@ -278,7 +280,7 @@ This attribute holds either an XML string or a URL.
 
 An example IDP metadata configuration in UAA follows:
 
-<code>idpMetadata: http://simplesamlphp.identity.cf-app.com/saml2/idp/metadata.php</code>
+<pre class="terminal">idpMetadata: \http://simplesamlphp.identity.cf-app.com/saml2/idp/metadata.php</pre>
 
 If the IDP is configured using a URL, UAA will refresh the metadata content from that URL every 10 minutes. This is useful for providers that rotate their keys frequently.
 
