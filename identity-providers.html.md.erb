@@ -3,7 +3,7 @@ title: Identity Providers in UAA
 owner: UAA
 ---
 
-## <a id="ldap">LDAP Providers</a>
+## <a id="ldap"></a>LDAP Providers
 
 The [lightweight directory access protocol](https://tools.ietf.org/html/rfc4511) communicates with directory servers. In comparison with the other external identity providers, LDAP is a very simple integration. It only requires configuration on UAA. Other types of provider require configuration changes be made on both UAA and on the external provider.
 
@@ -16,7 +16,7 @@ LDAP supports three different connection types:
 
 For more information, see the [LDAP documentation](https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-LDAP.md).
 
-## <a id="saml">SAML Providers</a>
+## <a id="saml"></a>SAML Providers
 
 The [SAML v2 standard](http://saml.xml.org/saml-specifications) is a dominant player in the federated authentication space. It is also one of the harder integrations to configure. When configuring SAML integration on UAA, you must configure both UAA and the SAML identity provider. A mistake on either side will cause assertions to be rejected and authentication to fail.
 
@@ -37,7 +37,7 @@ Download the UAA SP metadata through the <a href="http://login.run.pivotal.io/sa
 
 If you’re using the UAA as an IDP, fetch the metadata from <a href="http://login.run.pivotal.io/saml/idp/metadata">/saml/idp/metadata</a>.
 
-## <a id="id-flow">Identity Provider Workflow</a>
+## <a id="id-flow"></a>Identity Provider Workflow
 
 SAML provides two commonly used flows, SP initiated and IDP initiated.
 
@@ -48,8 +48,8 @@ If you arrive on the UAA login page, and click on a link to authenticate using y
 The authentication request sent from the SP to the IDP follows:
 
 <pre class="terminal">
-<?\xml version="1.0" encoding="UTF-8"?>
-<\saml2p:AuthnRequest 
+<?<span>x</span>ml version="1.0" encoding="UTF-8"?>
+<<span>s<span>aml2p:AuthnRequest 
     xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol" 
     AssertionConsumerServiceURL="https://..host../saml/SSO/alias/login.identity.cf-app.com" 
     Destination="http://simplesamlphp.identity.cf-app.com/saml2/idp/SSOService.php" 
@@ -59,11 +59,11 @@ The authentication request sent from the SP to the IDP follows:
     ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" 
     Version="2.0"
 >
-  <\saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">
+  <<span>s</span>aml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">
       Login.identity.cf-app.com
-  <\/saml2:Issuer>
-  <\saml2p:NameIDPolicy Format="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress" />
-<\/saml2p:AuthnRequest>
+  </<span>s</span>aml2:Issuer>
+  <<span>s</span>aml2p:NameIDPolicy Format="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress" />
+<<span>/s</span>aml2p:AuthnRequest>
 </pre>
 
 Once the IDP has authenticated the user, it sends an assertion back to the user. This step takes place in both SP initiated and IDP initiated flows. We will cover the SAML response containing the assertion in the next section.
@@ -77,126 +77,126 @@ The user can start their authentication process on the IDP. The IDP sends a SAML
 An example SAML request with an assertion follows:
 
 <pre class="terminal">
-<\?xml version="1.0" encoding="UTF-8"?>
-<\samlp:Response 
+<<span>?x</span>ml version="1.0" encoding="UTF-8"?>
+<<span>s</span>amlp:Response 
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" 
     Destination="https://...url.../saml/SSO/alias/login.identity.cf-app.com" 
     ID="_de497bc8a79e5f17202a30112181ea7c99325f8827" 
     InResponseTo="a17j41337a9835i93h78hihc9a89j4b" 
     IssueInstant="2017-05-03T21:51:01Z" Version="2.0">
-  <\saml:Issuer>
+  <<span>s</span>aml:Issuer>
     http://simplesamlphp.identity.cf-app.com/saml2/idp/metadata.php
-  <\/saml:Issuer>
-  <\ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-    <\ds:SignedInfo>
-      <\ds:CanonicalizationMethod 
+  <<span>/s</span>aml:Issuer>
+  <<span>d</span>s:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <<span>d</span>s:SignedInfo>
+      <<span>d</span>s:CanonicalizationMethod 
         Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
-      <\ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-      <\ds:Reference URI="#_de497bc8a79e5f17202a30112181ea7c99325f8827">
-        <\ds:Transforms>
-          <\ds:Transform 
+      <<span>d</span>s:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <<span>d</span>s:Reference URI="#_de497bc8a79e5f17202a30112181ea7c99325f8827">
+        <<span>d</span>s:Transforms>
+          <<span>d</span>s:Transform 
             Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-          <\ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
-        <\/ds:Transforms>
-        <\ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <\ds:DigestValue>QQZHHBC4KDxZ0H4FrbTGFOnNR1E=<\/ds:DigestValue>
-      <\/ds:Reference>
-    <\/ds:SignedInfo>
-    <\ds:SignatureValue>...signature value...<\/ds:SignatureValue>
-    <\ds:KeyInfo>
-      <\ds:X509Data>
-        <\ds:X509Certificate>...x509 certificate value<\/ds:X509Certificate>
-      <\/ds:X509Data>
-    <\/ds:KeyInfo>
-  <\/ds:Signature>
-  <\samlp:Status>
-    <\samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success" />
-  <\/samlp:Status>
-  <\saml:Assertion 
+          <<span>d</span>s:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </<span>d</span>s:Transforms>
+        <<span>d</span>s:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <<span>d</span>s:DigestValue>QQZHHBC4KDxZ0H4FrbTGFOnNR1E=<\/ds:DigestValue>
+      <<span>/d</span>s:Reference>
+    <<span>/d</span>s:SignedInfo>
+    <<span>d</span>s:SignatureValue>...signature value...<\/ds:SignatureValue>
+    <<span>d</span>s:KeyInfo>
+      <<span>d</span>s:X509Data>
+        <<span>d</span>s:X509Certificate>...x509 certificate value<\/ds:X509Certificate>
+      <<span>/d</span>s:X509Data>
+    <<span>/</span>ds:KeyInfo>
+  <<span>/</span>ds:Signature>
+  <<span>s</span>amlp:Status>
+    <<span>s</span>amlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success" />
+  <<span>/</span>samlp:Status>
+  <<span>s</span>aml:Assertion 
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     ID="_ec6adc4fca9e3dc72fff4a1fd99561007777ac7afd" 
     IssueInstant="2017-05-03T21:51:01Z" 
     Version="2.0">
-<\saml:Issuer>http://simplesamlphp.identity.cf-app.com/saml2/idp/metadata.php<\/saml:Issuer>
-    <\ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-      <\ds:SignedInfo>
-        <\ds:CanonicalizationMethod 
+<<span>s</span>aml:Issuer>http://simplesamlphp.identity.cf-app.com/saml2/idp/metadata.php<\/saml:Issuer>
+    <<span>d</span>s:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+      <<span>d</span>s:SignedInfo>
+        <<span>d</span>s:CanonicalizationMethod 
           Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
-        <\ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-        <\ds:Reference URI="#_ec6adc4fca9e3dc72fff4a1fd99561007777ac7afd">
-          <\ds:Transforms>
-            <\ds:Transform
+        <<span>d</span>s:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+        <<span>d</span>s:Reference URI="#_ec6adc4fca9e3dc72fff4a1fd99561007777ac7afd">
+          <<span>d</span>s:Transforms>
+            <<span>d</span>s:Transform
               Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
-            <\ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
-          <\/ds:Transforms>
-          <\ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-          <\ds:DigestValue>dxt7OSy1/Xf6+BHgDU4YOi4ogMg=<\/ds:DigestValue>
-        <\/ds:Reference>
-      <\/ds:SignedInfo>
-      <\ds:SignatureValue>...signature value...<\/ds:SignatureValue>
-      <\ds:KeyInfo>
-        <\ds:X509Data>
-          <\ds:X509Certificate>...x509 certificate value<\/ds:X509Certificate>
-        <\/ds:X509Data>
-      <\/ds:KeyInfo>
-    <\/ds:Signature>
-    <\saml:Subject>
-      <\saml:NameID 
+            <<span>d</span>s:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+          <<span>/d</span>s:Transforms>
+          <<span>d</span>s:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+          <<span>d</span>s:DigestValue>dxt7OSy1/Xf6+BHgDU4YOi4ogMg=<\/ds:DigestValue>
+        <<span>/d</span>s:Reference>
+      <<span>/d</span>s:SignedInfo>
+      <<span>ds</span>:SignatureValue>...signature value...<\/ds:SignatureValue>
+      <<span>d</span>s:KeyInfo>
+        <<span>d</span>s:X509Data>
+          <<span>d</span>s:X509Certificate>...x509 certificate value<\/ds:X509Certificate>
+        <<span>/d</span>s:X509Data>
+      <<span>/d</span>s:KeyInfo>
+    <<span>/d</span>s:Signature>
+    <<span>s</span>aml:Subject>
+      <<span>s</span>aml:NameID 
         Format="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress" 
         SPNameQualifier="login.identity.cf-app.com">
           marissa@test.org
-      <\/saml:NameID>
-      <\saml:SubjectConfirmation 
+      <<span>/s</span>aml:NameID>
+      <<span>s</span>aml:SubjectConfirmation 
           Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
-        <\saml:SubjectConfirmationData 
+        <<span>sa</span>ml:SubjectConfirmationData 
             InResponseTo="a9e378fia1g38da5503ahgih430fah"
             NotOnOrAfter="2017-05-03T21:56:01Z"
             Recipient="https://..url../saml/SSO/alias/login.identity.cf-app.com" />
-      <\/saml:SubjectConfirmation>
-    <\/saml:Subject>
-    <\saml:Conditions 
+      <<span>/sa</span>ml:SubjectConfirmation>
+    <<span>/s</span>aml:Subject>
+    <<span>sa</span>ml:Conditions 
         NotBefore="2017-05-03T21:50:31Z" 
         NotOnOrAfter="2017-05-03T21:56:01Z">
-      <\saml:AudienceRestriction>
-        <\saml:Audience>login.identity.cf-app.com<\/saml:Audience>
-      <\/saml:AudienceRestriction>
-    <\/saml:Conditions>
-    <\saml:AuthnStatement 
+      <<span>sa</span>ml:AudienceRestriction>
+        <<span>s</span>aml:Audience>login.identity.cf-app.com<\/saml:Audience>
+      <<span>/s</span>aml:AudienceRestriction>
+    <<span>/sa</span>ml:Conditions>
+    <<span>sa</span>ml:AuthnStatement 
         AuthnInstant="2017-05-03T21:16:21Z"
         SessionIndex="_a3ab48bcfbb76ad78d4ac28231240af256be171c9f"
         SessionNotOnOrAfter="2017-05-04T05:51:01Z">
-      <\saml:AuthnContext>
-        <\saml:AuthnContextClassRef>
+      <<span>sa</span>ml:AuthnContext>
+        <<span>sa</span>ml:AuthnContextClassRef>
            urn:oasis:names:tc:SAML:2.0:ac:classes:Password
-        <\/saml:AuthnContextClassRef>
-      <\/saml:AuthnContext>
-    <\/saml:AuthnStatement>
-    <\saml:AttributeStatement>
-      <\saml:Attribute 
+        <<span>/sa</span>ml:AuthnContextClassRef>
+      <<span>/sa</span>ml:AuthnContext>
+    <<span>/sa</span>ml:AuthnStatement>
+    <<span>sa</span>ml:AttributeStatement>
+      <<span>sa</span>ml:Attribute 
           Name="uid" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic">
-        <\saml:AttributeValue xsi:type="xs:string">
+        <<span>sa</span>ml:AttributeValue xsi:type="xs:string">
             marissa@test.org
-        <\/saml:AttributeValue>
-      <\/saml:Attribute>
-      <\saml:Attribute Name="eduPersonAffiliation"
+        <<span>/sam</span>l:AttributeValue>
+      <<span>/sam</span>l:Attribute>
+      <<span>sam</span>l:Attribute Name="eduPersonAffiliation"
           NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic">
-        <\saml:AttributeValue xsi:type="xs:string">member<\/saml:AttributeValue>
-        <\saml:AttributeValue xsi:type="xs:string">marissa<\/saml:AttributeValue>
-      <\/saml:Attribute>
-      <\saml:Attribute Name="emailAddress" 
+        <<span>sa</span>ml:AttributeValue xsi:type="xs:string">member<\/saml:AttributeValue>
+        <<span>sa</span>ml:AttributeValue xsi:type="xs:string">marissa<\/saml:AttributeValue>
+      <<span>/sa</span>ml:Attribute>
+      <<span>sam</span>l:Attribute Name="emailAddress" 
           NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic">
-        <\saml:AttributeValue xsi:type="xs:string">
+        <<span>sam</span>l:AttributeValue xsi:type="xs:string">
             marissa@test.org
-        <\/saml:AttributeValue>
-      <\/saml:Attribute>
-    <\/saml:AttributeStatement>
-  <\/saml:Assertion>
-<\/samlp:Response>
+        <<span>/sa</span>ml:AttributeValue>
+      <<span>/sam</span>l:Attribute>
+    <<span>/sa</span>ml:AttributeStatement>
+  <<span>/sa</span>ml:Assertion>
+<<span>/sa</span>mlp:Response>
 </pre>
 
-## <a id="config">Configuration</a>
+## <a id="config"></a>Configuration
 
 UAA provides a limited set of attributes to configure when setting up an external identity provider. You configure these attributes for each individual SAML IDP you set up in UAA.
 
@@ -214,19 +214,19 @@ The most common configuration is `unspecified`, where the IDP decides which attr
 An example of what the subject element looks like in an assertion, with the username EXAMPLE@test.org, follows:
 
 <pre class="terminal">
-<\saml:Subject>
-  <\saml:NameID 
+<<span>s</span>aml:Subject>
+  <<span>s</span>aml:NameID 
       Format="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"     
       SPNameQualifier="login.identity.cf-app.com">
     EXAMPLE@test.org
-  <\/saml:NameID>
-  <\saml:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
-    <\saml:SubjectConfirmationData InResponseTo="a17j41337a9835i93h78hihc9a89j4b"
+  <<span>/s</span>aml:NameID>
+  <<span>s</span>aml:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+    <<span>s</span>aml:SubjectConfirmationData InResponseTo="a17j41337a9835i93h78hihc9a89j4b"
       NotOnOrAfter="2017-05-03T21:21:21Z"
       Recipient="https://..url../saml/SSO/alias/login.identity.cf-app.com"
     />
-  </\saml:SubjectConfirmation>
-</\saml:Subject>
+  </<span>s</span>aml:SubjectConfirmation>
+</<span>s</span>aml:Subject>
 </pre>
 
 ### assertion Consumer Service
@@ -236,16 +236,16 @@ Indicates which assertion consumer service URL the external identity provider sh
 An example assertion consumer services in SP metadata, organized by index, follows:
 
 <pre class="terminal">
-<\md:AssertionConsumerService 
+<<span>md</span>:AssertionConsumerService 
   Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
   Location="https://login.run.pivotal.io/saml/SSO/alias/login.run.pivotal.io" 
   index="0" 
   isDefault="true"/>
-<\md:AssertionConsumerService 
+<<span>m</span>d:AssertionConsumerService 
   Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" 
   Location="https://login.run.pivotal.io/saml/SSO/alias/login.run.pivotal.io" 
   index="1"/>
-<\md:AssertionConsumerService 
+<<span>m</span>d:AssertionConsumerService 
   Binding="urn:oasis:names:tc:SAML:2.0:bindings:URI" 
   Location="https://login.run.pivotal.io/oauth/token/alias/login.run.pivotal.io" 
   index="2"/>
@@ -254,8 +254,8 @@ An example assertion consumer services in SP metadata, organized by index, follo
 An example SAML request to the IDP with the correct assertion consumer service selected follows:
 
 <pre class="terminal">
-<\?xml version="1.0" encoding="UTF-8"?>
-<\saml2p:AuthnRequest
+<<span>?x</span>ml version="1.0" encoding="UTF-8"?>
+<<span>s</span>aml2p:AuthnRequest
     AssertionConsumerServiceURL="https://..../saml/SSO/alias/login.identity.cf-app.com" 
     Destination="http://simplesamlphp.identity.cf-app.com/saml2/idp/SSOService.php" 
     ForceAuthn="false" 
@@ -265,13 +265,13 @@ An example SAML request to the IDP with the correct assertion consumer service s
     ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" 
     Version="2.0" 
     xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol">
-  <\saml2:Issuer 
+  <<span>s</span>aml2:Issuer 
     xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">
       Login.identity.cf-app.com
-  <\/saml2:Issuer>
-  <\saml2p:NameIDPolicy 
+  <<span>/s</span>aml2:Issuer>
+  <<span>s</span>aml2p:NameIDPolicy 
     Format="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"/>
-<\/saml2p:AuthnRequest>
+<<span>/s</span>aml2p:AuthnRequest>
 </pre>
 
 ### idpMetadata
@@ -289,30 +289,30 @@ If the IDP is configured using metadata as an XML string, the metadata remains s
 An example of the XML metadata configuration follows:
 
 <pre class="terminal">
-<\?xml version="1.0" encoding="UTF-8"?>
-<\md:EntityDescriptor 
+<<span>?x</span>ml version="1.0" encoding="UTF-8"?>
+<<span>md</span>:EntityDescriptor 
     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     entityID="http://www.okta.com/k2lw4l5bPODCMIIDBRYZ">
-  <\md:IDPSSODescriptor 
+  <<span>md</span>:IDPSSODescriptor 
       WantAuthnRequestsSigned="true"
       protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
-    <\md:KeyDescriptor use="signing">
-      <\ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-        <\ds:X509Data>
-          <\ds:X509Certificate>..x509 certificate</ds:X509Certificate>
-        <\/ds:X509Data>
-      <\/ds:KeyInfo>
-    <\/md:KeyDescriptor>
-    <\md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
-    <\md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
-    <\md:SingleSignOnService 
+    <<span>md</span>:KeyDescriptor use="signing">
+      <<span>ds</span>:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <<span>ds</span>:X509Data>
+          <<span>ds</span>:X509Certificate>..x509 certificate</<span>ds</span>:X509Certificate>
+        <<span>/ds</span>:X509Data>
+      <<span>/ds</span>:KeyInfo>
+    <<span>/md</span>:KeyDescriptor>
+    <<span>md</span>:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</<span>md</span>:NameIDFormat>
+    <<span>md</span>:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</<span>md</span>:NameIDFormat>
+    <<span>md</span>:SingleSignOnService 
       Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" 
       Location="https://s.okta.com/app/env_1/k2lw4l5bPODCMIIDBRYZ/sso/saml" />
-    <\md:SingleSignOnService 
+    <<span>md</span>:SingleSignOnService 
         Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" 
         Location="https://s.okta.com/app/env_1/k2lw4l5bPODCMIIDBRYZ/sso/saml" />
-  <\/md:IDPSSODescriptor>
-<\/md:EntityDescriptor>
+  <<span>/md:IDPSSODescriptor>
+<<span>/md:EntityDescriptor>
 </pre>
 
 ### linkText
