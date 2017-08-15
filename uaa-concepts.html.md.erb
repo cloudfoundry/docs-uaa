@@ -25,11 +25,11 @@ Having two identity zones is equivalent to standing up two separate UAA deployme
 
 ## <a id="subdomains">Subdomains</a>
 
-An identity zone is uniquely identified by a subdomain identifier in UAA. If a UAA deployment is hosted on the URL <code>https://login.my-cf-domain.com</code>, identity zones are hosted as subdomains of that same deployment.
+An identity zone is uniquely identified by a subdomain identifier in UAA. If a UAA deployment is hosted on the URL <code>http<span>s</span>://login.my-cf-domain.com</code>, identity zones are hosted as subdomains of that same deployment.
 
-For example:
-zone1 : <code>https://ZONE1.login.EXAMPLE-CF-DOMAIN.com</code>
-zone2 : <code>https://ZONE2.login.EXAMPLE-CF-DOMAIN.com</code>
+For example:<br/>
+zone1 : <code>http<span>s</span>://ZONE1.login.EXAMPLE-CF-DOMAIN.com</code><br/>
+zone2 : <code>http<span>s</span>://ZONE2.login.EXAMPLE-CF-DOMAIN.com</code>
 
 Identity zones are configured with JSON payloads using a REST API.
 
