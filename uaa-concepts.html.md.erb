@@ -31,16 +31,16 @@ For example:<br/>
 zone1: <code>http<span>s</span>://ZONE1.login.EXAMPLE-CF-DOMAIN.com</code><br/>
 zone2: <code>http<span>s</span>://ZONE2.login.EXAMPLE-CF-DOMAIN.com</code>
 
-### The 'default' zone
+### <a id="default-zones"></a>Default Zones
 
-A UAA deployment always has one zone referred to as the default zone. The default zone is configured and bootstrapped using a YAML configuration file. 
+A UAA deployment always has one zone referred to as the **default zone**. The default zone is configured and bootstrapped using a YAML configuration file. 
 
 ## <a id="users"></a>Users
 A **user** is the central domain object of the UAA server. Because UAA acts as both an account store and an authorization server, many different types of information are linked to users and can be accessed through user-centric API calls.
 
 In its capacity as a user account store, UAA can provide descriptive user attributes, such as email, name, phone number, and group memberships. In addition to these editable account properties, UAA also tracks some dynamic user metadata, such as the last successful logon time and last updated time.
 
-You can make additional descriptive properties available if UAA is configured to use custom attribute mappings from an external identity provider, such as an existing LDAP or SAML provider. 
+You can make additional descriptive properties available if UAA is configured to use custom attribute mappings from an external identity provider, such as an existing LDAP or SAML provider. For more information about identity provider options, see [Identity Providers in UAA](./identity-providers.html).
 
 External identity providers are read-only, as are attributes from those providers. Any change to the external user account should be performed on the external identity provider directly. These read-only attributes are refreshed each time the user authenticates with the [external identity provider](https://docs.google.com/document/d/1XYmns9Er0D0EOAZ8Qzl-4THIGTSio3vJMNYTdbhtSh4/edit#heading=h.2qxneqgov2pe).
 
@@ -106,7 +106,7 @@ The common group attributes are as follows:
 
 <p class="note"><strong>Note</strong>: To create a group, see <a href="https://docs.cloudfoundry.org/api/uaa/#groups">the UAA API documentation</a>. Add a user or group to a group through <a href="https://docs.cloudfoundry.org/api/uaa/#add-member">group-membership</a>.</p>  
 
-### Default user groups
+### <a id="default-groups"></a>Default User Groups
 UAA can be configured to have one or more default groups. These are groups that every user in the system is a member of, even if there is no direct relationship between user and group in the 
 database.
 
@@ -117,7 +117,7 @@ UAA internal users have an origin of <code>uaa</code>. Shadow users are differen
 
 Shadow users have a different type of group membership. A shadow user can be associated with a group through its origin. This membership may also change each time a new assertion is received. 
 
-A shadow user can also have a group memberships defined using <code>group_membership.origin=`uaa`</code>. These are memberships that remain persistent and do not change when assertions report a change in external group memberships. It also allows UAA operators to assign privileges to users that are not known by external providers or cannot be mapped to external groups.
+A shadow user can also have a group memberships defined using <code>group_membership.origin=<span>`</span>uaa<span>`</span></code>. These are memberships that remain persistent and do not change when assertions report a change in external group memberships. It also allows UAA operators to assign privileges to users that are not known by external providers or cannot be mapped to external groups.
 
 ## <a id="client"></a>Client
 
@@ -129,7 +129,7 @@ There are two types of clients: clients that access resources and request tokens
 
 Clients are created in UAA through **client registration**. Clients can be defined in UAA using the UAA configuration files or created using the UAA API.
 
-### Choosing authorization grant types
+### <a id="auth-grant-types"></a>Choosing Authorization Grant Types
 
 To create a client, the application developer must specify which grant types should be permitted using their client. The grant type determines how your client can interact with UAA. Each grant types corresponds to one of the four different authorization flows [defined in the OAuth2 spec](https://tools.ietf.org/html/rfc6749#section-1.3.1). The available grant types on UAA include: 
 <ul>
@@ -141,7 +141,7 @@ To create a client, the application developer must specify which grant types sho
 
 For increased security, use only the grant types your application requires. If necessary, however, you can assign multiple grant types to one client.
 
-### <a id="select-type"></a>Selecting the client grant type
+### <a id="select-type"></a>Selecting the Client Grant Type
 
 The table below is intended to help you choose a grant type for your use case.
 
@@ -193,7 +193,7 @@ URLs are registered using a comma delimited string.
 
 ### <a id="access-token-validity"></a>Client.access-token-validity
 
-UAA validates access tokens up to the time those tokens expire. Clients will do the same, if they can validate tokens offline. The access token validity is the the value in seconds from the time the token was created to when it expires. 
+UAA validates access tokens up to the time those tokens expire. Clients will do the same, if they can validate tokens offline. The access token validity is the value in seconds from the time the token was created to when it expires. 
 
 ### <a id="refresh-token-validity"></a>Client.refresh-token-validity
 
@@ -201,7 +201,7 @@ UAA validates access tokens up to the time those tokens expire. Clients will do 
 
 ## <a id="scopes"></a>Choosing Scopes and Authorities
 
-Client scopes are used to populate the `scope` claim when constructing an access token where the client acts on behalf of the user. 
+Client scopes are used to populate the scope claim when constructing an access token where the client acts on behalf of the user. 
 
 When an access token is created, UAA takes the user groups and intersects them with the client scopes. The intersection of these two fields are scopes that are eligible to be populated in the access token. There are two more validations that can further limit the scopes that get populated in the access token after the intersection has been decided:
 
@@ -237,7 +237,7 @@ Clients can store custom attributes in a field called <code>additional_informati
 		<td>allowed providers</td>
 		<td>You can limit what applications can be used by what users. For example, in a Cloud Foundry deployment, you may have set up multiple identity providers. For example, you could be using Facebook and your organization’s LDAP system.<br/><br/>
 
-		You can limit UAA to only issue an application tokens if the users are from a certain provider. You would configure the application’s client to have <code>allowed providers=”ldap”</code>. The value is a comma delimited string of <a href="#idporigin">Identity Provider.origin</a> values.</td>
+		You can limit UAA to only issue an application tokens if the users are from a certain provider. You would configure the application’s client to have <code>allowed providers="ldap"</code>. The value is a comma delimited string of <a href="#idporigin">Identity Provider.origin</a> values.</td>
 	</tr>
 	<tr>
 		<td>created with</td>
@@ -254,6 +254,6 @@ Clients can store custom attributes in a field called <code>additional_informati
 	</tr>
 	<tr>
 		<td>token_salt</td>
-		<td>Tokens, even stateless JSON Web Tokens (JWT), can be revoked. By revoked we mean they will not pass a UAA token validation when the token is passed to the <code><span>/c</span>heck_token</code> endpoint. UAA will revoke a token if the client’s secret has changed. There may be instances to revoke all tokens for a certain client without having to change the client secret. This can be achieved by changing the <code>token_salt</code>. <code>token_salt</code> is an arbitrary string value that is used to generate a hash.</td>
+		<td>Tokens, even stateless JWT, can be revoked. By revoked we mean they will not pass a UAA token validation when the token is passed to the <code><span>/c</span>heck_token</code> endpoint. UAA will revoke a token if the client’s secret has changed. There may be instances to revoke all tokens for a certain client without having to change the client secret. This can be achieved by changing the <code>token_salt</code>. <code>token_salt</code> is an arbitrary string value that is used to generate a hash.</td>
 	</tr>
 </table>
