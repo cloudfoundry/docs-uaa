@@ -88,11 +88,11 @@ Users that create accounts through the UAA user interface will use their email a
 For external providers, the username is mapped from the assertion received by UAA.
 <ul>
 <li><strong>SAML</strong>: Retrieved from the nameID claim. For example:<br/>
-<code><\<span>s</span>aml2:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">
+<code><span>s</span>aml2:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">
     EXAMPLE-SAML-USER-NAME
 </<span>s</span>aml2:NameID></code></li>
 <li><strong>LDAP</strong>: Username derived from user input.</li>
-<li><strong>OIDC1.0 / OAuth2</strong>: The UAA derives username from OpenID Connect and OAuth2 providers from the <code>id_token</code>, userinfo endpoint or the access token in JWT, JSON Web Token, format. The name of the claim holding the username value can be configured and defaults to <code>preferred_username</code>.
+<li><strong>OIDC1.0 / OAuth2</strong>: UAA derives usernames from OpenID Connect and OAuth2 providers from the <code>id_token</code>, userinfo endpoint, or the access token. The usernames are returned in JSON Web Token (JWT) format. The name of the claim holding the username value can be configured and defaults to <code>preferred_username</code>.
 </ul>
 
 ## <a id="#user-groups"></a>User Groups
