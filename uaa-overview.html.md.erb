@@ -2,9 +2,9 @@
 title: UAA Overview
 owner: UAA
 ---
-User Account and Authentication (UAA) is an open source identity server [project](https://github.com/cloudfoundry/uaa) under the Cloud Foundry foundation. 
+User Account and Authentication (UAA) is an open source identity server [project](https://github.com/cloudfoundry/uaa) under the Cloud Foundry (CF) foundation. 
 
-UAA provides enterprise scale identity management features. It is part of: 
+UAA provides enterprise scale identity management features. It is part of the following: 
 
 * [Pivotal Single Sign-On Service](https://pivotal.io/platform/services/identity-and-security/sso): Identity Services for Apps and APIs running on Pivotal Cloud Foundry
 * [GE Predix Identity Services](https://docs.predix.io/en-US/content/service/security/user_account_and_authentication/uaa-service-overview)
@@ -12,7 +12,7 @@ UAA provides enterprise scale identity management features. It is part of:
 
 ## <a id="overview">What is UAA?</a>
 
-UAA provides identity based security for applications and APIs. It supports open standards for authentication and authorization, including: 
+UAA provides identity based security for applications and APIs. It supports open standards for authentication and authorization, including the following: 
 <ul>
 <li>OAuth</li> 
 <li>OpenID Connect</li>
@@ -21,13 +21,13 @@ UAA provides identity based security for applications and APIs. It supports open
 <li>SCIM</li>
 </ul>
 
-UAA's major features include:
+The major features of UAA include the following:
 <ul>
 	<li>User Single Sign-On (SSO) using federated identity protocols</li>
 	<li>API security with OAuth</li>
 	<li>User and group management</li>
-	<li>Multitenancy support</li>
-	<li>Support for <a href="https://jwt.io/">JWT</a> and opaque as a token format</li>
+	<li>Multi-tenancy support</li>
+	<li>Support for <a href="https://jwt.io/">JWT</a> and **opaque** as a token format</li>
 	<li>Token revocation</li>
 	<li>Operational flexibility<br/>
 	<ul>
@@ -81,7 +81,7 @@ UAA's major features include:
 	</tr>
 </table>
 
-## <a id="client-tools">Client side tools and libraries</a>
+## <a id="client-tools">Client-Side Tools and Libraries</a>
 <table class="nice">
 	<th>Name</th>
 	<th>Language</th>
@@ -104,14 +104,14 @@ UAA's major features include:
 	</tr>
 </table>
 
-## <a id="securing">UAA's role in securing Cloud Foundry</a>
+## <a id="securing">The Role of UAA in Securing Cloud Foundry</a>
 
 Cloud Foundry relies on UAA for its identity and access management requirements.
 UAA secures user and system access to Cloud Foundry installations.
 
 Since Cloud Foundry is primarily used in the enterprise context, UAA supports enterprise SSO workflows. If a user has already authenticated against the enterprise identity provider, they can access Cloud Foundry without re-entering credentials.
 
-Some of the major components of Cloud Foundry that use UAA include: 
+Some of the major components of Cloud Foundry that use UAA include the following: 
 
 * Cloud Controller 
 * Router 
@@ -120,7 +120,7 @@ Some of the major components of Cloud Foundry that use UAA include:
 
 Each of these components expose APIs for user and system interaction. UAA uses OAuth to secure the APIs exposed by core Cloud Foundry components.  
 
-UAA secures many different CF components, including:
+UAA secures many different CF components, including the following:
 
 * CF CLI
 * Cloud Controller

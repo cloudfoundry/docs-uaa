@@ -5,13 +5,13 @@ owner: UAA
 
 ## <a id="ldap"></a>LDAP Providers
 
-The [lightweight directory access protocol](https://tools.ietf.org/html/rfc4511) communicates with directory servers. In comparison with the other external identity providers, LDAP is a very simple integration. It only requires configuration on UAA. Other types of provider require configuration changes be made on both UAA and on the external provider.
+The [Lightweight Directory Access Protocol](https://tools.ietf.org/html/rfc4511) communicates with directory servers. In comparison with the other external identity providers, LDAP is a very simple integration. It only requires configuration on UAA. Other types of provider require that you make configuration changes on both UAA and on the external provider.
 
 LDAP supports three different connection types:
 <ol>
-<li><code>ldap://</code>: cleartext LDAP, typically over port 389</li>
-<li><code>ldaps://</code>: an SSL/TLS connection, typically over port 636</li>
-<li><code>ldap://</code> with StartTLS: a TLS handshake performed on a cleartext LDAP connection, typically over port 389</li>
+<li><code>ldap://</code>: Cleartext LDAP, typically over port 389</li>
+<li><code>ldaps://</code>: An SSL/TLS connection, typically over port 636</li>
+<li><code>ldap://</code> with StartTLS: A TLS handshake performed on a cleartext LDAP connection, typically over port 389</li>
 </ol>
 
 For more information, see the [LDAP documentation](https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-LDAP.md).
@@ -35,15 +35,15 @@ A SAML provider, SP or IDP, presents a set of metadata. This metadata contains i
 
 Download the UAA SP metadata through the <a href="http://login.run.pivotal.io/saml/metadata">/saml/metadata</a> endpoint. Metadata is in XML format. Using this information, you can configure the IDP.
 
-If you’re using the UAA as an IDP, fetch the metadata from <a href="http://login.run.pivotal.io/saml/idp/metadata">/saml/idp/metadata</a>.
+If you use the UAA as an IDP, fetch the metadata from <a href="http://login.run.pivotal.io/saml/idp/metadata">/saml/idp/metadata</a>.
 
 ## <a id="id-flow"></a>Identity Provider Workflow
 
-SAML provides two commonly used flows, SP initiated and IDP initiated.
+SAML provides two commonly-used flows, SP-initiated and IDP-initiated.
 
 ### SP Initiated
 
-If you arrive on the UAA login page, and click on a link to authenticate using your organization’s SAML provider, this is an SP initiated flow.
+If you arrive on the UAA login page and click on a link to authenticate using your organization's SAML provider, you are using an SP-initiated flow.
 
 The authentication request sent from the SP to the IDP follows:
 
@@ -66,7 +66,7 @@ The authentication request sent from the SP to the IDP follows:
 <<span>/s</span>aml2p:AuthnRequest>
 </pre>
 
-Once the IDP has authenticated the user, it sends an assertion back to the user. This step takes place in both SP initiated and IDP initiated flows. We will cover the SAML response containing the assertion in the next section.
+Once the IDP has authenticated the user, it sends an assertion back to the user. This step takes place in both SP-initiated and IDP-initiated flows. We discuss the SAML response containing the assertion in the next section.
 
 <img src="./images/sp-flow.png" alt="An SP-initiated flow.">
 
@@ -202,7 +202,7 @@ UAA provides a limited set of attributes to configure when setting up an externa
 
 ### nameID
 
-The nameID is the element that provides the username in the SAML assertion. We sometimes refer to this as the subject of the assertion. UAA links the external user to the internal shadow user record by matching the nameID to the user.username. 
+The `nameID` is the element that provides the username in the SAML assertion. We sometimes refer to this as the _subject_ of the assertion. UAA links the external user to the internal shadow user record by matching the `nameID` to the `user.username`. 
 
 Examples:<br/>
 <code>nameID: urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</code>
@@ -211,7 +211,7 @@ Examples:<br/>
 
 The most common configuration is `unspecified`, where the IDP decides which attribute is the username. 
 
-An example of what the subject element looks like in an assertion, with the username EXAMPLE@test.org, follows:
+An example of what the subject element looks like in an assertion, with the username `EXAMPLE@test.org`, follows:
 
 <pre class="terminal">
 <<span>s</span>aml:Subject>
@@ -324,7 +324,7 @@ linkText: Login in with SSO
 </pre>
 
 ### showSamlLoginLink
-Set to `true` to display the login link on the UAA home page. Clicking on this link starts the SP initiated flow. This is frequently set to `false` when you're using the IDP initiated flow.
+Set to `true` to display the login link on the UAA home page. Clicking on this link starts the SP initiated flow. This is frequently set to `false` when you use the IDP initiated flow.
 
 An example link text configuration follows:
 <pre class="terminal">
