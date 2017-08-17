@@ -81,9 +81,9 @@ If the user authenticates against an external provider, the username is transfer
 
 The username alone is not a unique value. Since usernames can change, UAA provides <a href="#id">user IDs</a> as unchanging references to a single user.
 
-Users that create accounts through the UAA user interface will use their email address as their username. The administrative API can create user accounts that specify arbitrary usernames.
+Users that create accounts through the UAA user interface use their email address as their username. The administrative API can create user accounts that specify arbitrary usernames.
 
-Users that create accounts through the UAA user interface will use their email address as their username. The administrative API can create user accounts that specify arbitrary usernames.
+Users that create accounts through the UAA user interface use their email address as their username. The administrative API can create user accounts that specify arbitrary usernames.
 
 For external providers, the username is mapped from the assertion received by UAA.
 <ul>
@@ -113,7 +113,7 @@ database.
 ### <a id="#shadow"></a>Shadow Users
 
 Users that have authenticated through an external identity provider still get assigned a record in the users table in the UAA database. These users are frequently referred to as **shadow users**. 
-UAA internal users have an origin of <code>uaa</code>. Shadow users are differentiated from internal users with a different origin corresponding to the external identity provider. Each time an external user is authenticated and the assertion is passed to UAA, UAA will refresh the user information. This means that the information about a shadow user in UAA is accurate up to the last time UAA received an assertion with user information.
+UAA internal users have an origin of <code>uaa</code>. Shadow users are differentiated from internal users with a different origin corresponding to the external identity provider. Each time an external user is authenticated and the assertion is passed to UAA, UAA refreshs the user information. This means that the information about a shadow user in UAA is accurate up to the last time UAA received an assertion with user information.
 
 Shadow users have a different type of group membership. A shadow user can be associated with a group through its origin. This membership may also change each time a new assertion is received. 
 
@@ -152,7 +152,7 @@ The table below is intended to help you choose a grant type for your use case.
 	<tr>
 		<td><code>authorization_code</code></td>
 		<td>Developers building web applications</td>
-		<td>In the authorization code grant flow, the user is directed to a page on the UAA where they will grant approvals to the client. After the user approves the requested scopes, they are redirected back to the client application with an authorization code in the URL parameters. The client application may then exchange the authorization code with UAA to obtain an access token.</td>
+		<td>In the authorization code grant flow, the user is directed to a page on the UAA where they grant approvals to the client. After the user approves the requested scopes, they are redirected back to the client application with an authorization code in the URL parameters. The client application may then exchange the authorization code with UAA to obtain an access token.</td>
 	</tr>
 	<tr>
 		<td><code>password</code></td>
@@ -162,11 +162,11 @@ The table below is intended to help you choose a grant type for your use case.
 	<tr>
 		<td><code>implicit</code></td>
 		<td>Developers building a single page web application with no server backend</td>
-		<td>The user is taken to a page on UAA where they will be asked to grant approvals to the client, and after doing so they are redirected to the <code>redirect_uri</code> with the access token in the URI fragment.</td>
+		<td>The user is taken to a page on UAA where they are asked to grant approvals to the client, and after doing so they are redirected to the <code>redirect_uri</code> with the access token in the URI fragment.</td>
 	</tr>
 	<tr>
 		<td><code>client_credentials</code></td>
-		<td>Developers use <code>client_credentials</code> when the client application will need to perform actions in UAA on its own behalf</td>
+		<td>Developers use <code>client_credentials</code> when the client application needs to perform actions in UAA on its own behalf</td>
 		<td>Actions where a <code>client_credentials</code> grant type might be appropriate include creating or destroying user groups, managing user group membership, or creating or destroying other clients. The <code>client_credentials</code> grant can be likened to service accounts in legacy application ecosystems.</td>
 	</tr>
 </table>
@@ -193,11 +193,11 @@ URLs are registered using a comma delimited string.
 
 ### <a id="access-token-validity"></a>Client.access-token-validity
 
-UAA validates access tokens up to the time those tokens expire. Clients will do the same, if they can validate tokens offline. The access token validity is the value in seconds from the time the token was created to when it expires. 
+UAA validates access tokens up to the time those tokens expire. Clients do the same, if they can validate tokens offline. The access token validity is the value in seconds from the time the token was created to when it expires. 
 
 ### <a id="refresh-token-validity"></a>Client.refresh-token-validity
 
-UAA validates access tokens up to the time those tokens expire. Clients will do the same, if they can validate tokens offline. The access token validity is the the value in seconds from the time the token was created to when it expires. 
+UAA validates access tokens up to the time those tokens expire. Clients do the same, if they can validate tokens offline. The access token validity is the the value in seconds from the time the token was created to when it expires. 
 
 ## <a id="scopes"></a>Choosing Scopes and Authorities
 
@@ -250,10 +250,10 @@ Clients can store custom attributes in a field called <code>additional_informati
 	</tr>
 	<tr>
 		<td>approvals_deleted</td>
-		<td>Contains a boolean value if performing an operation on the client resulted in all the client's user approvals were deleted. For example, changing the Client.client_secret value will cause UAA to delete all the approvals. UAA will then store a value of true in this field.</td>
+		<td>Contains a boolean value if performing an operation on the client resulted in all the client's user approvals were deleted. For example, changing the Client.client_secret value causes UAA to delete all the approvals. UAA then stores a value of true in this field.</td>
 	</tr>
 	<tr>
 		<td>token_salt</td>
-		<td>Tokens, even stateless JWT, can be revoked. By revoked we mean they will not pass a UAA token validation when the token is passed to the <code><span>/c</span>heck_token</code> endpoint. UAA will revoke a token if the client's secret has changed. There may be instances to revoke all tokens for a certain client without having to change the client secret. This can be achieved by changing the <code>token_salt</code>. <code>token_salt</code> is an arbitrary string value that is used to generate a hash.</td>
+		<td>Tokens, even stateless JWT, can be revoked. By revoked, we mean they do not pass a UAA token validation when the token is passed to the <code><span>/c</span>heck_token</code> endpoint. UAA revokes a token if the client's secret has changed. There may be instances to revoke all tokens for a certain client without having to change the client secret. This can be achieved by changing the <code>token_salt</code>. <code>token_salt</code> is an arbitrary string value that is used to generate a hash.</td>
 	</tr>
 </table>
