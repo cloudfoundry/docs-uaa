@@ -111,9 +111,9 @@ For external providers, the username is mapped from the assertion received by UA
 <ul>
 <li><strong>SAML</strong>: Retrieved from the nameID claim.
     For example:<br/>
-<code><span><s</span>aml2:NameID> Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">
-    EXAMPLE-SAML-USER-NAME
-</<span>s</span>aml2:NameID></code></li>
+<code>&lt;saml2:NameID&gt; Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"></br>
+    EXAMPLE-SAML-USER-NAME<br>
+&lt;/saml2:NameID&gt;</code></li>
 <li><strong>LDAP</strong>: Username derived from user input.</li>
 <li><strong>OIDC1.0 / OAuth2</strong>: UAA derives usernames from OpenID Connect and OAuth2 providers from the <code>id_token</code>, userinfo endpoint, or the access token.
     The usernames are returned in JSON Web Token (JWT) format.
@@ -128,7 +128,9 @@ This name, an arbitrary string, corresponds directly to a scope in a JWT access 
 
 The common group attributes are as follows:  
 <ul>
-<li><strong>type</strong>: This can be one of two membership types, "DIRECT" and "INDIRECT."  "DIRECT means that the user is directly associated with the group. "INDIRECT" means that the membership has been inherited from the nested membership of groups.</li>
+<li><strong>type</strong>: This can be one of two membership types, "DIRECT" and "INDIRECT."
+    "DIRECT means that the user is directly associated with the group.
+    "INDIRECT" means that the membership has been inherited from the nested membership of groups.</li>
 <li><strong>display</strong>: The displayName of the group the user or the group belongs to.
     The displayName is an identifier that is unique to a given identity zone and is a representation of the access given to the user.</li>
 </ul>
@@ -154,7 +156,7 @@ Shadow users have a different type of group membership.
 A shadow user can be associated with a group through its origin.
 This membership may also change each time a new assertion is received. 
 
-A shadow user can also have a group memberships defined using <code>group_membership.origin=<span>`</span>uaa<span>`</span></code>.
+A shadow user can also have a group memberships defined using <code>group_membership.origin='uaa'</code>.
 These are memberships that remain persistent and do not change when assertions report a change in external group memberships.
 It also allows UAA operators to assign privileges to users that are not known by external providers or cannot be mapped to external groups.
 
@@ -192,35 +194,36 @@ If necessary, however, you can assign multiple grant types to one client.
 The table below is intended to help you choose a grant type for your use case.
 
 <table class="nice">
-	<th>Grant type</th>
-	<th>User</th>
-	<th>Details</th>
-	<tr>
-		<td><code>authorization_code</code></td>
-		<td>Developers building web applications</td>
-		<td>In the authorization code grant flow, the user is directed to a page on the UAA where they grant approvals to the client.
+        <th>Grant type</th>
+        <th>User</th>
+        <th>Details</th>
+        <tr>
+                <td><code>authorization_code</code></td>
+                <td>Developers building web applications</td>
+                <td>In the authorization code grant flow, the user is directed to a page on the UAA where they grant approvals to the client.
                     After the user approves the requested scopes, they are redirected back to the client application with an authorization code in the URL parameters.
                     The client application may then exchange the authorization code with UAA to obtain an access token.</td>
-	</tr>
-	<tr>
-		<td><code>password</code></td>
-		<td>Developers building native desktop or mobile applications</td>
-		<td>The name "password" refers to the Resource Owner Password Grant type.
+        </tr>
+        <tr>
+                <td><code>password</code></td>
+                <td>Developers building native desktop or mobile applications</td>
+                <td>The name "password" refers to the Resource Owner Password Grant type.
                     The user, who trusts the security of the application,
                     provides their username and password to the client app which may then use them to obtain an <code>access_token</code>.</td>
-	</tr>
-	<tr>
-		<td><code>implicit</code></td>
-		<td>Developers building a single page web application with no server backend</td>
-		<td>The user is taken to a page on UAA where they are asked to grant approvals to the client, and after doing so they are redirected to the <code>redirect_uri</code> with the access token in the URI fragment.</td>
-	</tr>
-	<tr>
-		<td><code>client_credentials</code></td>
-		<td>Developers use <code>client_credentials</code> when the client application needs to perform actions in UAA on its own behalf</td>
-		<td>Actions where a <code>client_credentials</code> grant type might be appropriate include creating or destroying user groups,
+        </tr>
+        <tr>
+                <td><code>implicit</code></td>
+                <td>Developers building a single page web application with no server backend</td>
+                <td>The user is taken to a page on UAA where they are asked to grant approvals to the client,
+                    and after doing so they are redirected to the <code>redirect_uri</code> with the access token in the URI fragment.</td>
+        </tr>
+        <tr>
+                <td><code>client_credentials</code></td>
+                <td>Developers use <code>client_credentials</code> when the client application needs to perform actions in UAA on its own behalf</td>
+                <td>Actions where a <code>client_credentials</code> grant type might be appropriate include creating or destroying user groups,
                     managing user group membership, or creating or destroying other clients.
                     The <code>client_credentials</code> grant can be likened to service accounts in legacy application ecosystems.</td>
-	</tr>
+        </tr>
 </table>
 
 ### <a id="clientid"></a>Client.client_id
@@ -301,42 +304,42 @@ Clients can store custom attributes in a field called <code>additional_informati
 This is a simple key value store. 
 
 <table class="nice">
-	<th>Key</th>
-	<th>Value</th>
-	<tr>
-		<td>allowed providers</td>
-		<td>You can limit what applications can be used by what users.
+        <th>Key</th>
+        <th>Value</th>
+        <tr>
+                <td>allowed providers</td>
+                <td>You can limit what applications can be used by what users.
                     For example, in a Cloud Foundry deployment, you may have set up multiple identity providers.
                     For example, you could be using Facebook and your organization's LDAP system.<br/><br/>
 
                  You can limit UAA to only issue an application tokens if the users are from a certain provider.
                  You would configure the application's client to have <code>allowed providers="ldap"</code>.
                  The value is a comma delimited string of <a href="#idporigin">Identity Provider.origin</a> values.</td>
-	</tr>
-	<tr>
-		<td>created with</td>
-		<td>UAA stores the scope <code>zones.write</code> in this field if the client was created using the <code><span>/i</span>dentity-zones</code> endpoint.
+        </tr>
+        <tr>
+                <td>created with</td>
+                <td>UAA stores the scope <code>zones.write</code> in this field if the client was created using the <code><span>/i</span>dentity-zones</code> endpoint.
                     This field is used by the UAA to allow clients to be deleted by the same endpoint.
                     It is not a configurable field, instead used by the UAA.</td>
-	</tr>
-	<tr>
-		<td>name</td>
-		<td>Various tooling in the Cloud Foundry ecosystem creates clients with generated <a href="#clientid">Client.client_id</a> values.
+        </tr>
+        <tr>
+                <td>name</td>
+                <td>Various tooling in the Cloud Foundry ecosystem creates clients with generated <a href="#clientid">Client.client_id</a> values.
                     These tools often store a human readable name in this field. </td>
-	</tr>
-	<tr>
-		<td>approvals_deleted</td>
-		<td>Contains a boolean value if performing an operation on the client resulted in all the client's user approvals were deleted.
+        </tr>
+        <tr>
+                <td>approvals_deleted</td>
+                <td>Contains a boolean value if performing an operation on the client resulted in all the client's user approvals were deleted.
                     For example, changing the Client.client_secret value causes UAA to delete all the approvals.
                     UAA then stores a value of true in this field.</td>
-	</tr>
-	<tr>
-		<td>token_salt</td>
-		<td>Tokens, even stateless JWT, can be revoked.
+        </tr>
+        <tr>
+                <td>token_salt</td>
+                <td>Tokens, even stateless JWT, can be revoked.
                     By revoked, we mean they do not pass a UAA token validation when the token is passed to the <code><span>/c</span>heck_token</code> endpoint.
                     UAA revokes a token if the client's secret has changed.
                     There may be instances to revoke all tokens for a certain client without having to change the client secret.
                     This can be achieved by changing the <code>token_salt</code>.
                     <code>token_salt</code> is an arbitrary string value that is used to generate a hash.</td>
-	</tr>
+        </tr>
 </table>
