@@ -154,6 +154,11 @@ UAAC stores the token in `~/.uaac.yml`.
     $ uaac user add Alice -p SecretPassword --emails alice<span>@</span>example.com
     </pre>
 
+1. Ensure that the `cloud_controller.global_auditor` group exists.
+    <pre class="terminal">
+    $ uaac group add cloud\_controller.global\_auditor
+    </pre>
+
 1. Run `uaac member add GROUP NEW-USERNAME` to add the
 new global auditor account to the `cloud_controller.global_auditor` group.
     <pre class="terminal">
