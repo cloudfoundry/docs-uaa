@@ -101,8 +101,8 @@ new admin to the groups `cloud_controller.admin`, `uaa.admin`, `scim.read`, and 
 
 ### <a id="admin-read-only"></a> Create an Admin Read-Only User
 
-The admin read-only account can view but not modify all Cloud Controller API resources. 
-    
+The admin read-only account can view but not modify almost all Cloud Controller API resources. The admin read-only account cannot view process `stats` or `logs`.
+
 If you want to create an admin read-only user account, then perform the following steps: 
 
 1. Obtain the credentials of an admin client created using UAAC as above, or
@@ -132,7 +132,8 @@ new admin read-only account to the groups `cloud_controller.admin_read_only` and
   
 ### <a id="global-auditor"></a> Create a Global Auditor
 
-The global auditor account has read-only access to all Cloud Controller API resources but cannot access secret data such as environment variables. 
+The global auditor account has read-only access to almost all Cloud Controller API resources but cannot access secret data such as environment variables. 
+The global auditor account cannot view process `stats` or `logs`.
 
 Perform the following steps to create a global auditor account. 
 
