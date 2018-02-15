@@ -104,9 +104,6 @@ Because usernames can change, UAA provides <a href="#id">user IDs</a> as unchang
 Users that create accounts through the UAA user interface use their email address as their username.
 The administrative API can create user accounts that specify arbitrary usernames.
 
-Users that create accounts through the UAA user interface use their email address as their username.
-The administrative API can create user accounts that specify arbitrary usernames.
-
 For external providers, the username is mapped from the assertion received by UAA.
 <ul>
 <li><strong>SAML</strong>: Retrieved from the nameID claim.
@@ -147,9 +144,11 @@ database.
 
 Users that have authenticated through an external identity provider still get assigned a record in the users table in the UAA database.
 These users are frequently referred to as **shadow users**. 
+
 UAA internal users have an origin of <code>uaa</code>.
 Shadow users are differentiated from internal users with a different origin corresponding to the external identity provider.
-Each time an external user is authenticated and the assertion is passed to UAA, UAA refreshs the user information.
+
+Each time an external user is authenticated and the assertion is passed to UAA, UAA refreshes the user information.
 This means that the information about a shadow user in UAA is accurate up to the last time UAA received an assertion with user information.
 
 Shadow users have a different type of group membership.
