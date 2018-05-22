@@ -32,6 +32,7 @@ Each table depicts the following information:
 * **Indicator**: A discussion of what changes in the metric's value may indicate over time.
 * **Status**: **Active** metrics may change between metrics emissions, whereas **static** metrics are fixed and do not change.
 
+Note: If consuming UAA metrics via the Cloud Foundry Firehose, incremental metrics (i.e., metrics that capture an increment or decrement in a value since last emission) will be expressed instead as cumulative values. See [statsd-injector](https://github.com/cloudfoundry/statsd-injector) for details.
 
 ### <a id="global"></a>Global Performance Metrics
 
