@@ -167,7 +167,7 @@ new global auditor account to the `cloud_controller.global_auditor` group.
 
 ## <a id='external-group'></a>Grant Admin Permissions to an External Group (SAML or LDAP) ##
 
-Follow the steps below to grant all users under an external group admin permissions.
+To grant all users under an external group admin permissions, do the following:
 
 1. Obtain the credentials of an admin client created using UAAC as above, or
 refer to the `uaa: scim` section of your deployment manifest for the user
@@ -180,15 +180,24 @@ UAAC stores the token in `~/.uaac.yml`.
     $ uaac token client get admin -s MyAdminSecret
     </pre>
 
-1. Run the commands below to grant all users under the mapped LDAP Group admin permissions. Replace `GROUP-DISTINGUISHED-NAME` with an appropriate group name. 
-    * `uaac group map --name scim.read "GROUP-DISTINGUISHED-NAME"`
-    * `uaac group map --name cloud_controller.admin "GROUP-DISTINGUISHED-NAME"`
+1. Follow the procedure that corresponds to your use case:
+    * [Grant Admin Permissions for LDAP](#grant-admin-ldap)
+    * [Grant Admin Permissions for SAML](#grant-admin-saml)
+
+### <a id='grant-admin-ldap'></a> Grant Admin Permissions for LDAP
+
+Run the commands below to grant all users under the mapped LDAP Group admin permissions. Replace `GROUP-DISTINGUISHED-NAME` with an appropriate group name. 
+
+1. `uaac group map --name scim.read "GROUP-DISTINGUISHED-NAME"`
+2. `uaac group map --name cloud_controller.admin "GROUP-DISTINGUISHED-NAME"`
+
+### <a id='grant-admin-saml'></a> Grant Admin Permissions for SAML 
 
 1. <%= vars.saml_provider %>
 
 1. Run the commands below to grant all users under the mapped SAML group admin permissions. Replace `GROUP-NAME` with the group name, and `SAML-PROVIDER-NAME` with the name of your SAML provider.
-    * `uaac group map --name scim.read "GROUP-NAME" --origin SAML-PROVIDER-NAME`
-    * `uaac group map --name cloud_controller.admin "GROUP-NAME" --origin SAML-PROVIDER-NAME`
+    1. `uaac group map --name scim.read "GROUP-NAME" --origin SAML-PROVIDER-NAME`
+    1. `uaac group map --name cloud_controller.admin "GROUP-NAME" --origin SAML-PROVIDER-NAME`
 
 ## <a id='creating-users'></a>Create Users ##
 
