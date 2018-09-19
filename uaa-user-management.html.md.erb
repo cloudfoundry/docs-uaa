@@ -184,7 +184,7 @@ UAAC stores the token in `~/.uaac.yml`.
     * [Grant Admin Permissions for LDAP](#grant-admin-ldap)
     * [Grant Admin Permissions for SAML](#grant-admin-saml)
 
-*Note: UAA will not grant scopes from external group mappings until the next time a user in the external group logs in. This means that in order for the mapping to take affect, users granted scopes from external group mapping will need to logout and login again.*
+<p class="note"><strong>Note</strong>: The UAA will not grant scopes for users in external groups until the next time the user logs in. This means that users granted scopes from external group mappings must log out from PCF and log back in before their new scope takes effect.</p>
 
 ### <a id='grant-admin-ldap'></a> Grant Admin Permissions for LDAP
 
