@@ -191,7 +191,8 @@ UAAC stores the token in `~/.uaac.yml`.
 Run the commands below to grant all users under the mapped LDAP Group admin permissions. Replace `GROUP-DISTINGUISHED-NAME` with an appropriate group name. 
 
 1. `uaac group map --name scim.read "GROUP-DISTINGUISHED-NAME"`
-2. `uaac group map --name cloud_controller.admin "GROUP-DISTINGUISHED-NAME"`
+2. `uaac group map --name scim.write "GROUP-DISTINGUISHED-NAME"`
+3. `uaac group map --name cloud_controller.admin "GROUP-DISTINGUISHED-NAME"`
 
 ### <a id='grant-admin-saml'></a> Grant Admin Permissions for SAML 
 
@@ -199,6 +200,7 @@ Run the commands below to grant all users under the mapped LDAP Group admin perm
 
 1. Run the commands below to grant all users under the mapped SAML group admin permissions. Replace `GROUP-NAME` with the group name, and `SAML-PROVIDER-NAME` with the name of your SAML provider.
     1. `uaac group map --name scim.read "GROUP-NAME" --origin SAML-PROVIDER-NAME`
+    1. `uaac group map --name scim.write "GROUP-NAME" --origin SAML-PROVIDER-NAME`
     1. `uaac group map --name cloud_controller.admin "GROUP-NAME" --origin SAML-PROVIDER-NAME`
 
 ## <a id='creating-users'></a>Create Users ##
