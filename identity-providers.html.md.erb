@@ -33,9 +33,10 @@ UAA can be configured to act as an SP or IDP. In most scenarios, UAA is the SP, 
 
 A SAML provider, SP or IDP, presents a set of metadata. This metadata contains information about the server and is used to configure the opposing provider.
 
-Download the UAA SP metadata through the <a href="http://login.run.pivotal.io/saml/metadata">/saml/metadata</a> endpoint. Metadata is in XML format. Using this information, you can configure the IDP.
+Download the UAA SP metadata through the `/saml/metadata` endpoint of your SAML provider. For example, http://login.example.com/saml/metadata. 
+Metadata is in XML format. Using this information, you can configure the IDP.
 
-If you use the UAA as an IDP, fetch the metadata from <a href="http://login.run.pivotal.io/saml/idp/metadata">/saml/idp/metadata</a>.
+If you use UAA as an IDP, fetch the metadata from the `/saml/idp/metadata` endpoint. For example, http://login.example.com/saml/idp/metadata.
 
 ## <a id="id-flow"></a>Identity Provider Workflow
 
