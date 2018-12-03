@@ -188,17 +188,9 @@ This section describes metrics that the UAA VM and JVM emit.
 		<td>Active.</td>
 	</tr>
 	<tr>
-		<td>vitals.vm.memory.total</td>
-		<td>Gauge.</td>
-		<td>Total OS memory, in bytes, as reported by <a href="https://docs.oracle.com/javase/8/docs/jre/api/management/extension/com/sun/management/OperatingSystemMXBean.html#getCommittedVirtualMemorySize--">Java VM</a>.</td>
-		<td><code>uaa.vitals.vm.memory.total:1073741824|g</code></td>
-		<td>Use this metric in conjunction with other performance metrics to assess system health.</td>
-		<td>Active.</td>
-	</tr>
-	<tr>
 		<td>vitals.vm.memory.committed</td>
 		<td>Gauge.</td>
-		<td>OS memory, in bytes, committed to UAA processes, as reported by <a href="https://docs.oracle.com/javase/8/docs/jre/api/management/extension/com/sun/management/OperatingSystemMXBean.html#getFreePhysicalMemorySize--">Java VM</a>.</td>
+		<td>OS memory, in bytes, committed to UAA processes, as reported by <a href="https://docs.oracle.com/javase/8/docs/jre/api/management/extension/com/sun/management/OperatingSystemMXBean.html#getCommittedVirtualMemorySize--">Java VM</a>.</td>
 		<td><code>uaa.vitals.vm.memory.committed:1073741824|g</code></td>
 		<td>Use this metric in conjunction with other performance metrics to assess system health.</td>
 		<td>Active.</td>
@@ -206,7 +198,7 @@ This section describes metrics that the UAA VM and JVM emit.
 	<tr>
 		<td>vitals.vm.memory.free</td>
 		<td>Gauge.</td>
-		<td>Free OS memory, in bytes, as reported by <a href="https://docs.oracle.com/javase/8/docs/jre/api/management/extension/com/sun/management/OperatingSystemMXBean.html#getProcessCpuLoad--">Java VM</a>.</td>
+		<td>Free OS memory, in bytes, as reported by <a href="https://docs.oracle.com/javase/8/docs/jre/api/management/extension/com/sun/management/OperatingSystemMXBean.html#getFreePhysicalMemorySize--">Java VM</a>.</td>
 		<td><code>uaa.vitals.vm.memory.free:1073741824|g</code></td>
 		<td>Use this metric in conjunction with other performance metrics to assess system health.</td>
 		<td>Active.</td>
