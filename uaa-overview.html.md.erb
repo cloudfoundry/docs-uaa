@@ -131,3 +131,37 @@ UAA secures many different CF components, including the following:
 * Diego
 * Operations Manager/BOSH Director
 * Autoscaler
+
+## <a id="tokens"></a>Token Management
+After authenticating, client apps access resources and services using tokens rather than account authentication credentials. 
+UAA generates, manages, distributes and validates these tokens, and only provides tokens to client apps with valid authentication credentials.  
+
+UAA manages two types of tokens: Access Tokens and Refresh Tokens: 
+
+* Client apps use Access Tokens to request access to resources and services. 
+* Client apps use Refresh Tokens to request replacements for expired Access Tokens.  
+
+A client app must present a valid UAA-provided Access Token to access API endpoints and resources.  
+
+Tokens are valid for a limited period of time:  
+
+* The Access Token timeout is the maximum period during which an already running app can continue to access services after privileges have been revoked from the account it is using.  
+* The Refresh Token timeout is the maximum period during which a client app can access services without re-authentication. 
+
+UAA can provide replacement tokens to client apps:
+
+* To request a replacement Access Token from UAA a client app must present a valid Refresh Token.  
+* A client app can only request a replacement Access Token while the app's Refresh Token is valid.  
+* To request a replacement Refresh Token from UAA a client app must re-authenticate. 
+
+The preferred UAA Access Token and Refresh Token timeout values are provided as the default UAA token timeout values. 
+Consider the following when changing token timeout settings:  
+
+* Short time out periods create overhead within your system.  
+    * A short Access Token timeout requires the client application to frequently request a replacement Access Token from the UAA server. 
+    * Setting a short timeout period, such as "0", can cause the associated service interfaces to become inaccessible.  
+    * A short Refresh Token timeout requires frequent re-authentication, which might be impossible at the designated timeout frequency.  
+* Long timeout periods represent a security risk.  
+    * A long Access Token timeout allows an authenticated process to continue accessing data and services for a long period after 
+    an admin has revoked the account's access to the data and services.  
+    * A long Refresh Token timeout allows an authenticated app to continue running for a long period of time without being challenged to re-authenticate.  
