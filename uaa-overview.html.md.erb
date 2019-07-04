@@ -134,34 +134,43 @@ UAA secures many different CF components, including the following:
 
 ## <a id="tokens"></a>Token Management
 After authenticating, client apps access resources and services using tokens rather than account authentication credentials. 
-UAA generates, manages, distributes and validates these tokens, and only provides tokens to client apps with valid authentication credentials.  
+UAA generates, manages, distributes, and validates these tokens. 
+UAA provides new tokens only to client apps with valid authentication credentials.  
 
-UAA manages two types of tokens: Access Tokens and Refresh Tokens: 
+UAA manages two types of tokens: access tokens and refresh tokens.
 
-* Client apps use Access Tokens to request access to resources and services. 
-* Client apps use Refresh Tokens to request replacements for expired Access Tokens.  
+### <a id="access-tokens"></a>Access Tokens
+Client apps use access tokens to request access to API endpoints, resources and services. 
+Access tokens are valid for a short period of time. The access token presented by a client app must be valid in order to access a resource.  
 
-A client app must present a valid UAA-provided Access Token to access API endpoints and resources.  
+Client apps can request UAA provide a replacement access token. 
+To request a replacement access token from UAA a client app must present a valid refresh token.  
 
-Tokens are valid for a limited period of time:  
 
-* The Access Token timeout is the maximum period during which an already running app can continue to access services after privileges have been revoked from the account it is using.  
-* The Refresh Token timeout is the maximum period during which a client app can access services without re-authentication. 
+### <a id="refresh-tokens"></a>Refresh Tokens
+Client apps use refresh tokens to request replacements for expired access tokens. 
+Refresh tokens are valid for a long period of time. The refresh token presented by a client app must 
+be valid in order to replace an expired access token.
 
-UAA can provide replacement tokens to client apps:
+UAA does not provide a replacement refresh token. To replace an expired refresh token the client app must first re-authenticate. 
+ 
 
-* To request a replacement Access Token from UAA a client app must present a valid Refresh Token.  
-* A client app can only request a replacement Access Token while the app's Refresh Token is valid.  
-* To request a replacement Refresh Token from UAA a client app must re-authenticate. 
+### <a id="token-timeouts"></a>Token Timeouts
+Once granted, UAA-provided token validity is unchallenged until the token expires due to timeout:
 
-The preferred UAA Access Token and Refresh Token timeout values are provided as the default UAA token timeout values. 
-Consider the following when changing token timeout settings:  
+* The access token timeout is the maximum period during which an already running app can continue to access services 
+after an admin has revoked its service account's privileges.   
+* The refresh token timeout is the maximum period during which a client app can access services without re-authentication.
 
-* Short time out periods create overhead within your system.  
-    * A short Access Token timeout requires the client application to frequently request a replacement Access Token from the UAA server. 
-    * Setting a short timeout period, such as "0", can cause the associated service interfaces to become inaccessible.  
-    * A short Refresh Token timeout requires frequent re-authentication, which might be impossible at the designated timeout frequency.  
-* Long timeout periods represent a security risk.  
-    * A long Access Token timeout allows an authenticated process to continue accessing data and services for a long period after 
-    an admin has revoked the account's access to the data and services.  
-    * A long Refresh Token timeout allows an authenticated app to continue running for a long period of time without being challenged to re-authenticate.  
+The default access and refresh token timeout values are Pivotal's recommended UAA token timeout values. 
+Consider the following before altering token timeout settings:  
+
+* Short time out periods create overhead within your system. 
+Setting a short timeout period, such as "0", can result in rendering all associated services and resources inaccessible.  
+    * A short access token timeout requires a client app to frequently request a replacement access token from the UAA server.  
+    * A short refresh token timeout requires frequent re-authentication, which might be impossible at the designated timeout frequency.  
+* Long timeout periods represent a security risk. 
+Setting a long timeout period, such as one lasting days, results in a client app running unchallenged for days.  
+    * A long access token timeout allows an authenticated process to continue accessing services and resources for a long period after 
+    an admin has revoked privileges from the service account used by the process.  
+    * A long refresh token timeout allows an authenticated app to continue running for a long period of time without being challenged to re-authenticate.  
