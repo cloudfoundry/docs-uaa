@@ -178,6 +178,11 @@ The table below is intended to help you choose a grant type for your use case.
                     managing user group membership, or creating or destroying other clients.
                     The <code>client_credentials</code> grant can be likened to service accounts in legacy application ecosystems.</td>
         </tr>
+        <tr>
+                <td><code>refresh_token</code></td>
+                <td>Developers must use <code>refresh_token</code> grant type with either <code>authorization_code</code> or <code>password</code> grant type. <code>refresh_token</code> cannot be used by itself. </td>
+                <td>Clients typically use the <code>refresh_token</code> to obtain a new access token without the need for the user to authenticate again. They do this by calling <code>/oauth/token</code> with <code>grant_type=refresh_token</code>. A refresh token will only be issued to clients that have <code>refresh_token</code> in their list of <code>authorized_grant_types</code>.</td>
+        </tr>
 </table>
 
 ### <a id="clientid"></a> Client.client_id
