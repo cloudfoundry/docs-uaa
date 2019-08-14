@@ -165,7 +165,7 @@ new global auditor account to the `cloud_controller.global_auditor` group.
     $ uaac member add cloud_controller.global\_auditor Alice
     </pre>
 
-## <a id='external-group'></a>Grant Admin Permissions to an External Group (SAML or LDAP) ##
+## <a id='external-group'></a>Grant Admin Permissions to an External Group (SAML, LDAP or OIDC) ##
 
 To grant all users under an external group admin permissions, do the following:
 
@@ -182,7 +182,7 @@ UAAC stores the token in `~/.uaac.yml`.
 
 1. Follow the procedure that corresponds to your use case:
     * [Grant Admin Permissions for LDAP](#grant-admin-ldap)
-    * [Grant Admin Permissions for SAML](#grant-admin-saml)
+    * [Grant Admin Permissions for SAML and OIDC](#grant-admin-saml)
 
 <p class="note"><strong>Note</strong>: The UAA will not grant scopes for users in external groups until the next time the user logs in. This means that users granted scopes from external group mappings must log out from PCF and log back in before their new scope takes effect.</p>
 
@@ -194,14 +194,16 @@ Run the commands below to grant all users under the mapped LDAP Group admin perm
 2. `uaac group map --name scim.write "GROUP-DISTINGUISHED-NAME"`
 3. `uaac group map --name cloud_controller.admin "GROUP-DISTINGUISHED-NAME"`
 
-### <a id='grant-admin-saml'></a> Grant Admin Permissions for SAML 
+### <a id='grant-admin-saml'></a> Grant Admin Permissions for SAML and OIDC
 
 1. <%= vars.saml_provider %>
 
-1. Run the commands below to grant all users under the mapped SAML group admin permissions. Replace `GROUP-NAME` with the group name, and `SAML-PROVIDER-NAME` with the name of your SAML provider.
-    1. `uaac group map --name scim.read "GROUP-NAME" --origin SAML-PROVIDER-NAME`
-    1. `uaac group map --name scim.write "GROUP-NAME" --origin SAML-PROVIDER-NAME`
-    1. `uaac group map --name cloud_controller.admin "GROUP-NAME" --origin SAML-PROVIDER-NAME`
+1. Run the commands below to grant all users under the mapped SAML/OIDC group admin permissions. Replace `GROUP-NAME` with the group name, and `PROVIDER-NAME` with the name of your SAML/OIDC provider.
+    1. `uaac group map --name scim.read "GROUP-NAME" --origin PROVIDER-NAME`
+    1. `uaac group map --name scim.write "GROUP-NAME" --origin PROVIDER-NAME`
+    1. `uaac group map --name cloud_controller.admin "GROUP-NAME" --origin PROVIDER-NAME`
+
+1. Note for OIDC: Make sure to configure the IDP's attribute mappings and map "external_groups" to the groups field in the OIDC ID Token issued by the identity provider.
 
 ## <a id='creating-users'></a>Create Users ##
 
