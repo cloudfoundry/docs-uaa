@@ -2,19 +2,19 @@
 title: UAA Overview
 owner: UAA
 ---
-User Account and Authentication (UAA) is an open source identity server [project](https://github.com/cloudfoundry/uaa) under the Cloud Foundry (CF) Foundation. 
+User Account and Authentication (UAA) is an open source identity server [project](https://github.com/cloudfoundry/uaa) under the Cloud Foundry (CF) Foundation.
 
-UAA provides enterprise-scale identity management features. For example, it is used by the following commercial services: 
+UAA provides enterprise-scale identity management features. For example, it is used by the following commercial services:
 
-* [Pivotal Single Sign-On Service](https://pivotal.io/platform/services/identity-and-security/sso): Identity Services for Apps and APIs running on <%= vars.product_runtime %>
+* [Pivotal Single Sign-On Service](https://pivotal.io/platform/services/identity-and-security/sso): Identity Services for Apps and APIs running on <%= vars.app_runtime_full %>
 * [GE Predix Identity Services](https://docs.predix.io/en-US/content/service/security/user_account_and_authentication/uaa-service-overview)
 * [SAP HANA Identity Services](https://help.sap.com/viewer/4505d0bdaf4948449b7f7379d24d0f0d/2.0.01/en-US/c6f36d5d49844bd790798ea36538e024.html)
 
 ## <a id="overview"></a>What is UAA?
 
-UAA provides identity-based security for applications and APIs. It supports open standards for authentication and authorization, including the following: 
+UAA provides identity-based security for applications and APIs. It supports open standards for authentication and authorization, including the following:
 <ul>
-<li>OAuth</li> 
+<li>OAuth</li>
 <li>OpenID Connect</li>
 <li>SAML</li>
 <li>LDAP</li>
@@ -32,7 +32,7 @@ The major features of UAA include the following:
 	<li>Operational flexibility<br/>
 	<ul>
 		<li>Operate and run as a <a href="http://bosh.io/releases/github.com/cloudfoundry/uaa-release?all=1">BOSH release</a>, which allows multi-cloud deployment capabilities</li>
-		<li>Push as an app to <%= vars.product_runtime %></li>
+		<li>Push as an app to <%= vars.app_runtime %></li>
 	</ul>
 	</li>
 	<li>Database flexibility, including support for MySQL and Postgres</li>
@@ -104,87 +104,87 @@ The major features of UAA include the following:
 	</tr>
 </table>
 
-## <a id="securing"></a>The Role of UAA in Securing <%= vars.product_runtime %>
+## <a id="securing"></a>The Role of UAA in Securing <%= vars.app_runtime %>
 
-<%= vars.product_runtime %> relies on UAA for its identity and access management requirements.
-UAA secures user and system access to <%= vars.product_runtime %> installations.
+<%= vars.app_runtime %> relies on UAA for its identity and access management requirements.
+UAA secures user and system access to <%= vars.app_runtime %> installations.
 
-Since <%= vars.product_runtime %> is primarily used in the enterprise context, UAA supports enterprise SSO workflows. If a user has already authenticated against the enterprise identity provider, they can access <%= vars.product_runtime %> without re-entering credentials.
+Since <%= vars.app_runtime %> is primarily used in the enterprise context, UAA supports enterprise SSO workflows. If a user has already authenticated against the enterprise identity provider, they can access <%= vars.app_runtime %> without re-entering credentials.
 
-Some of the major components of <%= vars.product_runtime %> that use UAA include the following: 
+Some of the major components of <%= vars.app_runtime %> that use UAA include the following:
 
-* Cloud Controller 
-* Gorouter 
+* Cloud Controller
+* Gorouter
 * Loggregator
-* Container Networking 
+* Container Networking
 
-Each of these components expose APIs for user and system interaction. UAA uses OAuth to secure the APIs exposed by core <%= vars.product_runtime %> components.  
+Each of these components expose APIs for user and system interaction. UAA uses OAuth to secure the APIs exposed by core <%= vars.app_runtime %> components.
 
 UAA secures many different CF components, including the following:
 
 * CF CLI
 * Cloud Controller
-* Loggregator 
-* Notifications 
-* Gorouter 
+* Loggregator
+* Notifications
+* Gorouter
 * Container Networking
 * Diego
 * Operations Manager/BOSH Director
 * Autoscaler
 
 ## <a id="tokens"></a>Token Management
-After authenticating, client apps access resources and services using tokens rather than account authentication credentials. 
-UAA generates, manages, distributes, and validates these tokens. 
-UAA provides new tokens only to client apps with valid authentication credentials.  
+After authenticating, client apps access resources and services using tokens rather than account authentication credentials.
+UAA generates, manages, distributes, and validates these tokens.
+UAA provides new tokens only to client apps with valid authentication credentials.
 
-Once granted, token validity is unchallenged until the token expires due to timeout.  
+Once granted, token validity is unchallenged until the token expires due to timeout.
 
-UAA distributes two types of tokens: access tokens and refresh tokens.  
+UAA distributes two types of tokens: access tokens and refresh tokens.
 
 ### <a id="access-tokens"></a>Access Tokens
-Client apps use UAA-provided access tokens to request access to API endpoints, resources and services. 
-The access token presented by a client app must be valid in order to access a resource.  
+Client apps use UAA-provided access tokens to request access to API endpoints, resources and services.
+The access token presented by a client app must be valid in order to access a resource.
 
-Access tokens are valid for a short period of time. 
+Access tokens are valid for a short period of time.
 
-After a UAA-provided access token has expired, a client app can request UAA provide a replacement. 
-To request a replacement access token from UAA a client app must present a valid refresh token.  
+After a UAA-provided access token has expired, a client app can request UAA provide a replacement.
+To request a replacement access token from UAA a client app must present a valid refresh token.
 
 
 ### <a id="refresh-tokens"></a>Refresh Tokens
-Client apps use UAA-provided refresh tokens to request replacements for expired access tokens. 
+Client apps use UAA-provided refresh tokens to request replacements for expired access tokens.
 The refresh token presented by a client app must be valid in order to replace an expired access token.
 
-Refresh tokens are valid for a long period of time.  
+Refresh tokens are valid for a long period of time.
 
-UAA does not provide replacement refresh tokens. A client app must re-authenticate to obtain a new refresh token.  
+UAA does not provide replacement refresh tokens. A client app must re-authenticate to obtain a new refresh token.
 
 ### <a id="token-timeouts"></a>Token Timeouts
-Consider the following end-results of the token interactions listed above.  
+Consider the following end-results of the token interactions listed above.
 
-Authenticated client apps are running and interacting with services using tokens, not the service account's 
-authentication. An admin can revoke a service account's access and privileges, but a client app running 
-under that service account can continue to interact with the environment, unchallenged, as long as its token is valid:   
+Authenticated client apps are running and interacting with services using tokens, not the service account's
+authentication. An admin can revoke a service account's access and privileges, but a client app running
+under that service account can continue to interact with the environment, unchallenged, as long as its token is valid:
 
-* The access token timeout is therefore the maximum period during which an already running app can continue to 
-access services after an admin has revoked privileges from the service account the app is running under.    
-* The refresh token timeout is therefore the maximum period during which a client app can access services 
-without re-authentication.  
+* The access token timeout is therefore the maximum period during which an already running app can continue to
+access services after an admin has revoked privileges from the service account the app is running under.
+* The refresh token timeout is therefore the maximum period during which a client app can access services
+without re-authentication.
 
-The default access and refresh token timeout values are Pivotal's recommended UAA token timeout values. 
-Consider the following before altering token timeout settings:  
+The default access and refresh token timeout values are Pivotal's recommended UAA token timeout values.
+Consider the following before altering token timeout settings:
 
-* Short default token time out periods create overhead within your system. 
-    * A short access token timeout requires a client app to frequently request a replacement access token from the UAA server.  
-    * A short refresh token timeout requires frequent re-authentication, which might be impossible at the designated timeout frequency.  
-    
-    Setting a short token timeout period, such as "0", can result in rendering all associated services and resources inaccessible.  
+* Short default token time out periods create overhead within your system.
+    * A short access token timeout requires a client app to frequently request a replacement access token from the UAA server.
+    * A short refresh token timeout requires frequent re-authentication, which might be impossible at the designated timeout frequency.
 
-* Long timeout periods represent a security risk. 
-    * A long access token timeout allows an authenticated process to continue accessing services and resources for a long period after 
-    an admin has revoked privileges from the service account used by the process.  
-    * A long refresh token timeout allows an already authenticated app to continue running for a long period 
-    of time on stale authentication credentials without being challenged to re-authenticate.  
+    Setting a short token timeout period, such as "0", can result in rendering all associated services and resources inaccessible.
 
-    Setting a long timeout period, such as one lasting days, can result in a client app running 
-    unchallenged for days.  
+* Long timeout periods represent a security risk.
+    * A long access token timeout allows an authenticated process to continue accessing services and resources for a long period after
+    an admin has revoked privileges from the service account used by the process.
+    * A long refresh token timeout allows an already authenticated app to continue running for a long period
+    of time on stale authentication credentials without being challenged to re-authenticate.
+
+    Setting a long timeout period, such as one lasting days, can result in a client app running
+    unchallenged for days.
