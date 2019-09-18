@@ -6,7 +6,7 @@ User Account and Authentication (UAA) is an open source identity server [project
 
 UAA provides enterprise-scale identity management features. For example, it is used by the following commercial services: 
 
-* [Pivotal Single Sign-On Service](https://pivotal.io/platform/services/identity-and-security/sso): Identity Services for Apps and APIs running on <%= vars.product_name %>
+* [Pivotal Single Sign-On Service](https://pivotal.io/platform/services/identity-and-security/sso): Identity Services for Apps and APIs running on <%= vars.product_runtime %>
 * [GE Predix Identity Services](https://docs.predix.io/en-US/content/service/security/user_account_and_authentication/uaa-service-overview)
 * [SAP HANA Identity Services](https://help.sap.com/viewer/4505d0bdaf4948449b7f7379d24d0f0d/2.0.01/en-US/c6f36d5d49844bd790798ea36538e024.html)
 
@@ -32,7 +32,7 @@ The major features of UAA include the following:
 	<li>Operational flexibility<br/>
 	<ul>
 		<li>Operate and run as a <a href="http://bosh.io/releases/github.com/cloudfoundry/uaa-release?all=1">BOSH release</a>, which allows multi-cloud deployment capabilities</li>
-		<li>Push as an app to Cloud Foundry</li>
+		<li>Push as an app to <%= vars.product_runtime %></li>
 	</ul>
 	</li>
 	<li>Database flexibility, including support for MySQL and Postgres</li>
@@ -104,21 +104,21 @@ The major features of UAA include the following:
 	</tr>
 </table>
 
-## <a id="securing"></a>The Role of UAA in Securing Cloud Foundry
+## <a id="securing"></a>The Role of UAA in Securing <%= vars.product_runtime %>
 
-Cloud Foundry relies on UAA for its identity and access management requirements.
-UAA secures user and system access to Cloud Foundry installations.
+<%= vars.product_runtime %> relies on UAA for its identity and access management requirements.
+UAA secures user and system access to <%= vars.product_runtime %> installations.
 
-Since Cloud Foundry is primarily used in the enterprise context, UAA supports enterprise SSO workflows. If a user has already authenticated against the enterprise identity provider, they can access Cloud Foundry without re-entering credentials.
+Since <%= vars.product_runtime %> is primarily used in the enterprise context, UAA supports enterprise SSO workflows. If a user has already authenticated against the enterprise identity provider, they can access <%= vars.product_runtime %> without re-entering credentials.
 
-Some of the major components of Cloud Foundry that use UAA include the following: 
+Some of the major components of <%= vars.product_runtime %> that use UAA include the following: 
 
 * Cloud Controller 
 * Gorouter 
 * Loggregator
 * Container Networking 
 
-Each of these components expose APIs for user and system interaction. UAA uses OAuth to secure the APIs exposed by core Cloud Foundry components.  
+Each of these components expose APIs for user and system interaction. UAA uses OAuth to secure the APIs exposed by core <%= vars.product_runtime %> components.  
 
 UAA secures many different CF components, including the following:
 
