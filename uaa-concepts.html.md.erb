@@ -278,7 +278,7 @@ Clients can store custom attributes in a field called `additional_information`. 
         <tr>
                 <td>token_salt</td>
                 <td>Tokens, even stateless JWT, can be revoked.
-                    By revoked, we mean they do not pass a UAA token validation when the token is passed to the <code><span>/c</span>heck_token</code> endpoint.
+                    By revoked, we mean they do not pass a UAA token validation when the token is passed to the <code>/introspect</code> endpoint.
                     UAA revokes a token if the client's secret has changed.
                     There may be instances to revoke all tokens for a certain client without having to change the client secret.
                     This can be achieved by changing the <code>token_salt</code>.
