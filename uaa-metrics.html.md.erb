@@ -3,16 +3,12 @@ title: UAA Performance Metrics
 owner: UAA
 ---
 
-<style>
-table.nice code {
-  word-break: break-all;
-}
-</style>
+This topic describes performance metrics for User Account and Authentication (UAA).
 
 
-## <a id="intro"></a> Introduction
+## <a id="overview"></a> Overview
 
-User Account and Authentication (UAA) emits metrics constantly. These metrics can help you understand performance over time, troubleshoot problems, and asses the health of your installation in real-time. These metrics are emitted through Loggregator.
+UAA emits metrics constantly. These metrics can help you understand performance over time, troubleshoot problems, and asses the health of your installation in real-time. These metrics are emitted through Loggregator.
 
 This topic describes different metrics that UAA, virtual machines (VMs), and Java Virtual Machines (JVMs) emit.
 
@@ -62,7 +58,7 @@ This section describes metrics that UAA emits.
 		<td><code>uaa.requests.global.completed.time:60|g</code></td>
 		<td>A rise may indicate problems with server or database.</td>
 		<td>Active.</td>
-	</tr>	
+	</tr>
 	<tr>
 		<td>server.inflight.count</td>
 		<td>Gauge.</td>
@@ -70,7 +66,7 @@ This section describes metrics that UAA emits.
 		<td><code>uaa.server.inflight.count:1|g</code></td>
 		<td>If this number climbs continuously, it can indicate that servers are getting saturated and are unable to handle the incoming load.</td>
 		<td>Active.</td>
-	</tr>		
+	</tr>
 	<tr>
 		<td>requests.global.unhealthy.count</td>
 		<td>Counter (gauge in 4.9.0).</td>
@@ -78,7 +74,7 @@ This section describes metrics that UAA emits.
 		<td><code>uaa.requests.global.unhealthy.count:1|c</code></td>
 		<td>If the number of requests not meeting tolerable completion time is growing, than either the tolerable request time needs to be fine tuned for false negatives or the server does not have enough capacity to handle the request load. The actual cause for this can be the need for an increase in server or database resources and further metrics are needed to actually make a scaling decision.</td>
 		<td>Active.</td>
-	</tr>	
+	</tr>
 	<tr>
 		<td>requests.global.unhealthy.time</td>
 		<td>Gauge.</td>
@@ -94,7 +90,7 @@ This section describes metrics that UAA emits.
 		<td><code>uaa.requests.global.status_4xx.count:1|c</code></td>
 		<td>This metric gives the client the ability calculate error rates. It is often used to detect faulty applications that may be causing unnecessary processing on the server.</td>
 		<td>Active.</td>
-	</tr>	
+	</tr>
 	<tr>
 		<td>requests.global.status_5xx.count</td>
 		<td>Counter.</td>
@@ -150,7 +146,7 @@ This section describes metrics that UAA emits.
 		<td><code>uaa.database.global.unhealthy.time:4678623|g</code></td>
 		<td>This metric allows you to monitor database response time.</td>
 		<td>Active.</td>
-	</tr>	
+	</tr>
 </table>
 
 
@@ -175,7 +171,7 @@ This section describes metrics that the UAA VM and JVM emit.
 		<td>This metric is required for a proper CPU load calculation.</td>
 		<td>Active.</td>
 	</tr>
-	<tr>	
+	<tr>
 		<td>vitals.vm.cpu.load</td>
 		<td>Gauge.</td>
 		<td>Average system CPU load as reported by the <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/management/OperatingSystemMXBean.html#getSystemLoadAverage--">Java VM</a>. The value is reported as a whole number multiplied by .01. For example, a value of 163 is read as 1.63.</td>
@@ -298,5 +294,5 @@ This section describes metrics that the UAA VM and JVM emit.
 		<td><code>uaa.vitals.jvm.non-heap.max:1073741824|g</code></td>
 		<td>Use this metric in conjunction with other performance metrics to assess system health.</td>
 		<td>Active.</td>
-	</tr>	
+	</tr>
 </table>
