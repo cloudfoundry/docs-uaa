@@ -33,8 +33,8 @@ For more information about which roles can perform various operations in Cloud F
 
 1. Record the **uaa:admin:client_secret** from your deployment manifest.
 
-1. Run `uaac token client get admin -s ADMIN-CLIENT-SECRET` to authenticate and obtain an access token for the admin client from the UAA server. Replace 
-`ADMIN-CLIENT-SECRET` with the admin secret you have retrieved in previous step. UAAC stores the token in 
+1. Run `uaac token client get admin -s ADMIN-CLIENT-SECRET` to authenticate and obtain an access token for the admin client from the UAA server. Replace
+`ADMIN-CLIENT-SECRET` with the admin secret you have retrieved in previous step. UAAC stores the token in
 `~/.uaac.yml`.
     <pre class="terminal">
     $ uaac token client get admin -s MyAdminSecret
@@ -103,13 +103,13 @@ new admin to the groups `cloud_controller.admin`, `uaa.admin`, `scim.read`, and 
 
 The admin read-only account can view but not modify almost all Cloud Controller API resources. The admin read-only account cannot view process `stats` or `logs`.
 
-If you want to create an admin read-only user account, then perform the following steps: 
+If you want to create an admin read-only user account, then perform the following steps:
 
 1. Obtain the credentials of an admin client created using UAAC as above, or
 refer to the `uaa: scim` section of your deployment manifest for the user
 name and password of an admin user.
 
-1. Run `uaac token client get admin -s ADMIN-CLIENT-SECRET` to authenticate and obtain an access token for the admin client from the UAA server. Replace 
+1. Run `uaac token client get admin -s ADMIN-CLIENT-SECRET` to authenticate and obtain an access token for the admin client from the UAA server. Replace
 `ADMIN-CLIENT-SECRET` with your admin secret.
 UAAC stores the token in `~/.uaac.yml`.
     <pre class="terminal">
@@ -129,20 +129,20 @@ new admin read-only account to the groups `cloud_controller.admin_read_only` and
     $ uaac member add cloud_controller.admin\_read\_only Bob
     $ uaac member add scim.read Bob
     </pre>
-  
+
 ### <a id="global-auditor"></a> Create a Global Auditor
 
-The global auditor account has read-only access to almost all Cloud Controller API resources but cannot access secret data such as environment variables. 
+The global auditor account has read-only access to almost all Cloud Controller API resources but cannot access secret data such as environment variables.
 The global auditor account cannot view process `stats` or `logs`.
 
-Perform the following steps to create a global auditor account. 
+Perform the following steps to create a global auditor account.
 
 1. Obtain the credentials of an admin client created using UAAC as above, or
 refer to the `uaa: scim` section of your deployment manifest for the user
 name and password of an admin user.
 
-1. Run `uaac token client get admin -s ADMIN-CLIENT-SECRET` to authenticate 
-and obtain an access token for the admin client from the UAA server. Replace 
+1. Run `uaac token client get admin -s ADMIN-CLIENT-SECRET` to authenticate
+and obtain an access token for the admin client from the UAA server. Replace
 `ADMIN-CLIENT-SECRET` with your admin secret.
 UAAC stores the token in `~/.uaac.yml`.
     <pre class="terminal">
@@ -173,7 +173,7 @@ To grant all users under an external group admin permissions, do the following:
 refer to the `uaa: scim` section of your deployment manifest for the user
 name and password of an admin user.
 
-1. Run `uaac token client get admin -s ADMIN-CLIENT-SECRET` to authenticate and obtain an access token for the admin client from the UAA server. Replace 
+1. Run `uaac token client get admin -s ADMIN-CLIENT-SECRET` to authenticate and obtain an access token for the admin client from the UAA server. Replace
 `ADMIN-CLIENT-SECRET` with your admin secret.
 UAAC stores the token in `~/.uaac.yml`.
     <pre class="terminal">
@@ -184,11 +184,11 @@ UAAC stores the token in `~/.uaac.yml`.
     * [Grant Admin Permissions for LDAP](#grant-admin-ldap)
     * [Grant Admin Permissions for SAML and OIDC](#grant-admin-saml)
 
-<p class="note"><strong>Note</strong>: The UAA will not grant scopes for users in external groups until the next time the user logs in. This means that users granted scopes from external group mappings must log out from <%= vars.product_name %> and log back in before their new scope takes effect.</p>
+<p class="note"><strong>Note</strong>: The UAA will not grant scopes for users in external groups until the next time the user logs in. This means that users granted scopes from external group mappings must log out from <%= vars.platform_name %> and log back in before their new scope takes effect.</p>
 
 ### <a id='grant-admin-ldap'></a> Grant Admin Permissions for LDAP
 
-Run the commands below to grant all users under the mapped LDAP Group admin permissions. Replace `GROUP-DISTINGUISHED-NAME` with an appropriate group name. 
+Run the commands below to grant all users under the mapped LDAP Group admin permissions. Replace `GROUP-DISTINGUISHED-NAME` with an appropriate group name.
 
 1. `uaac group map --name scim.read "GROUP-DISTINGUISHED-NAME"`
 2. `uaac group map --name scim.write "GROUP-DISTINGUISHED-NAME"`
@@ -228,7 +228,7 @@ user.
 refer to the `uaa: scim` section of your deployment manifest for the user
 name and password of an admin user.
 
-1. Run `uaac token client get admin -s ADMIN-CLIENT-SECRET` to authenticate and obtain an access token for the admin client from the UAA server. Replace 
+1. Run `uaac token client get admin -s ADMIN-CLIENT-SECRET` to authenticate and obtain an access token for the admin client from the UAA server. Replace
 `ADMIN-CLIENT-SECRET` with your admin secret.
 UAAC stores the token in `~/.uaac.yml`.
     <pre class="terminal">
@@ -317,7 +317,7 @@ Follow the steps below to retrieve user email addresses:
 
 1. Record the **uaa:admin:client_secret** from your deployment manifest.
 
-1. Run `uaac token client get admin -s ADMIN-CLIENT-SECRET` to authenticate and obtain an access token for the admin client from the UAA server. Replace 
+1. Run `uaac token client get admin -s ADMIN-CLIENT-SECRET` to authenticate and obtain an access token for the admin client from the UAA server. Replace
 `ADMIN-CLIENT-SECRET` with your admin secret. UAAC stores the token in `~/.uaac.yml`.
     <pre class="terminal">
     $ uaac token client get admin -s MyAdminSecret
