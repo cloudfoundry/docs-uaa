@@ -3,11 +3,11 @@ title: UAA Overview
 owner: UAA
 ---
 
-User Account and Authentication (UAA) is an open source identity server [project](https://github.com/cloudfoundry/uaa) under the Cloud Foundry (CF) Foundation.
+User Account and Authentication (UAA) is an open-source identity server project under the Cloud Foundry (CF) Foundation.
 
-UAA provides enterprise-scale identity management features. For example, it is used by the following commercial services:
+UAA provides enterprise-scale identity management features. For example, it is used by these commercial services:
 
-* [Pivotal Single Sign-On Service](https://pivotal.io/platform/services/identity-and-security/sso): Identity Services for Apps and APIs running on <%= vars.product_runtime %> (<%= vars.product_short %>)
+* [<%= vars.product_name %> Single Sign-On Service](https://pivotal.io/platform/services/identity-and-security/sso): Identity Services for Apps and APIs running on <%= vars.product_runtime %> (<%= vars.product_short %>)
 
 * [GE Predix Identity Services](https://docs.predix.io/en-US/content/service/security/user_account_and_authentication/uaa-service-overview)
 
@@ -43,46 +43,24 @@ The major features of UAA include:
 
 ## <a id='uaa-architecture'></a> UAA Architecture
 
+The diagram below illustrates the architecture of UAA:
+
 <img src="./images/uaa-architecture.png" alt="UAA architecture diagram">
 
-<table class="nice">
-	<th>Protocol</th>
-	<th>Purpose</th>
-	<th>Profiles</th>
-	<tr>
-		<td>OAuth 2.0</td>
-		<td>Authorizes apps and APIs</td>
-		<td>Authorization Server,<br/>
-		Relying Party</td>
-	</tr>
-	<tr>
-		<td>OpenID Connect 1.0</td>
-		<td>Federates to external identity providers for SSO<br/>
-		Acts as an identity provider for SSO</td>
-		<td>Identity Provider,<br/>
-		Relying Party</td>
-	</tr>
-	<tr>
-		<td>SAML 2.0</td>
-		<td>Federates to external identity providers for SSO<br/>
-		Acts as an identity provider for SSO</td>
-		<td>Identity Provider,<br/>
-		Service Provider</td>
-	</tr>
-	<tr>
-		<td>LDAP</td>
-		<td>Authenticate users in external user store</td>
-		<td>LDAP Client</td>
-	</tr>
-	<tr>
-		<td>SCIM 1.0</td>
-		<td>User and group management</td>
-		<td>Identity Provisioning</td>
-	</tr>
-</table>
+The table below describes the protocols UAA can use:
+
+| Protocol | Purpose | Profiles |
+| -------- | ------- | -------- |
+| OAuth 2.0 | Authorizes apps and APIs | Authorization Server, Relying Party |
+| OpenID Connect 1.0 | Federates to external identity providers (IDPs) and acts as an IDP for SSO | Identity Provider, Relying Party |
+| SAML 2.0 | Federates to external IDPs and acts as an IDP for SSO | Identity Provider, Service Provider |
+| LDAP | Authenticates users in external user store | LDAP Client |
+| SCIM 1.0 | Manages users and groups | Identity Provisioning |
 
 
 ## <a id="client-tools"></a> Client-Side Tools and Libraries
+
+The table below describes the client-side tools and libraries UAA uses:
 
 <table class="nice">
 	<th>Name</th>
@@ -111,7 +89,7 @@ The major features of UAA include:
 
 <%= vars.product_short %> relies on UAA for its identity and access management requirements. UAA secures user and system access to <%= vars.product_short %> installations.
 
-Since <%= vars.product_short %> is primarily used in the enterprise context, UAA supports enterprise SSO workflows. If a user has already authenticated against the enterprise identity provider, they can access <%= vars.product_short %> without re-entering credentials.
+Since <%= vars.product_short %> is primarily used in the enterprise context, UAA supports enterprise SSO workflows. If a user has already authenticated against the enterprise IDP, they can access <%= vars.product_short %> without re-entering credentials.
 
 Some of the major components of <%= vars.product_short %> that use UAA include:
 
@@ -122,14 +100,14 @@ Some of the major components of <%= vars.product_short %> that use UAA include:
 
 Each of these components expose APIs for user and system interaction. UAA uses OAuth to secure the APIs exposed by core <%= vars.product_short %> components.
 
-UAA secures many different CF components, including:
+UAA secures many different <%= vars.product_short %> components, including:
 
-* CF CLI
+* Cloud Foundry Command Line Interface (cf CLI)
 * Cloud Controller
 * Loggregator
 * Notifications
 * Gorouter
 * Container Networking
 * Diego
-* Operations Manager/BOSH Director
+* BOSH Director
 * Autoscaler
