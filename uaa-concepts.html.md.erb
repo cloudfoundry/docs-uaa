@@ -6,11 +6,23 @@ owner: UAA
 This topic explains core concepts of User Accounts and Authentication (UAA).
 
 
+## <a id='overview'></a>
+
+There are six main components of the UAA architecture:
+
+* [Identity Zones](#iz)
+* [Subdomains](#subdomains)
+* [Users](#users)
+* [User Groups](#user-groups)
+* [Client](#client)
+* [Choosing Scopes and Authorities](#scopes)
+
+
 ## <a id="iz"></a> Identity Zones
 
-UAA is built to support a multi-tenant architecture. Each tenant is referred to as an **identity zone**.
+UAA is built to support a multi-tenant architecture. Each tenant is referred to as an _identity zone_.
 
-Identity zones are configured with JSON payloads using a REST API. For examples, see the [UAA API documentation](https://docs.cloudfoundry.org/api/uaa/index.html#creating-an-identity-zone).
+Identity zones are configured with JSON payloads using a REST API. For examples, see [Creating an identity zone](https://docs.cloudfoundry.org/api/uaa/index.html#creating-an-identity-zone) in the UAA API documentation.
 
 An identity zone is a logical boundary around the entities UAA manages. The entities in a zone include, but are not limited to:
 
@@ -19,7 +31,7 @@ An identity zone is a logical boundary around the entities UAA manages. The enti
 * Groups
 * Group mappings
 * User approvals
-* Identity providers and access
+* Identity providers (IDPs) and access
 * ID and refresh tokens
 
 Having two identity zones is equivalent to standing up two separate UAA deployments, but using fewer resources. This type of resource management can reduce operational and maintenance overhead.
@@ -27,115 +39,124 @@ Having two identity zones is equivalent to standing up two separate UAA deployme
 
 ## <a id="subdomains"></a> Subdomains
 
-An identity zone is uniquely identified by a subdomain identifier in UAA. If a UAA deployment is hosted on the URL <code>http<span>s</span>://login.EXAMPLE-CF-DOMAIN.com</code>, identity zones are hosted as subdomains of that same deployment.
+An identity zone is uniquely identified by a subdomain identifier in UAA. If a UAA deployment is hosted on the URL `https://login.EXAMPLE-CF-DOMAIN.com`, identity zones are hosted as _subdomains_ of that same deployment.
 
-For example:<br/>
-zone1: <code>http<span>s</span>://ZONE1.login.EXAMPLE-CF-DOMAIN.com</code><br/>
-zone2: <code>http<span>s</span>://ZONE2.login.EXAMPLE-CF-DOMAIN.com</code>
+For example:
+
+* `zone1`: `https://ZONE1.login.EXAMPLE-CF-DOMAIN.com`
+
+* `zone2`: `https://ZONE2.login.EXAMPLE-CF-DOMAIN.com`
 
 ### <a id="default-zones"></a> Default Zones
 
-A UAA deployment always has one zone referred to as the **default zone**. The default zone is configured and bootstrapped using a YAML configuration file.
+A UAA deployment always has one zone referred to as the _default zone_. You configure and bootstrap a default zone using a YAML configuration file.
 
 
 ## <a id="users"></a> Users
 
-A **user** is the central domain object of the UAA server. Because UAA acts as both an account store and an authorization server, many different types of information are linked to users and can be accessed through user-centric API calls.
+A _user_ is the central domain object of the UAA server. Because UAA acts as both an account store and an authorization server, many different types of information are linked to users and can be accessed through user-centric API calls.
 
 In its capacity as a user account store, UAA can provide unique attributes that describe an individual user, such as email, name, phone number, and group memberships. In addition to these attributes, UAA also tracks some dynamic user metadata, such as the last successful logon time and last updated time.
 
-You can make additional attributes available if UAA is configured to use custom attribute mappings from an external identity provider, such as an existing LDAP or SAML provider. For more information about identity provider options, see [Identity Providers in UAA](./identity-providers.html).
+You can make additional attributes available if UAA is configured to use custom attribute mappings from an external IDP, such as an existing LDAP or SAML provider. For more information about IDP options, see [Identity Providers in UAA](identity-providers.html).
 
-External identity providers are read-only, as are attributes from those providers. Any change to the external user account should be performed on the external identity provider directly. These read-only attributes are refreshed each time the user authenticates with the external identity provider.
+External IDPs are read-only, as are attributes from those providers. Any change to the external user account should be performed on the external IDP directly. These read-only attributes are refreshed each time the user authenticates with the external IDP.
 
-UAA can be used as an authorization server, which allows client applications to interact with resources on a user's behalf using the four standard OAuth2 authorization grant flows for obtaining access tokens:
+UAA can be used as an authorization server, which allows client apps to interact with resources on a user's behalf using the four standard OAuth2 authorization grant flows for obtaining access tokens:
 
-* Authorization Code
+* Authorization code
 * Implicit
-* Resource Owner Password Credentials
-* Client Credentials
+* Resource owner password credentials
+* Client credentials
 
-A UAA user fulfills the **resource owner** role of the OAuth2 protocol. Access tokens issued to the user contain scopes at the intersection of the requesting client's allowed scopes and a user's group memberships.
+A UAA user is the _resource owner_ of the OAuth2 protocol. Access tokens issued to the user contain scopes at the intersection of the requesting client's allowed scopes and a user's group memberships.
 
-### <a name="id"></a> User.id
+### <a name="id"></a> user.id
 
-A string used to identify a user in APIs. This universally unique identifier is randomly generated at the time of user creation and does not change. It is guaranteed to be unique across all identity zones in the UAA deployment. The user.id is a 128-bit number formatted as a UUID. This is also expressed as a "sub" claim in the tokens generated by UAA.
+A `user.id` is a string used to identify a user in APIs. This universally unique identifier is randomly generated at the time of user creation and does not change. It is guaranteed to be unique across all identity zones in the UAA deployment. The `user.id` is a 128-bit number formatted as a UUID. This is also expressed as a "sub" claim in the tokens generated by UAA.
 
-### <a id="origin"></a> User.origin
+### <a id="origin"></a> user.origin
 
-A user in UAA always belongs to a user store with an alias referred to as an `origin`. For example, users that are authenticated by the UAA itself with a username/password combination have their origin set to the value `uaa`.
+A user in UAA always belongs to a user store with an alias called an `origin`. For example, users that are authenticated by the UAA itself with a username and password have their origin set to the value `uaa`.
 
 The fixed origin values are:
 
 * `uaa` for users that are authenticated by the UAA deployment
 * `ldap` for users that are authenticated by the LDAP provider
-* {OIDC provider alias} for users authenticated via an OIDC provider
-* {SAML provider alias} for users authenticated via a SAML identity provider
+* {OIDC provider alias} for users authenticated through an OIDC provider
+* {SAML provider alias} for users authenticated through a SAML IDP
 
-Users that are authenticated with an external identity provider are often referred to as shadow users in UAA. For more information, see [Shadow Users](#shadow).
+Users that are authenticated with an external IDP are often referred to as shadow users in UAA. For more information, see [Shadow Users](#shadow).
 
-### <a id="name"></a> User.userName
+### <a id="name"></a> user.userName
 
-A user-readable string that refers to the user, typically an email address. The user enters their username when authenticating against UAA.
+A `user.userName` is a user-readable string that refers to the user, typically an email address. The user enters their username when authenticating against UAA.
 
-If the user authenticates against an external provider, the username is transferred from that provider to the shadow user in UAA. An individual user can be uniquely identified by the combination of the username and the origin values.
+If the user authenticates against an external IDP, the username is transferred from that IDP to the shadow user in UAA. An individual user can be uniquely identified by the combination of the username and the origin values.
 
-The username alone is not a unique value. Because usernames can change, UAA provides user IDs as unchanging references to a single user. For more information, see [User.id](#id).
+The username alone is not a unique value. Because usernames can change, UAA provides user IDs as unchanging references to a single user. For more information, see [user.id](#id).
 
-Users that create accounts through the UAA user interface use their email address as their username. The administrative API can create user accounts that specify arbitrary usernames.
+Users that create accounts through the UAA UI use their email address as their username. The administrative API can create user accounts that specify arbitrary usernames.
 
-For external providers, the username is mapped from the assertion received by UAA.
+For external IDPs, the username is mapped from the assertion received by UAA.
 
-* **SAML:** Retrieved from the nameID claim. For example:<br/>
-<code>&lt;saml2:NameID&gt; Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"></br>
-    EXAMPLE-SAML-USER-NAME<br>
-&lt;/saml2:NameID&gt;</code>
+* **SAML:** UAA retrieve the username from the `nameID` claim. For example:
 
-* **LDAP:** Username derived from user input.
+    ```
+    &lt;saml2:NameID&gt; Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">
+        SAML-USERNAME<br>
+    &lt;/saml2:NameID&gt;
+    ```
+    Where `SAML-USERNAME` is the username UAA retrieves.
 
-* **OIDC1.0 / OAuth2:** UAA derives usernames from OpenID Connect and OAuth2 providers from the `id_token`, userinfo endpoint, or the access token. The usernames are returned in JSON Web Token (JWT) format. The name of the claim holding the username value can be configured and defaults to `preferred_username`.
+* **LDAP:** UAA derives the username from user input.
+
+* **OIDC1.0/OAuth2:** UAA derives usernames from OpenID Connect and OAuth2 providers from the `id_token`, userinfo endpoint, or the access token. The usernames are returned in JSON Web Token (JWT) format. The name of the claim holding the username value can be configured and defaults to `preferred_username`.
 
 
 ## <a id="#user-groups"></a> User Groups
 
-A user can belong to one or more groups. A group is a way to express a common group-based or role-based access control model. A group has a display name. This name, an arbitrary string, corresponds directly to a scope in a JWT access token and is used for access control by OAuth2 resource servers.
+A user can belong to one or more groups. A group is a way to express a common group-based or role-based access control model. A group has a display name. This name is an arbitrary string that corresponds directly to a scope in a JWT access token and is used for access control by OAuth2 resource servers.
 
-The common group attributes are as follows:
+The common group attributes are:
 
-* **type**: This can be one of two membership types, "DIRECT" and "INDIRECT." "DIRECT means that the user is directly associated with the group. "INDIRECT" means that the membership has been inherited from the nested membership of groups.
+* `type`: This can be one of two membership types, `DIRECT` and `INDIRECT`. `DIRECT` means that the user is directly associated with the group. `INDIRECT` means that the membership has been inherited from the nested membership of groups.
 
-* **display**: The displayName of the group the user or the group belongs to. The displayName is an identifier that is unique to a given identity zone and is a representation of the access given to the user.
+* `display`: The `displayName` of the group the user or the group belongs to. The `displayName` is an identifier that is unique to a given identity zone and is a representation of the access given to the user.
 
-<p class="note"><strong>Note:</strong> To create a group, see the <a href="https://docs.cloudfoundry.org/api/uaa/version/73.7.0/index.html#groups">Groups</a> section of the UAA API documentation. To add a user or group to a group, see the <a href="https://docs.cloudfoundry.org/api/uaa/version/73.7.0/index.html#add-member">Add Member</a> section of the UAA API documentation.</p>
+<p class="note"><strong>Note:</strong> To create a group, see <a href="https://docs.cloudfoundry.org/api/uaa/version/73.7.0/index.html#groups">Groups</a> in the UAA API documentation. To add a user or group to a group, see <a href="https://docs.cloudfoundry.org/api/uaa/version/73.7.0/index.html#add-member">Add Member</a> in the UAA API documentation.</p>
 
 ### <a id="default-groups"></a> Default User Groups
 
-UAA can be configured to have one or more default groups. These are groups that every user in the system is a member of, even if there is no direct relationship between user and group in the database.
+You can configure UAA to have one or more default groups. These are groups that every user in the system is a member of, even if there is no direct relationship between user and group in the database.
 
 ### <a id="#shadow"></a> Shadow Users
 
-Users that have authenticated through an external identity provider still get assigned a record in the users table in the UAA database. These users are frequently referred to as **shadow users**.
+Users that have authenticated through an external IDP still get assigned a record in the users table in the UAA database. These users are frequently called _shadow users_.
 
-UAA internal users have an origin of `uaa`. Shadow users are differentiated from internal users with a different origin corresponding to the external identity provider. Each time an external user is authenticated and the assertion is passed to UAA, UAA refreshes the user information. This means that the information about a shadow user in UAA is accurate up to the last time UAA received an assertion with user information.
+UAA internal users have a `user.origin` of `uaa`. Shadow users are differentiated from internal users with a different origin corresponding to the external IDP. Each time an external user is authenticated and the assertion is passed to UAA, UAA refreshes the user information. This means that the information about a shadow user in UAA is accurate up to the last time UAA received an assertion with user information.
 
 Shadow users have a different type of group membership. A shadow user can be associated with a group through its origin. This membership may also change each time a new assertion is received.
 
-A shadow user can also have a group memberships defined using `group_membership.origin='uaa'`. These are memberships that remain persistent and do not change when assertions report a change in external group memberships. It also allows UAA operators to assign privileges to users that are not known by external providers or cannot be mapped to external groups.
+A shadow user can also have a group membership defined using `group_membership.origin='uaa'`. These are memberships that remain persistent and do not change when assertions report a change in external group memberships. It also allows UAA operators to assign privileges to users that are not known by external providers or cannot be mapped to external groups.
 
 
-## <a id="#client"></a> Client
+## <a id="client"></a> Client
 
-UAA is an OAuth2 authorization server. Before applications can obtain access tokens, developers must perform a one-time registration process to create a **client** in the UAA.
+UAA is an OAuth2 authorization server. Before apps can obtain access tokens, developers must perform a one-time registration process to create a _client_ in the UAA.
 
-A client usually represents an application with its own set of permissions and configurations. Clients are protected by simple credentials, such as client ID and secret, that applications use to authenticate themselves to the UAA in order to obtain tokens.
+A client usually represents an app with its own set of permissions and configurations. Clients are protected by simple credentials, such as client ID and secret, that apps use to authenticate themselves to the UAA in order to obtain tokens.
 
-There are two types of clients: clients that access resources and request tokens from UAA with which to do so, and clients that represent resources and accept and validate access tokens.
+There are two types of clients:
 
-Clients are created in UAA through **client registration**. Clients can be defined in UAA using the UAA configuration files or created using the UAA API.
+* Clients that access resources and request tokens from UAA with which to do so
+* Clients that represent resources and accept and validate access tokens
 
-### <a id="#auth-grant-types"></a> Choosing Authorization Grant Types
+Clients are created in UAA through _client registration_. You can define clients in UAA using the UAA configuration files or create them using the UAA API.
 
-To create a client, the application developer must specify which grant types should be permitted using their client. The grant type determines how your client can interact with UAA. Each grant types corresponds to one of the four different authorization flows defined in the OAuth2 2.0 Authorization Framework. For more information, see the [Authorization Code](https://tools.ietf.org/html/rfc6749#section-1.3.1) section of the OAuth2 2.0 Authorization Framework.
+### <a id="auth-grant-types"></a> Choosing Authorization Grant Types
+
+To create a client, the developer must specify which grant types should be permitted using their client. The grant type determines how your client can interact with UAA. Each grant types corresponds to one of the four different authorization flows defined in the OAuth2 2.0 Authorization Framework. For more information, see the [Authorization Code](https://tools.ietf.org/html/rfc6749#section-1.3.1) section of the OAuth2 2.0 Authorization Framework.
 
 The available grant types on UAA include:
 
@@ -144,57 +165,27 @@ The available grant types on UAA include:
 * `implicit`
 * `client_credentials`
 
-For increased security, use only the grant types your application requires. If necessary, however, you can assign multiple grant types to one client.
+For increased security, use only the grant types your app requires. However, you can assign multiple grant types to one client if necessary.
 
-### <a id="#select-type"></a> Selecting the Client Grant Type
+### <a id="select-type"></a> Selecting the Client Grant Type
 
-The table below is intended to help you choose a grant type for your use case.
+To help you choose a grant type for your use case, see the table below:
 
-<table class="nice">
-        <th>Grant type</th>
-        <th>User</th>
-        <th>Details</th>
-        <tr>
-                <td><code>authorization_code</code></td>
-                <td>Developers building web applications</td>
-                <td>In the authorization code grant flow, the user is directed to a page on the UAA where they grant approvals to the client.
-                    After the user approves the requested scopes, they are redirected back to the client application with an authorization code in the URL parameters.
-                    The client application may then exchange the authorization code with UAA to obtain an access token.</td>
-        </tr>
-        <tr>
-                <td><code>password</code></td>
-                <td>Developers building native desktop or mobile applications</td>
-                <td>The name "password" refers to the Resource Owner Password Grant type.
-                    The user, who trusts the security of the application,
-                    provides their username and password to the client app which may then use them to obtain an <code>access_token</code>.</td>
-        </tr>
-        <tr>
-                <td><code>implicit</code></td>
-                <td>Developers building a single page web application with no server backend</td>
-                <td>The user is taken to a page on UAA where they are asked to grant approvals to the client,
-                    and after doing so they are redirected to the <code>redirect_uri</code> with the access token in the URI fragment.</td>
-        </tr>
-        <tr>
-                <td><code>client_credentials</code></td>
-                <td>Developers use <code>client_credentials</code> when the client application needs to perform actions in UAA on its own behalf</td>
-                <td>Actions where a <code>client_credentials</code> grant type might be appropriate include creating or destroying user groups,
-                    managing user group membership, or creating or destroying other clients.
-                    The <code>client_credentials</code> grant can be likened to service accounts in legacy application ecosystems.</td>
-        </tr>
-        <tr>
-                <td><code>refresh_token</code></td>
-                <td>Developers must use <code>refresh_token</code> grant type with either <code>authorization_code</code> or <code>password</code> grant type. <code>refresh_token</code> cannot be used by itself. </td>
-                <td>Clients typically use the <code>refresh_token</code> to obtain a new access token without the need for the user to authenticate again. They do this by calling <code>/oauth/token</code> with <code>grant_type=refresh_token</code>. A refresh token will only be issued to clients that have <code>refresh_token</code> in their list of <code>authorized_grant_types</code>.</td>
-        </tr>
-</table>
+| Grant type | User | Details |
+| ---------- | ---- | ------- |
+| `authorization_code` | Developers building web apps | In the authorization code grant flow, the user is directed to a UAA page where they grant approvals to the client. After the user approves the requested scopes, they are redirected back to the client app with an authorization code in the URL parameters. The client app may then exchange the authorization code with UAA to obtain an access token. |
+| `password` | Developers building native desktop or mobile apps | The name `password` refers to the resource owner password grant type. The user provides their username and password to the client app, which may then use them to obtain an `access_token`. |
+| `implicit` | Developers building a single page web app with no server back end | The user is taken to a page on UAA where they are asked to grant approvals to the client. After doing so, they are redirected to the `redirect_uri` with the access token in the URI fragment. |
+| `client_credentials` | Developers when the client app needs to perform actions in UAA on its own behalf | Actions where a `client_credentials` grant type might be appropriate include creating or destroying user groups, managing user group membership, or creating or destroying other clients. The `client_credentials` grant can be likened to service accounts in legacy app ecosystems. |
+| `refresh_token` | Developers must use the `refresh_token` grant type with either the `authorization_code` or `password` grant type. `refresh_token` cannot be used by itself. | Clients typically use the `refresh_token` to obtain a new access token without the need for the user to authenticate again. They do this by calling `/oauth/token` with `grant_type=refresh_token`. A refresh token is only issued to clients that have `refresh_token` in their list of `authorized_grant_types`. |
 
-### <a id="clientid"></a> Client.client_id
+### <a id="clientid"></a> client.client_id
 
-A client is identified with a value up to 255 characters. Unlike the user.id, the client_id is often a human readable identifier. For example, an app's name could be its client_id. This identifier is unique within the identity zone.
+A client is identified with a value up to 255 characters, called the `client_id`. Unlike the `user.id`, the `client_id` is often a human-readable identifier. For example, an app's name could be its `client_id`. This identifier is unique within the identity zone.
 
-### <a id="secret"></a> Client.secret
+### <a id="secret"></a> client.secret
 
-Client authentication occurs through a password mechanism referred to as a client_secret.
+Client authentication occurs through a password mechanism called a `client_secret`.
 
 UAA allows client credentials to be asserted in two different ways:
 
@@ -204,21 +195,21 @@ UAA allows client credentials to be asserted in two different ways:
 
 For more information, see the [Client Password](https://tools.ietf.org/html/rfc6749#section-2.3.1) section of the OAuth 2.0 Authorization Framework.
 
-### <a id="redirect-uri"></a> Client.redirect-uri
+### <a id="redirect-uri"></a> client.redirect-uri
 
 The `authorization_code` and implicit grant types rely on a user agent. A user agent like a web browser is responsible for performing HTTP redirects to UAA and receiving a response from UAA. That response can be in the form of an access token or a code that is exchanged for an access token later.
 
 A client that supports either of these two flows must have at least one URL in the client configuration. Alternatively, you can use multiple URLs and wildcards (*) for ant path matching. For more information, see the [Class AntPathMatcher](http://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/AntPathMatcher.html) section of the Spring Framework documentation.
 
-URLs are registered using a comma delimited string.
+URLs are registered using a comma-separated string.
 
-### <a id="access-token-validity"></a> Client.access-token-validity
-
-UAA validates access tokens up to the time those tokens expire. Clients do the same, if they can validate tokens offline. The access token validity is the value in seconds from the time the token was created to when it expires.
-
-### <a id="refresh-token-validity"></a> Client.refresh-token-validity
+### <a id="access-token-validity"></a> client.access-token-validity
 
 UAA validates access tokens up to the time those tokens expire. Clients do the same, if they can validate tokens offline. The access token validity is the value in seconds from the time the token was created to when it expires.
+
+### <a id="refresh-token-validity"></a> client.refresh-token-validity
+
+UAA validates refresh tokens up to the time those tokens expire. Clients do the same, if they can validate tokens offline. The refresh token validity is the value in seconds from the time the token was created to when it expires.
 
 
 ## <a id="scopes"></a> Choosing Scopes and Authorities
@@ -232,60 +223,46 @@ When an access token is created, UAA takes the user groups and intersects them w
 
 The token can never contain more scopes than the intersection between client scopes and user groups.
 
-### <a id="autoapprove"></a> Client.autoapprove
+### <a id="autoapprove"></a> client.autoapprove
 
-Scopes in an access token have to be approved by the granting entity.
+Scopes in an access token must be approved by the granting entity.
 
-During a `client_credentials` grant, the client itself is the granting entity and the client authorities are automatically assumed to be approved.
+During a `client_credentials` grant, the client itself is the granting entity and automatically assumes the client authorities are approved.
 
-During a password grant, the user shares their password with the client application. This sharing is considered the implicit approval of the scopes that the client wish to be populated in the access token.
+During a password grant, the user shares their password with the client app. The client app assumes this sharing to be implicit approval of the scopes that the client wants to be populated in the access token.
 
-Two grant types, `authorization_code` and implicit, require specific user approval for the scopes to populate in the access token. UAA provides a UI that lets the user approve or deny scopes from being populated in the access token.
+Two grant types, `authorization_code` and `implicit`, require specific user approval for the scopes to populate in the access token. UAA provides a UI that lets the user approve or deny scopes from being populated in the access token.
 
-During client registration, the operator can configure the client to bypass this approval process by setting the auto-approve values to a single string with the value of `true`. This results in any requested scope being approved automatically.
+During client registration, the operator can configure the client to bypass this approval process by setting the auto-approve values to a single string with its value set to `true`. This results in any requested scope being approved automatically.
 
-The value can also be a comma delimited list of selected scopes that would not require user approval.
+The value can also be a comma-separated list of selected scopes that do not require user approval.
 
-### <a id="additional-info"></a> Client.additional_information
+### <a id="additional-info"></a> client.additional_information
 
-Clients can store custom attributes in a field called `additional_information`. This is a simple key value store.
+Clients can store custom attributes in a field called `additional_information`. This is a simple key value store. The table below describes these custom attributes:
 
 <table class="nice">
-        <th>Key</th>
-        <th>Value</th>
-        <tr>
-                <td>allowed providers</td>
-                <td>You can limit what applications can be used by what users.
-                    For example, in a Cloud Foundry deployment, you may have set up multiple identity providers.
-                    For example, you could be using Facebook and your organization's LDAP system.<br/><br/>
-
-                 You can limit UAA to only issue an application tokens if the users are from a certain provider.
-                 You would configure the application's client to have <code>allowed providers="ldap"</code>.
-                 The value is a comma delimited string of Identity Provider.origin values. For more information, see <a href="#idporigin">Identity Provider.origin</a></td>
-        </tr>
-        <tr>
-                <td>created with</td>
-                <td>UAA stores the scope <code>zones.write</code> in this field if the client was created using the <code>/identity-zones</code> endpoint.
-                    This field is used by the UAA to allow clients to be deleted by the same endpoint.
-                    It is not a configurable field, instead used by the UAA.</td>
-        </tr>
-        <tr>
-                <td>name</td>
-                <td>Various tooling in the Cloud Foundry ecosystem creates clients with generated Client.client_id values. These tools often store a human readable name in this field. For more information, see <a href="#clientid">Client.client_id</a>.</td>
-        </tr>
-        <tr>
-                <td>approvals_deleted</td>
-                <td>Contains a boolean value if performing an operation on the client resulted in all the client's user approvals were deleted.
-                    For example, changing the Client.client_secret value causes UAA to delete all the approvals.
-                    UAA then stores a value of true in this field.</td>
-        </tr>
-        <tr>
-                <td>token_salt</td>
-                <td>Tokens, even stateless JWT, can be revoked.
-                    By revoked, we mean they do not pass a UAA token validation when the token is passed to the <code>/introspect</code> endpoint.
-                    UAA revokes a token if the client's secret has changed.
-                    There may be instances to revoke all tokens for a certain client without having to change the client secret.
-                    This can be achieved by changing the <code>token_salt</code>.
-                    <code>token_salt</code> is an arbitrary string value that is used to generate a hash.</td>
-        </tr>
+<th>Key</th>
+<th>Value</th>
+  <tr>
+    <td><code>allowed providers</code></td>
+    <td>You can limit which users can use which apps. For example, in a <%= vars.platform_name %> deployment, you may have set up multiple IDPs. Or, you could be using Facebook and your organization's LDAP system.<br/><br/>
+    You can limit UAA to only issue an app tokens if the users are from a certain provider. To do this, you configure the app's client with <code>allowed providers="ldap"</code>. The value is a comma-separated string of <code>Identity Provider.origin</code> values.</td>
+  </tr>
+  <tr>
+    <td><code>created with</code></td>
+    <td>UAA stores the scope <code>zones.write</code> in this field if the client was created using the <code>/identity-zones</code> endpoint. UAA uses this field to allow clients to be deleted by the same endpoint. It is not a configurable field.</td>
+  </tr>
+  <tr>
+    <td><code>name</code></td>
+    <td>Various tooling in the <%= vars.platform_name %> ecosystem creates clients with generated <code>Client.client_id</code> values. These tools often store a human-readable name in this field. For more information, see <a href="#clientid">client.client_id</a>.</td>
+  </tr>
+  <tr>
+    <td><code>approvals_deleted</code></td>
+    <td>Contains a boolean value if performing an operation on the client resulted in all the client's user approvals were deleted. For example, changing the <code>client.client_secret</code> value causes UAA to delete all the approvals. UAA then stores a value of <code>true</code> in this field.</td>
+  </tr>
+  <tr>
+    <td><code>token_salt</code></td>
+    <td>Tokens, even stateless JWT, can be revoked. Revoked tokens do not pass a UAA token validation when the token is passed to the <code>/introspect</code> endpoint. UAA revokes a token if the client's secret has changed. There may be occasions to revoke all tokens for a certain client without having to change the client secret. You can do this by changing the <code>token_salt</code>. <code>token_salt</code> is an arbitrary string value that is used to generate a hash.</td>
+  </tr>
 </table>
