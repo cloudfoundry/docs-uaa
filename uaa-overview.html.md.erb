@@ -3,11 +3,11 @@ title: UAA Overview
 owner: UAA
 ---
 
-User Account and Authentication (UAA) is an open-source identity server project under the Cloud Foundry (CF) Foundation.
+User Account and Authentication (UAA) is an open-source identity server project under the Cloud Foundry Foundation.
 
 UAA provides enterprise-scale identity management features. For example, it is used by these commercial services:
 
-* [<%= vars.platform_name %> Single Sign-On Service](https://pivotal.io/platform/services/identity-and-security/sso): Identity Services for Apps and APIs running on <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>)
+* [Single Sign-On for VMware Tanzu](https://pivotal.io/platform/services/identity-and-security/sso): Identity services for apps and APIs running on <%= vars.app_runtime_full %> (<%= vars.app_runtime_abbr %>)
 
 * [GE Predix Identity Services](https://docs.predix.io/en-US/content/service/security/user_account_and_authentication/uaa-service-overview)
 
@@ -147,7 +147,7 @@ Authenticated client apps are running and interacting with services using tokens
 
 * The refresh token timeout is the maximum period during which a client app can access services without re-authentication.
 
-The default access and refresh token timeout values are the UAA token timeout values <%= vars.recommended_by %> recommends. Before altering token timeout settings, consider:
+The default access and refresh token timeout values are the UAA token timeout values <%= vars.company_name %> recommends. Before altering token timeout settings, consider:
 
 * Short default token timeout periods create overhead within your system.
     * A short access token timeout requires a client app to frequently request a replacement access token from the UAA server.
