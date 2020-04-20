@@ -171,13 +171,47 @@ For increased security, use only the grant types your app requires. However, you
 
 To help you choose a grant type for your use case, see the table below:
 
-| Grant type | User | Details |
-| ---------- | ---- | ------- |
-| `authorization_code` | Developers building web apps | In the authorization code grant flow, the user is directed to a UAA page where they grant approvals to the client. After the user approves the requested scopes, they are redirected back to the client app with an authorization code in the URL parameters. The client app may then exchange the authorization code with UAA to obtain an access token. |
-| `password` | Developers building native desktop or mobile apps | The name `password` refers to the resource owner password grant type. The user provides their username and password to the client app, which may then use them to obtain an `access_token`. |
-| `implicit` | Developers building a single page web app with no server back end | The user is taken to a page on UAA where they are asked to grant approvals to the client. After doing so, they are redirected to the `redirect_uri` with the access token in the URI fragment. |
-| `client_credentials` | Developers when the client app needs to perform actions in UAA on its own behalf | Actions where a `client_credentials` grant type might be appropriate include creating or destroying user groups, managing user group membership, or creating or destroying other clients. The `client_credentials` grant can be likened to service accounts in legacy app ecosystems. |
-| `refresh_token` | Developers must use the `refresh_token` grant type with either the `authorization_code` or `password` grant type. `refresh_token` cannot be used by itself. | Clients typically use the `refresh_token` to obtain a new access token without the need for the user to authenticate again. They do this by calling `/oauth/token` with `grant_type=refresh_token`. A refresh token is only issued to clients that have `refresh_token` in their list of `authorized_grant_types`. |
+<table class="nice">
+  <th width="30%">Grant type</th>
+  <th>User</th>
+  <th>Details</th>
+  <tr>
+    <td><code>authorization_code</code></td>
+    <td>Developers building web apps</td>
+    <td>In the authorization code grant flow, the user is directed to a UAA page where they grant approvals to the
+      client. After the user approves the requested scopes, they are redirected back to the client app with an
+      authorization code in the URL parameters. The client app may then exchange the authorization code with UAA to
+      obtain an access token.</td>
+  </tr>
+  <tr>
+    <td><code>password</code></td>
+    <td>Developers building native desktop or mobile apps</td>
+    <td>The name <code>password</code> refers to the resource owner password grant type. The user provides their
+      username and password to the client app, which may then use them to obtain an <code>access_token</code>.</td>
+  </tr>
+  <tr>
+    <td><code>implicit</code></td>
+    <td>Developers building a single page web app with no server back end</td>
+    <td>The user is taken to a page on UAA where they are asked to grant approvals to the client. After doing so, they
+      are redirected to the <code>redirect_uri</code> with the access token in the URI fragment.</td>
+  </td>		
+  <tr>
+    <td><code>client_credentials</code></td>
+    <td>Developers when the client app needs to perform actions in UAA on its own behalf</td>
+    <td>Actions where a <code>client_credentials</code> grant type might be appropriate include creating or destroying
+      user groups, managing user group membership, or creating or destroying other clients. The
+      <code>client_credentials</code> grant can be likened to service accounts in legacy app ecosystems.</td>
+  </tr>
+  <tr>
+    <td><code>refresh_token</code></td>
+    <td>Developers must use the <code>refresh_token</code> grant type with either the <code>authorization_code</code>
+      or <code>password</code> grant type. <code>refresh_token</code> cannot be used by itself.</td>
+    <td>Clients typically use the <code>refresh_token</code> to obtain a new access token without the need for the user
+      to authenticate again. They do this by calling <code>/oauth/token</code> with
+      <code>grant_type=refresh_token</code>. A refresh token is only issued to clients that have
+		<code>refresh_token</code> in their list of <code>authorized_grant_types</code>.</td>
+  </tr>
+</table>
 
 ### <a id="clientid"></a> client.client_id
 
@@ -242,27 +276,40 @@ The value can also be a comma-separated list of selected scopes that do not requ
 Clients can store custom attributes in a field called `additional_information`. This is a simple key value store. The table below describes these custom attributes:
 
 <table class="nice">
-<th>Key</th>
-<th>Value</th>
+  <th width="25%">Key</th>
+  <th>Value</th>
   <tr>
     <td><code>allowed providers</code></td>
-    <td>You can limit which users can use which apps. For example, in a <%= vars.platform_name %> deployment, you may have set up multiple IDPs. Or, you could be using Facebook and your organization's LDAP system.<br/><br/>
-    You can limit UAA to only issue an app tokens if the users are from a certain provider. To do this, you configure the app's client with <code>allowed providers="ldap"</code>. The value is a comma-separated string of <code>Identity Provider.origin</code> values.</td>
+    <td>You can limit which users can use which apps. For example, in a <%= vars.platform_name %> deployment, you may
+      have set up multiple IDPs. Or, you could be using Facebook and your organization's LDAP system.<br/><br/>
+      You can limit UAA to only issue an app tokens if the users are from a certain provider. To do this, configure the
+      app's client with <code>allowed providers="ldap"</code>. The value is a comma-separated string of
+      <code>Identity Provider.origin</code> values.</td>
   </tr>
   <tr>
     <td><code>created with</code></td>
-    <td>UAA stores the scope <code>zones.write</code> in this field if the client was created using the <code>/identity-zones</code> endpoint. UAA uses this field to allow clients to be deleted by the same endpoint. It is not a configurable field.</td>
+    <td>UAA stores the scope <code>zones.write</code> in this field if the client was created using the
+      <code>/identity-zones</code> endpoint. UAA uses this field to allow clients to be deleted by the same endpoint.
+      This is not a configurable field.</td>
   </tr>
   <tr>
     <td><code>name</code></td>
-    <td>Various tooling in the <%= vars.platform_name %> ecosystem creates clients with generated <code>Client.client_id</code> values. These tools often store a human-readable name in this field. For more information, see <a href="#clientid">client.client_id</a>.</td>
+    <td>Various tooling in the <%= vars.platform_name %> ecosystem creates clients with generated
+      <code>Client.client_id</code> values. These tools often store a human-readable name in this field. For more
+      information, see <a href="#clientid">client.client_id</a>.</td>
   </tr>
   <tr>
     <td><code>approvals_deleted</code></td>
-    <td>Contains a boolean value if performing an operation on the client resulted in all the client's user approvals were deleted. For example, changing the <code>client.client_secret</code> value causes UAA to delete all the approvals. UAA then stores a value of <code>true</code> in this field.</td>
+    <td>Contains a boolean value if performing an operation on the client resulted in all the client's user approvals
+      were deleted. For example, changing the <code>client.client_secret</code> value causes UAA to delete all the
+      approvals. UAA then stores a value of <code>true</code> in this field.</td>
   </tr>
   <tr>
     <td><code>token_salt</code></td>
-    <td>Tokens, even stateless JWT, can be revoked. Revoked tokens do not pass a UAA token validation when the token is passed to the <code>/introspect</code> endpoint. UAA revokes a token if the client's secret has changed. There may be occasions to revoke all tokens for a certain client without having to change the client secret. You can do this by changing the <code>token_salt</code>. <code>token_salt</code> is an arbitrary string value that is used to generate a hash.</td>
+    <td>Tokens, even stateless JWT, can be revoked. Revoked tokens do not pass a UAA token validation when the token is
+      passed to the <code>/introspect</code> endpoint. UAA revokes a token if the client's secret has changed. There
+      may be occasions to revoke all tokens for a certain client without having to change the client secret. You can do
+      this by changing the <code>token_salt</code>. <code>token_salt</code> is an arbitrary string value that is used
+      to generate a hash.</td>
   </tr>
 </table>
