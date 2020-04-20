@@ -103,9 +103,9 @@ For external IDPs, the username is mapped from the assertion received by UAA.
 * **SAML:** UAA retrieve the username from the `nameID` claim. For example:
 
     ```
-    &lt;saml2:NameID&gt; Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">
-        SAML-USERNAME<br>
-    &lt;/saml2:NameID&gt;
+    <saml2:NameID> Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">
+    SAML-USERNAME
+    </saml2:NameID>
     ```
     Where `SAML-USERNAME` is the username UAA retrieves.
 
