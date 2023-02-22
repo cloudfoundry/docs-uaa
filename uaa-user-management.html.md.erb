@@ -80,19 +80,26 @@ To create an admin user for UAA:
     ```
     uaac user add NEW-ADMIN-USERNAME -p NEW-ADMIN-PASSWORD --emails NEW-ADMIN-EMAIL
     ```
+
     Where:
-    * `NEW-ADMIN-USERNAME` is the username you want to give the admin user.
-    * `NEW-ADMIN-PASSWORD` is the password you want to give the admin user.
-    * `NEW-ADMIN-EMAIL` is the email address of the admin user.
+    <ul>
+      <li><code>NEW-ADMIN-USERNAME</code> is the username you want to give the admin user.</li>
+      <li><code>NEW-ADMIN-PASSWORD</code> is the password you want to give the admin user.</li>
+      <li><code>NEW-ADMIN-EMAIL</code> is the email address of the admin user.</li>
+    </ul>
 
 1. Add the new admin user to the groups `cloud_controller.admin`, `uaa.admin`, `scim.read`, and `scim.write` by running:
 
     ```
     uaac member add GROUP NEW-ADMIN-USERNAME
     ```
+
     Where:
-    * `GROUP` is the name of the group to which you want to add the new admin user.
-    * `NEW-ADMIN-USERNAME`is the username of the new admin user.
+    <ul>
+      <li><code>GROUP</code> is the name of the group to which you want to add the new admin user.</li>
+      <li><code>NEW-ADMIN-USERNAME</code>is the username of the new admin user.</li>
+    </ul>
+
 
 ### <a id="admin-read-only"></a> Create an Admin Read-Only User
 
@@ -117,19 +124,27 @@ To create an admin read-only user account:
     ```
     uaac user add NEW-ADMIN-RO-USERNAME -p NEW-ADMIN-RO-PASSWORD --emails NEW-ADMIN-RO-EMAIL
     ```
+
     Where:
-    * `NEW-ADMIN-RO-USERNAME` is the username you want to give the admin read-only user.
-    * `NEW-ADMIN-RO-PASSWORD` is the password you want to give the admin read-only user.
-    * `NEW-ADMIN-RO-EMAIL` is the email address of the admin read-only user.
+    <ul>
+      <li><code>NEW-ADMIN-RO-USERNAME</code> is the username you want to give the admin read-only user.</li>
+      <li><code>NEW-ADMIN-RO-PASSWORD</code> is the password you want to give the admin read-only user.</li>
+      <li><code>NEW-ADMIN-RO-EMAIL</code> is the email address of the admin read-only user.</li>
+    </ul>
+
 
 1. Add the new admin user to the groups `cloud_controller.admin_read_only` and `scim.read` by running:
 
     ```
     uaac member add GROUP NEW-ADMIN-RO-USERNAME
     ```
+
     Where:
-    * `GROUP` is the name of the group to which you want to add the new admin read-only user.
-    * `NEW-ADMIN-RO-USERNAME`is the username of the new admin read-only user.
+    <ul>
+      <li><code>GROUP</code> is the name of the group to which you want to add the new admin read-only user.</li>
+      <li><code>NEW-ADMIN-RO-USERNAME</code>is the username of the new admin read-only user.</li>
+    </ul>
+
 
 ### <a id="global-auditor"></a> Create a Global Auditor
 
@@ -154,10 +169,13 @@ To create a global auditor account:
     ```
     uaac user add NEW-GLOBAL-AUDITOR-USERNAME -p NEW-GLOBAL-AUDITOR-PASSWORD --emails NEW-GLOBAL-AUDITOR-EMAIL
     ```
+
     Where:
-    * `NEW-GLOBAL-AUDITOR-USERNAME` is the username you want to give the admin read-only user.
-    * `NEW-GLOBAL-AUDITOR-PASSWORD` is the password you want to give the admin read-only user.
-    * `NEW-GLOBAL-AUDITOR-EMAIL` is the email address of the admin read-only user.
+    <ul>
+      <li><code>NEW-GLOBAL-AUDITOR-USERNAME</code> is the username you want to give the admin read-only user.</li>
+      <li><code>NEW-GLOBAL-AUDITOR-PASSWORD</code> is the password you want to give the admin read-only user.</li>
+      <li><code>NEW-GLOBAL-AUDITOR-EMAIL</code> is the email address of the admin read-only user.</li>
+    </ul>
 
 1. To ensure that the `cloud_controller.global_auditor` group exists, run:
 
@@ -170,10 +188,12 @@ To create a global auditor account:
     ```
     uaac member add GROUP NEW-GLOBAL-AUDITOR-USERNAME
     ```
-    Where:
-    * `GROUP` is the name of the group to which you want to add the new global auditor user.
-    * `NEW-GLOBAL-AUDITOR-USERNAME` is the username of the new global auditor user.
 
+    Where:
+    <ul>
+      <li><code>GROUP</code> is the name of the group to which you want to add the new global auditor user.</li>
+      <li><code>NEW-GLOBAL-AUDITOR-USERNAME</code> is the username of the new global auditor user.</li>
+    </ul>
 
 ## <a id='external-group'></a> Grant Admin Permissions to an External Group (SAML, LDAP, or OIDC)
 
@@ -236,11 +256,12 @@ To grant admin permissions to all users under the mapped SAML or OIDC group:
     uaac group map --name cloud_controller.admin "GROUP-NAME" --origin PROVIDER-NAME
     ```
     Where:
-    * `GROUP-NAME` is the name of the SAML or OIDC group.
-    * `PROVIDER-NAME` is the name of your SAML or OIDC IDP.
+    <ul>
+      <li><code>GROUP-NAME</code> is the name of the SAML or OIDC group.</li>
+      <li><code>PROVIDER-NAME</code> is the name of your SAML or OIDC IDP.</li>
+    </ul>
 
 <p class='note'><strong>Note:</strong> For OIDC, make sure you configure the IDP's attribute mappings and map <code>external_groups</code> to the groups field in the OIDC ID Token issued by the IDP.</p>
-
 
 ## <a id='creating-users'></a> Create Users
 
@@ -253,19 +274,25 @@ To create new users:
     ```
     cf login -u ADMIN-USERNAME -p ADMIN-PASSWORD
     ```
+
     Where:
-    * `ADMIN-USERNAME` is the username of the admin user.
-    * `ADMIN-PASSWORD` is the password of the admin user.
+    <ul>
+      <li><code>ADMIN-USERNAME</code> is the username of the admin user.</li>
+      <li><code>ADMIN-PASSWORD</code> is the password of the admin user.</li>
+    </ul>
+
 
 1. Create a new user by running:
 
     ```
     cf create-user NEW-USERNAME NEW-USER-PASSWORD
     ```
-    Where:
-    * `NEW-USERNAME` is the username you give the new user.
-    * `NEW-USER-PASSWORD` is the password you give the new user.
 
+    Where:
+    <ul>
+      <li><code>NEW-USERNAME</code> is the username you give the new user.</li>
+      <li><code>NEW-USER-PASSWORD</code> is the password you give the new user.</li>
+    </ul>
 
 ## <a id='changing-passwords'></a> Change Passwords
 
@@ -314,9 +341,13 @@ To change the password of a user:
     ```
     uaac password set USERNAME -p TEMP-PASSWORD
     ```
+
     Where:
-    * `USERNAME` is the username of the user whose password you want to change.
-    * `TEMP-PASSWORD` is the temporary password you set.
+    <ul>
+      <li><code>USERNAME</code> is the username of the user whose password you want to change.</li>
+      <li><code>TEMP-PASSWORD</code> is the temporary password you set.</li>
+    </ul>
+
 
 1. Provide the temporary password to the user and instruct the user to run:
 
@@ -325,12 +356,14 @@ To change the password of a user:
     cf login -u USERNAME -p TEMP-PASSWORD
     cf passwd
     ```
+
     Where:
-    * `UAA-DOMAIN` is the domain of your UAA server.
-    * `USERNAME` is the username of the user.
-    * `TEMP-PASSWORD` is the temporary password you provided the user.
-    <br>
-    <br>
+    <ul>
+      <li><code>UAA-DOMAIN</code> is the domain of your UAA server.</li>
+      <li><code>USERNAME</code> is the username of the user.</li>
+      <li><code>TEMP-PASSWORD</code> is the temporary password you provided the user.</li>
+    </ul>
+    <br><br>
     <%= vars.pw_policy %>
 
 
