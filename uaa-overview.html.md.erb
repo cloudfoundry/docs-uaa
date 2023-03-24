@@ -31,7 +31,7 @@ The major features of UAA include:
 * Support for **JWT** and **opaque** as a token format
 * Token revocation
 * Operational flexibility
-	* Operate and run as a [BOSH release](http://bosh.io/releases/github.com/cloudfoundry/uaa-release?all=1), which allows multi-cloud deployment capabilities
+	* Operate and run as a [BOSH release](http://bosh.io/releases/github.com/cloudfoundry/uaa-release?all=1), which uses multi-cloud deployment capabilities
 	* Push as an app to <%= vars.app_runtime_abbr %>
 * Database flexibility, including support for MySQL and Postgres
 * Auditing, logging, and monitoring
@@ -41,11 +41,11 @@ The major features of UAA include:
 
 ## <a id='uaa-architecture'></a> UAA Architecture
 
-The diagram below illustrates the architecture of UAA:
+The following diagram illustrates the architecture of UAA:
 
-<img src="./images/uaa-architecture.png" alt="UAA architecture diagram">
+![alt-text="UAA architecture diagram"](./images/uaa-architecture.png)
 
-The table below describes the protocols UAA can use:
+The following table describes the protocols UAA can use:
 
 | Protocol | Purpose | Profiles |
 | -------- | ------- | -------- |
@@ -58,7 +58,7 @@ The table below describes the protocols UAA can use:
 
 ## <a id="client-tools"></a> Client-Side Tools and Libraries
 
-The table below describes the client-side tools and libraries UAA uses:
+The following table describes the client-side tools and libraries UAA uses:
 
 <table class="nice">
 	<th>Name</th>
@@ -137,7 +137,7 @@ UAA does not provide replacement refresh tokens. To obtain a new refresh token, 
 
 ### <a id="token-timeouts"></a> Token Timeouts
 
-The token interactions listed above produce certain end results.
+The token interactions that are listed previously produce certain end results.
 
 Authenticated client apps are running and interacting with services using tokens, not the service account's authentication. An admin can revoke a service account's access and privileges, but a client app running under that service account can continue to interact with the environment, unchallenged, as long as its token is valid. Therefore:
 

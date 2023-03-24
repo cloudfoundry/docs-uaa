@@ -23,11 +23,11 @@ For more information, see [User Account and Authentication LDAP Integration](htt
 
 ## <a id="saml"></a> SAML Providers
 
-The [SAML v2 standard](http://saml.xml.org/saml-specifications) is a dominant player in the federated authentication space. It is also one of the harder integrations to configure. When configuring SAML integration on UAA, you must configure both UAA and the SAML IDP. A mistake on either side causes assertions to be rejected and authentication to fail.
+The [SAML v2 standard](http://saml.xml.org/saml-specifications) is a dominant player in the federated authentication space. It is one of the harder integrations to configure. When configuring SAML integration on UAA, you must configure both UAA and the SAML IDP. A mistake on either side causes assertions to be rejected and authentication to fail.
 
 ## <a id="oidc"></a> OpenID Connect Providers
 
-The [OpenID Connect standard](https://openid.net/developers/specs/) is a simple identity layer on top of the OAuth 2.0 protocol. It allows clients to verify the identity of the end-user based on the authentication performed by the OIDC IDP, as well as to obtain basic profile information about the end-User in an interoperable and REST-like manner. When configuring OIDC integration on UAA, you must configure both UAA and the OIDC IDP. A mistake on either side causes tokens to be rejected and authentication to fail.
+The [OpenID Connect standard](https://openid.net/developers/specs/) is a simple identity layer on top of the OAuth 2.0 protocol. Clients can verify the identity of the end-user based on the authentication performed by the OIDC IDP, as well as to obtain basic profile information about the end-User in an interoperable and REST-like manner. When configuring OIDC integration on UAA, you must configure both UAA and the OIDC IDP. A mistake on either side causes tokens to be rejected and authentication to fail.
 
 
 ## <a id="service-identity"></a> Service Provider versus Identity Provider
@@ -51,13 +51,17 @@ If you use UAA as an IDP, fetch the metadata from the `/saml/idp/metadata` endpo
 
 ## <a id="id-flow"></a> SAML IDP Workflow
 
-SAML provides two commonly-used workflows, SP-initiated and IDP-initiated. These sections describe each workflow.
+SAML provides two commonly used workflows:
+* SP-initiated
+* IDP-initiated.
+
+The following sections describe each workflow.
 
 ### <a id='sp-initiated'></a> SAML SP-Initiated
 
-If you navigate to the UAA login page and click on a link to authenticate using your organization's SAML provider, you are using an SP-initiated flow.
+If you navigate to the UAA login page and click a link to authenticate using your organization's SAML provider, you are using an SP-initiated flow.
 
-The SP sends an authentication request to the IDP like the example below:
+The SP sends an authentication request to the IDP. See the following example:
 
 <pre class="terminal">
 <?<span>x</span>ml version="1.0" encoding="UTF-8"?>
@@ -80,13 +84,13 @@ The SP sends an authentication request to the IDP like the example below:
 
 Once the IDP has authenticated the user, it sends an assertion back to the user. This step takes place in both SP-initiated and IDP-initiated flows. For information about the SAML response, see [IDP-Initiated](#idp-initiated).
 
-<img src="./images/sp-flow.png" alt="An SP-initiated flow.">
+![alt-text="An SP-initiated flow."](./images/sp-flow.png)
 
 ### <a id='idp-initiated'></a> SAML IDP-Initiated
 
 You can start your authentication process with the IDP.
 
-The IDP sends a SAML assertion to the SP, which in this case is UAA, like the example below:
+The IDP sends a SAML assertion to the SP, which in this case is UAA, like the following example:
 
 <pre class="terminal">
 <<span>?x</span>ml version="1.0" encoding="UTF-8"?>
@@ -227,7 +231,7 @@ For example:
 
 The most common configuration is `unspecified`, where the IDP decides which attribute is the username.
 
-Below is an example of what the subject element looks like in an assertion, with the username `EXAMPLE@test.org`:
+The following example is what the subject element looks like in an assertion, with the username `EXAMPLE@test.org`:
 
 <pre class="terminal">
 <<span>s</span>aml:Subject>
@@ -249,7 +253,7 @@ Below is an example of what the subject element looks like in an assertion, with
 
 The `AssertionConsumerService` attribute indicates which assertion consumer service URL the external IDP should use. This is used by the SP when it sends a SAML request for authentication to the IDP. The SP metadata contains one assertion consumer service by default, but can contain more.
 
-Below are examples of assertion consumer services in SP metadata, organized by index:
+The following examples are of assertion consumer services in SP metadata, organized by index:
 
 <pre class="terminal">
 <<span>md</span>:AssertionConsumerService
@@ -267,7 +271,7 @@ Below are examples of assertion consumer services in SP metadata, organized by i
   index="2"/>
 </pre>
 
-Below is an example of a SAML request to the IDP with the correct assertion consumer service selected:
+The following example is a SAML request to the IDP with the correct assertion consumer service selected:
 
 <pre class="terminal">
 <<span>?x</span>ml version="1.0" encoding="UTF-8"?>
@@ -292,9 +296,9 @@ Below is an example of a SAML request to the IDP with the correct assertion cons
 
 ### <a id='idpmetadata'></a> idpMetadata
 
-The `idpMetadata` attribute holds either an XML string or a URL.
+The `idpMetadata` attribute holds either an XML string or an URL.
 
-Below is an example of IDP metadata configuration in UAA:
+This is an example of IDP metadata configuration in UAA:
 
 <pre class="terminal">idpMetadata: \http://simplesamlphp.identity.cf-app.com/saml2/idp/metadata.php</pre>
 
@@ -302,7 +306,7 @@ If the IDP is configured using a URL, UAA refreshes the metadata content from th
 
 If the IDP is configured using metadata as an XML string, the metadata remains static. Rotating keys on the IDP requires you to reconfigure UAA with the new data.
 
-Below is an example of the XML metadata configuration:
+This is an example of the XML metadata configuration:
 
 <pre class="terminal">
 <<span>?x</span>ml version="1.0" encoding="UTF-8"?>
@@ -333,17 +337,17 @@ Below is an example of the XML metadata configuration:
 
 ### <a id='showsamlloginlink'></a> showSamlLoginLink
 
-The `showSamlLoginLink` displays the login link on the UAA home page. This shows when `showSamlLoginLink` is set to `true`, it . Clicking on this link starts the SP-initiated flow. This is frequently set to `false` when you use the IDP-initiated flow.
+The `showSamlLoginLink` shows the login link on the UAA home page. This appears when `showSamlLoginLink` is set to `true`. When you click this link, it starts the SP-initiated flow. This is frequently set to `false` when you use the IDP-initiated flow.
 
-Below is an example of a SAML login link text configuration:
+This is an example of a SAML login link text configuration:
 
 <pre class="terminal">showSamlLoginLink: true</pre>
 
 ### <a id='linktext'></a> linkText
 
-The `linkText` attribute allows you to specify the text on a link on the UAA home page. This shows when `showSamlLoginLink` is set to `true`.
+You can use the `linkText` attribute to specify the text on a link on the UAA home page. This appears when `showSamlLoginLink` is set to `true`.
 
-Below is an example of a link text configuration:
+This is an example of a link text configuration:
 
 <pre class="terminal">linkText: Log in with SSO</pre>
 
@@ -351,6 +355,6 @@ Below is an example of a link text configuration:
 
 The `metadataTrustCheck` attribute requires UAA to verify signatures of incoming messages. This requirement exists when `metadataTrustCheck` is set to `true`.
 
-Below is an example of a metadata trust check configuration:
+This is an example of a metadata trust check configuration:
 
 <pre class="terminal">metadataTrustCheck: true</pre>

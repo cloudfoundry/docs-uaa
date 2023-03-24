@@ -8,14 +8,14 @@ This topic describes performance metrics for User Account and Authentication (UA
 
 ## <a id="overview"></a> Overview
 
-UAA emits metrics constantly. These metrics can help you understand performance over time, troubleshoot problems, and assess the health of your installation in real time. These metrics are emitted through Loggregator.
+UAA emits metrics constantly. These metrics help you to understand performance over time, troubleshoot problems, and assess the health of your installation in real time. These metrics are emitted through Loggregator.
 
 This topic describes different metrics that UAA, virtual machines (VMs), and Java Virtual Machines (JVMs) emit.
 
 
 ## <a id="performance"></a> About UAA Performance
 
-These tables explain different types of UAA and UAA-related metrics you can view. There are three different metric areas discussed in these tables:
+The following tables explain different types of UAA and UAA-related metrics you can view. There are three different metric areas discussed in these tables:
 
 * [Global Performance Metrics](##global): Metric values that UAA emits.
 * [Virtual Machine Vitals](#vm-vitals): Metric values that UAA reads from the VM.
@@ -30,11 +30,11 @@ Each table contains:
 * **Indicator:** What changes in the metric's value may indicate over time.
 * **Status**: Whether a metric is active or static. Active metrics may change between metrics emissions. Static metrics are fixed and do not change.
 
-<p class='note'><strong>Note:</strong> If consuming UAA metrics through the Firehose, incremental metrics, or metrics that capture an increment or decrement in a value since UAA's last emission, are expressed as cumulative values. For more information, see the <a href="https://github.com/cloudfoundry/statsd-injector">statsd-injector</a> repository on GitHub.</p>
+<p class='note'><strong>Note:</strong> If consuming UAA metrics through the Firehose, incremental metrics, or metrics that capture an increment or decrement in a value because UAA's last emission, are expressed as cumulative values. For more information, see the <a href="https://github.com/cloudfoundry/statsd-injector">statsd-injector</a> repository on GitHub.</p>
 
 ### <a id="global"></a> Global Performance Metrics
 
-The table below describes metrics that UAA emits:
+The following table describes metrics that UAA emits:
 
 | Name | Type | Description | Example | Indicator | Status |
 | ---- | ---- | ----------- | ------- | --------- | ------ |
@@ -59,7 +59,7 @@ These sections describe metrics that the UAA VM and JVM emit.
 
 ### <a id="vm-vitals"></a> Virtual Machine Vitals
 
-The table below describes metrics that the UAA VM emits:
+The following table describes metrics that the UAA VM emits:
 
 | Name | Type | Description | Example | Indicator | Status |
 | ---- | ---- | ----------- | ------- | --------- | ------ |
@@ -71,7 +71,7 @@ The table below describes metrics that the UAA VM emits:
 
 ### <a id="jvm-vitals"></a> Java Virtual Machine Vitals
 
-The table below describes metrics that the UAA JVM emits:
+The following table describes metrics that the UAA JVM emits:
 
 | Name | Type | Description | Example | Indicator | Status |
 | ---- | ---- | ----------- | ------- | --------- | ------ |
