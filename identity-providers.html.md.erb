@@ -1,12 +1,12 @@
 ---
-title: Identity Providers in UAA
+title: Identity providers in UAA
 owner: UAA
 ---
 
-This topic describes the identity providers (IDPs) you can configure with your User Account and Authentication (UAA) server.
+You can configure identity providers (IDPs) with your Cloud Foundry User Account and Authentication (UAA) server.
 
 
-## <a id="ldap"></a> LDAP Providers
+## <a id="ldap"></a> LDAP providers
 
 The [Lightweight Directory Access Protocol](https://tools.ietf.org/html/rfc4511) communicates with directory servers. Compared with the other external IDPs, LDAP is a very simple integration. It only requires configuration on UAA. Other types of provider require that you make configuration changes on both UAA and on the external provider.
 
@@ -21,12 +21,16 @@ LDAP supports three different connection types:
 For more information, see [User Account and Authentication LDAP Integration](https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-LDAP.md) in the UAA repository on GitHub.
 
 
-## <a id="saml"></a> SAML Providers
+## <a id="saml"></a> SAML providers
 
 The [SAML v2 standard](http://saml.xml.org/saml-specifications) is a dominant player in the federated authentication space. It is also one of the harder integrations to configure. When configuring SAML integration on UAA, you must configure both UAA and the SAML IDP. A mistake on either side causes assertions to be rejected and authentication to fail.
 
+## <a id="oidc"></a> OpenID Connect providers
 
-## <a id="service-identity"></a> Service Provider versus Identity Provider
+The [OpenID Connect standard](https://openid.net/developers/specs/) is a simple identity layer on top of the OAuth 2.0 protocol. Clients can verify the identity of the end-user based on the authentication performed by the OIDC IDP, as well as to obtain basic profile information about the end-User in an interoperable and REST-like manner. When configuring OIDC integration on UAA, you must configure both UAA and the OIDC IDP. A mistake on either side causes tokens to be rejected and authentication to fail.
+
+
+## <a id="service-identity"></a> Service provider versus identity provider
 
 The SAML specification defines two players in a SAML interaction:
 
@@ -36,7 +40,7 @@ The SAML specification defines two players in a SAML interaction:
 
 UAA can be configured to act as an SP or IDP. In most scenarios, UAA is the SP, and an external provider, such as Okta or ADFS, is the IDP.
 
-### <a id='metadata'></a> View Metadata
+### <a id='metadata'></a> View metadata
 
 A SAML provider, either the SP or the IDP, presents a set of metadata. This metadata contains information about the server and is used to configure the opposing provider.
 
@@ -45,13 +49,13 @@ If you use UAA as an SP, you can download metadata through the `/saml/metadata` 
 If you use UAA as an IDP, fetch the metadata from the `/saml/idp/metadata` endpoint. For example, http://login.example.com/saml/idp/metadata.
 
 
-## <a id="id-flow"></a> IDP Workflow
+## <a id="id-flow"></a> SAML IDP workflow
 
 SAML provides two commonly-used workflows, SP-initiated and IDP-initiated. These sections describe each workflow.
 
 ### <a id='sp-initiated'></a> SP-Initiated
 
-If you navigate to the UAA login page and click on a link to authenticate using your organization's SAML provider, you are using an SP-initiated flow.
+### <a id='sp-initiated'></a> SAML SP-initiated
 
 The SP sends an authentication request to the IDP like the example below:
 
@@ -74,11 +78,11 @@ The SP sends an authentication request to the IDP like the example below:
 <<span>/s</span>aml2p:AuthnRequest>
 </pre>
 
-Once the IDP has authenticated the user, it sends an assertion back to the user. This step takes place in both SP-initiated and IDP-initiated flows. For information about the SAML response, see [IDP-Initiated](#idp-initiated).
+After the IDP has authenticated the user, it sends an assertion back to the user. This step takes place in both SP-initiated and IDP-initiated flows. For information about the SAML response, see [IDP-Initiated](#idp-initiated).
 
-<img src="./images/sp-flow.png" alt="An SP-initiated flow.">
+![alt-text=""](./images/sp-flow.png)
 
-### <a id='idp-initiated'></a> IDP-Initiated
+### <a id='idp-initiated'></a> SAML IDP-initiated
 
 You can start your authentication process with the IDP.
 
@@ -205,7 +209,7 @@ The IDP sends a SAML assertion to the SP, which in this case is UAA, like the ex
 </pre>
 
 
-## <a id="config"></a> Configuration
+## <a id="config"></a> SAML configuration
 
 UAA provides a limited set of attributes to configure when setting up an external IDP. You configure these attributes for each individual SAML IDP you set up in UAA.
 
