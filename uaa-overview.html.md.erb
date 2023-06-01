@@ -1,20 +1,20 @@
 ---
-title: UAA Overview
+title: User Accounts and Authentication overview
 owner: UAA
 ---
 
-User Account and Authentication (UAA) is an open-source identity server project under the Cloud Foundry Foundation.
+Cloud Foundry User Account and Authentication (UAA) is an open-source identity server project under the Cloud Foundry Foundation.
 
-UAA provides enterprise-scale identity management features. For example, it is used by these commercial services:
+UAA provides enterprise-scale identity management features. It is used by these commercial services, for example:
 
-* [Single Sign-On for VMware Tanzu](https://pivotal.io/platform/services/identity-and-security/sso): Identity services for apps and APIs running on VMware Tanzu Application Service (TAS for VMs)
+* [Single sign-on for VMware Tanzu](https://pivotal.io/platform/services/identity-and-security/sso): Identity services for apps and APIs running on VMware Tanzu Application Service (TAS for VMs)
 
 * [GE Predix Identity Services](https://docs.predix.io/en-US/content/service/security/user_account_and_authentication/uaa-service-overview)
 
 * [SAP HANA Identity Services](https://help.sap.com/viewer/4505d0bdaf4948449b7f7379d24d0f0d/2.0.01/en-US/c6f36d5d49844bd790798ea36538e024.html)
 
 
-## <a id="overview"></a> What Is UAA?
+## <a id="overview"></a> What is UAA?
 
 UAA provides identity-based security for apps and APIs. It supports open standards for authentication and authorization, including:
 
@@ -41,7 +41,7 @@ The major features of UAA include:
 * Rest APIs for authentication, authorization, and configuration management
 
 
-## <a id='uaa-architecture'></a> UAA Architecture
+## <a id='uaa-architecture'></a> UAA architecture
 
 The diagram below illustrates the architecture of UAA:
 
@@ -58,7 +58,7 @@ The table below describes the protocols UAA can use:
 | SCIM 1.0 | Manages users and groups | Identity Provisioning |
 
 
-## <a id="client-tools"></a> Client-Side Tools and Libraries
+## <a id="client-tools"></a> Client-side tools and libraries
 
 The table below describes the client-side tools and libraries UAA uses:
 
@@ -85,7 +85,7 @@ The table below describes the client-side tools and libraries UAA uses:
 </table>
 
 
-## <a id="securing"></a> The Role of UAA in Securing <%= vars.app_runtime_abbr %>
+## <a id="securing"></a> The role of UAA in securing <%= vars.app_runtime_abbr %>
 
 <%= vars.app_runtime_abbr %> relies on UAA for its identity and access management requirements. UAA secures user and system access to <%= vars.app_runtime_abbr %> installations.
 
@@ -113,7 +113,7 @@ UAA secures many different <%= vars.app_runtime_abbr %> components, including:
 * Autoscaler
 
 
-## <a id="tokens"></a> Token Management
+## <a id="tokens"></a> Token management
 
 After authenticating, client apps access resources and services using tokens rather than account authentication credentials. UAA generates, manages, distributes, and validates these tokens. UAA provides new tokens only to client apps with valid authentication credentials.
 
@@ -121,7 +121,7 @@ Once granted, token validity is unchallenged until the token expires due to time
 
 UAA distributes two types of tokens: access tokens and refresh tokens.
 
-### <a id="access-tokens"></a> Access Tokens
+### <a id="access-tokens"></a> Access tokens
 
 Client apps use UAA-provided access tokens to request access to API endpoints, resources, and services. The access token presented by a client app must be valid in order to access a resource.
 
@@ -129,7 +129,7 @@ Access tokens are valid for a short period of time.
 
 After a UAA-provided access token has expired, a client app can request UAA provide a replacement. To request a replacement access token from UAA, a client app must present a valid refresh token.
 
-### <a id="refresh-tokens"></a> Refresh Tokens
+### <a id="refresh-tokens"></a> Refresh tokens
 
 Client apps use UAA-provided refresh tokens to request replacements for expired access tokens. The refresh token presented by a client app must be valid in order to replace an expired access token.
 
@@ -137,7 +137,7 @@ Refresh tokens are valid for a long period of time.
 
 UAA does not provide replacement refresh tokens. To obtain a new refresh token, a client app must re-authenticate.
 
-### <a id="token-timeouts"></a> Token Timeouts
+### <a id="token-timeouts"></a> Token timeouts
 
 The token interactions listed above produce certain end results.
 
