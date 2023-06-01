@@ -1,25 +1,21 @@
 ---
-title: UAA Performance Metrics
+title: UAA performance metrics
 owner: UAA
 ---
 
-This topic describes performance metrics for User Account and Authentication (UAA).
+
+Cloud Foundry User Accounts and Authentication (UAA) emits metrics constantly. These metrics help you to understand performance, troubleshoot problems, and assess the health of your installation in real time. These metrics are emitted through Loggregator.
+
+This article describes various metrics that UAA, virtual machines (VMs), and Java Virtual Machines (JVMs) emit.
 
 
-## <a id="overview"></a> Overview
+## <a id="performance"></a> About UAA performance
 
-UAA emits metrics constantly. These metrics can help you understand performance over time, troubleshoot problems, and assess the health of your installation in real time. These metrics are emitted through Loggregator.
+The following tables explain different types of UAA and UAA-related metrics you can view. There are three different types of metrics discussed in these tables:
 
-This topic describes different metrics that UAA, virtual machines (VMs), and Java Virtual Machines (JVMs) emit.
-
-
-## <a id="performance"></a> About UAA Performance
-
-These tables explain different types of UAA and UAA-related metrics you can view. There are three different metric areas discussed in these tables:
-
-* [Global Performance Metrics](##global): Metric values that UAA emits.
-* [Virtual Machine Vitals](#vm-vitals): Metric values that UAA reads from the VM.
-* [Java Virtual Machine Vitals](#jvm-vitals): Metric values that UAA reads from the JVM.
+* [Global performance metrics](#global): Metric values that UAA emits
+* [Virtual Machine vital statistics](#vm-vitals): Metric values that UAA reads from the VM
+* [Java Virtual Machine vital statistics](#jvm-vitals): Metric values that UAA reads from the JVM
 
 Each table contains:
 
@@ -32,7 +28,7 @@ Each table contains:
 
 <p class='note'><strong>Note:</strong> If consuming UAA metrics through the Firehose, incremental metrics, or metrics that capture an increment or decrement in a value since UAA's last emission, are expressed as cumulative values. For more information, see the <a href="https://github.com/cloudfoundry/statsd-injector">statsd-injector</a> repository on GitHub.</p>
 
-### <a id="global"></a> Global Performance Metrics
+### <a id="global"></a> Global performance metrics
 
 The table below describes metrics that UAA emits:
 
@@ -53,11 +49,11 @@ The table below describes metrics that UAA emits:
 | `database.global.unhealthy.time` | Timer | Average amount of time in milliseconds per database query that was not within the tolerated response time. | <code>uaa.database.global.unhealthy.time:4678623&#124;g</code> | Use this metric to monitor database response time. | Active |
 
 
-## <a id="vitals"></a> About UAA Vitals
+## <a id="vitals"></a> About UAA vital statistics
 
 These sections describe metrics that the UAA VM and JVM emit.
 
-### <a id="vm-vitals"></a> Virtual Machine Vitals
+### <a id="vm-vitals"></a> Virtual Machine vital statistics
 
 The table below describes metrics that the UAA VM emits:
 
@@ -69,7 +65,7 @@ The table below describes metrics that the UAA VM emits:
 | `vitals.vm.memory.committed` | Gauge | OS memory, in bytes, committed to UAA processes, as reported by the JVM. | <code>uaa.vitals.vm.memory.committed:1073741824&#124;g</code> | Use this metric in conjunction with other performance metrics to assess system health. | Active |
 | `vitals.vm.memory.free` | Gauge | Free OS memory, in bytes, as reported by the JVM. | <code>uaa.vitals.vm.memory.free:1073741824&#124;g</code> | Use this metric in conjunction with other performance metrics to assess system health. | Active |
 
-### <a id="jvm-vitals"></a> Java Virtual Machine Vitals
+### <a id="jvm-vitals"></a> Java Virtual Machine vital statistics
 
 The table below describes metrics that the UAA JVM emits:
 
