@@ -59,7 +59,7 @@ The following sections describe each workflow.
 
 ### <a id='sp-initiated'></a> SAML SP-initiated
 
-If you navigate to the UAA login page and click a link to authenticate using your organization's SAML provider, you are using an SP-initiated flow.
+If you go to the UAA login page and click a link to authenticate using your organization's SAML provider, you are using an SP initiated flow.
 
 The SP sends an authentication request to the IDP. See the following example:
 
@@ -82,7 +82,7 @@ The SP sends an authentication request to the IDP. See the following example:
 <<span>/s</span>aml2p:AuthnRequest>
 </pre>
 
-After the IDP has authenticated the user, it sends an assertion back to the user. This step takes place in both SP-initiated and IDP-initiated flows. For information about the SAML response, see [IDP-Initiated](#idp-initiated).
+After the IDP has authenticated the user, it sends an assertion back to the user. This step takes place in both SP initiated and IDP initiated flows. For information about the SAML response, see [IDP-Initiated](#idp-initiated).
 
 ![alt-text=""](./images/sp-flow.png)
 
@@ -90,7 +90,7 @@ After the IDP has authenticated the user, it sends an assertion back to the user
 
 You can start your authentication process with the IDP.
 
-The IDP sends a SAML assertion to the SP, which in this case is UAA, like the following example:
+The IDP sends a SAML assertion to the SP, which in this case is UAA, similar to the following example:
 
 <pre class="terminal">
 <<span>?x</span>ml version="1.0" encoding="UTF-8"?>
@@ -251,7 +251,8 @@ The following example is what the subject element looks like in an assertion, wi
 
 ### <a id='assertionconsumerservice'></a> AssertionConsumerService
 
-The `AssertionConsumerService` attribute indicates which assertion consumer service URL the external IDP should use. This is used by the SP when it sends a SAML request for authentication to the IDP. The SP metadata contains one assertion consumer service by default, but can contain more.
+The `AssertionConsumerService` attribute indicates which assertion consumer service URL the external IDP uses. This is used by the SP when
+it sends a SAML request for authentication to the IDP. The SP metadata contains one assertion consumer service by default, but can contain more.
 
 The following examples are of assertion consumer services in SP metadata, organized by index:
 

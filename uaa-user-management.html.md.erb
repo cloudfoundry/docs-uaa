@@ -7,11 +7,17 @@ owner: Identity
 
 Using the Cloud Foundry User Account and Authentication Command Line Interface (UAAC), you can create users in the UAA server.
 
-<p class="note"><strong>Note:</strong> The UAAC only creates users in UAA, and does not assign roles in the Cloud Controller database (CCDB). In general, admins create users using the Cloud Foundry Command Line Interface (cf CLI). The cf CLI both creates user records in the UAA and associates them with org and space roles in the CCDB. Before admins can assign roles to the user, the user must log in through Apps Manager or the cf CLI for the user record to populate the CCDB. For more information, see <a href="../adminguide/cli-user-management.html">Creating and Managing Users with the cf CLI</a>.</p></p>
+<p> The UAAC only creates users in UAA, and does not assign roles in the Cloud Controller database
+(CCDB). In general, admins create users using the Cloud Foundry Command Line Interface (cf CLI). The cf CLI both creates user records in
+the UAA and associates them with org and space roles in the CCDB. Before admins can assign roles to the user, the user must log in through
+Apps Manager or the cf CLI for the user record to populate the CCDB. For more information, see <a href="../adminguide/cli-user-management.html">Creating and Managing Users with the cf CLI</a>.</p></p>
 
 For more information, see [UAA Overview](../concepts/architecture/uaa.html), [UAA Sysadmin Guide](https://github.com/cloudfoundry/uaa/blob/master/docs/Sysadmin-Guide.rst) in the UAA repository on GitHub, and [Docs](https://github.com/cloudfoundry/uaa/tree/master/docs) in the UAA repository on GitHub.
 
-<p class="note"><strong>Note:</strong> UAAC requires Ruby v2.3.1 or later. If you have an earlier version of Ruby installed, install Ruby v2.3.1 or later before using the UAAC.</p>
+<p class="note important">
+<span class="note__title">Important</span> UAAC requires Ruby v2.3.1 or later. If you have an earlier version of Ruby installed, install
+Ruby v2.3.1 or later before using the UAAC.
+</p>
 
 For more information about which roles can perform various operations in <%= vars.platform_name %>, see [User roles](../concepts/roles.html#roles) in _Orgs, Spaces, Roles, and Permissions_.
 
@@ -211,7 +217,8 @@ To grant all users under an external group admin permissions:
     * [Grant Admin Permissions for LDAP](#grant-admin-ldap)
     * [Grant Admin Permissions for SAML and OIDC](#grant-admin-saml)
 
-<p class="note"><strong>Note:</strong> The UAA does not grant scopes for users in external groups until the next time the user logs in. This means that users granted scopes from external group mappings must log out from <%= vars.platform_name %> and log back in before their new scope takes effect.</p>
+<p> The UAA does not grant scopes for users in external groups until the next time the user logs in. This means that users granted
+scopes from external group mappings must log out from <%= vars.platform_name %> and log back in before their new scope takes effect.</p>
 
 ### <a id='grant-admin-ldap'></a> Grant admin permissions for LDAP
 
@@ -257,7 +264,8 @@ To grant admin permissions to all users under the mapped SAML or OIDC group:
       <li><code>PROVIDER-NAME</code> is the name of your SAML or OIDC IDP.</li>
     </ul>
 
-<p class='note'><strong>Note:</strong> For OIDC, make sure you configure the IDP's attribute mappings and map <code>external_groups</code> to the groups field in the OIDC ID Token issued by the IDP.</p>
+<p> For OIDC, make sure you configure the IDP's attribute mappings and map <code>external_groups</code> to the groups field in the
+OIDC ID Token issued by the IDP.</p>
 
 ## <a id='creating-users'></a> Create users
 

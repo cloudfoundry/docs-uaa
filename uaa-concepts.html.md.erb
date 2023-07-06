@@ -16,7 +16,7 @@ There are six main components of the Cloud Foundry User Accounts and Authenticat
 
 ## <a id="iz"></a> Identity zones
 
-UAA is built to support a multi-tenant architecture. Each tenant is referred to as an _identity zone_.
+UAA is built to support a multi tenant architecture. Each tenant is referred to as an _identity zone_.
 
 Identity zones are configured with JSON payloads using a REST API. For examples, see [Creating an identity zone](https://docs.cloudfoundry.org/api/uaa/index.html#creating-an-identity-zone) in the UAA API documentation.
 
@@ -30,7 +30,8 @@ An identity zone is a logical boundary around the entities UAA manages. The enti
 * Identity providers (IDPs) and access
 * ID and refresh tokens
 
-Having two identity zones is equivalent to standing up two separate UAA deployments, but using fewer resources. This type of resource management can reduce operational and maintenance overhead.
+Having two identity zones is equivalent to standing up two separate UAA deployments, but using fewer resources. This type of resource
+management can reduce operational and maintenance overhead.
 
 
 ## <a id="subdomains"></a> Subdomains
@@ -45,7 +46,8 @@ For example:
 
 ### <a id="default-zones"></a> Default zones
 
-A UAA deployment always has one zone referred to as the _default zone_. You configure and bootstrap a default zone using a YAML configuration file.
+A UAA deployment always has one zone referred to as the _default zone_. You configure and bootstrap a default zone using a YAML
+configuration file.
 
 
 ## <a id="users"></a> Users
@@ -56,7 +58,7 @@ In its capacity as a user account store, UAA can provide unique attributes that 
 
 You can make additional attributes available if UAA is configured to use custom attribute mappings from an external IDP, such as an existing LDAP or SAML provider. For more information about IDP options, see [Identity Providers in UAA](identity-providers.html).
 
-External IDPs are read-only, as are attributes from those providers. Any change to the external user account should be performed on the external IDP directly. These read-only attributes are refreshed each time the user authenticates with the external IDP.
+External IDPs are read only, as are attributes from those providers. Any change to the external user account can be performed on the external IDP directly. These read-only attributes are refreshed each time the user authenticates with the external IDP.
 
 UAA can be used as an authorization server, which allows client apps to interact with resources on a user's behalf using the four standard OAuth2 authorization grant flows for obtaining access tokens:
 
@@ -82,11 +84,12 @@ The fixed origin values are:
 * {OIDC provider alias} for users authenticated through an OIDC provider
 * {SAML provider alias} for users authenticated through a SAML IDP
 
-Users that are authenticated with an external IDP are often referred to as shadow users in UAA. For more information, see [Shadow Users](#shadow).
+Users that are authenticated with an external IDP are often referred to as shadow users in UAA.
+For more information, see [Shadow Users](#shadow).
 
 ### <a id="name"></a> user.userName
 
-A `user.userName` is a user-readable string that refers to the user, typically an email address. The user enters their username when authenticating against UAA.
+A `user.userName` is a user readable string that refers to the user, typically an email address. The user enters their username when authenticating against UAA.
 
 If the user authenticates against an external IDP, the username is transferred from that IDP to the shadow user in UAA. An individual user can be uniquely identified by the combination of the username and the origin values.
 
@@ -120,7 +123,8 @@ The common group attributes are:
 
 * `display`: The `displayName` of the group the user or the group belongs to. The `displayName` is an identifier that is unique to a given identity zone and is a representation of the access given to the user.
 
-<p class="note"><strong>Note:</strong> To create a group, see <a href="https://docs.cloudfoundry.org/api/uaa/version/73.7.0/index.html#groups">Groups</a> in the UAA API documentation. To add a user or group to a group, see <a href="https://docs.cloudfoundry.org/api/uaa/version/73.7.0/index.html#add-member">Add Member</a> in the UAA API documentation.</p>
+<p> To create a group, see <a href="https://docs.cloudfoundry.org/api/uaa/version/73.7.0/index.html#groups">Groups</a> in the
+UAA API documentation. To add a user or group to a group, see <a href="https://docs.cloudfoundry.org/api/uaa/version/73.7.0/index.html#add-member">Add Member</a> in the UAA API documentation.</p>
 
 ### <a id="default-groups"></a> Default user groups
 
@@ -269,7 +273,8 @@ The value can also be a comma-separated list of selected scopes that do not requ
 
 ### <a id="additional-info"></a> client.additional_information
 
-Clients can store custom attributes in a field called `additional_information`. This is a simple key value store. The following table describes these custom attributes:
+Clients can store custom attributes in a field called `additional_information`. This is a simple key value store.
+The following table describes these custom attributes:
 
 <table class="nice">
   <th width="25%">Key</th>

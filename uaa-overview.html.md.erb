@@ -7,14 +7,15 @@ Cloud Foundry User Account and Authentication (UAA) is an open-source identity s
 
 UAA provides enterprise-scale identity management features. It is used by these commercial services, for example:
 
-* [Single sign-on for VMware Tanzu](https://pivotal.io/platform/services/identity-and-security/sso): Identity services for apps and APIs running on VMware Tanzu Application Service (TAS for VMs)
+* [Single sign-on for VMware Tanzu](https://network.tanzu.vmware.com/products/pivotal_single_sign-on_service): Identity services for apps and
+APIs running on VMware Tanzu Application Service (TAS for VMs)
 
 * [SAP Cloud Identity Services](https://help.sap.com/docs/IDENTITY_AUTHENTICATION)
 
 
 ## <a id="overview"></a> What is UAA?
 
-UAA provides identity-based security for apps and APIs. It supports open standards for authentication and authorization, including:
+UAA provides identity based security for apps and APIs. It supports open standards for authentication and authorization, including:
 
 * OAuth
 * OpenID Connect
@@ -31,7 +32,7 @@ The major features of UAA include:
 * Support for **JWT** and **opaque** as a token format
 * Token revocation
 * Operational flexibility
-	* Operate and run as a [BOSH release](http://bosh.io/releases/github.com/cloudfoundry/uaa-release?all=1), which uses multi-cloud deployment capabilities
+	* Operate and run as a [BOSH release](http://bosh.io/releases/github.com/cloudfoundry/uaa-release?all=1), which uses multi cloud deployment capabilities
 	* Push as an app to <%= vars.app_runtime_abbr %>
 * Database flexibility, including support for MySQL and Postgres
 * Auditing, logging, and monitoring
@@ -43,7 +44,7 @@ The major features of UAA include:
 
 The following diagram illustrates the architecture of UAA:
 
-![alt-text="UAA architecture diagram"](./images/uaa-architecture.png)
+![alt-text="UAA architecture."](./images/uaa-architecture.png)
 
 The following table describes the protocols UAA can use:
 
@@ -87,7 +88,8 @@ The following table describes the client-side tools and libraries UAA uses:
 
 <%= vars.app_runtime_abbr %> relies on UAA for its identity and access management requirements. UAA secures user and system access to <%= vars.app_runtime_abbr %> installations.
 
-Since <%= vars.app_runtime_abbr %> is primarily used in the enterprise context, UAA supports enterprise SSO workflows. If a user has already authenticated against the enterprise IDP, they can access <%= vars.app_runtime_abbr %> without re-entering credentials.
+Since <%= vars.app_runtime_abbr %> is primarily used in the enterprise context, UAA supports enterprise SSO workflows. If you have already
+authenticated against the enterprise IDP, you can access <%= vars.app_runtime_abbr %> without entering credentials again.
 
 Some of the major components of <%= vars.app_runtime_abbr %> that use UAA include:
 
@@ -121,15 +123,15 @@ UAA distributes two types of tokens: access tokens and refresh tokens.
 
 ### <a id="access-tokens"></a> Access tokens
 
-Client apps use UAA-provided access tokens to request access to API endpoints, resources, and services. The access token presented by a client app must be valid in order to access a resource.
+Client apps use UAA provided access tokens to request access to API endpoints, resources, and services. The access token presented by a client app must be valid in order to access a resource.
 
 Access tokens are valid for a short period of time.
 
-After a UAA-provided access token has expired, a client app can request UAA provide a replacement. To request a replacement access token from UAA, a client app must present a valid refresh token.
+After a UAA provided access token has expired, a client app can request UAA provide a replacement. To request a replacement access token from UAA, a client app must present a valid refresh token.
 
 ### <a id="refresh-tokens"></a> Refresh tokens
 
-Client apps use UAA-provided refresh tokens to request replacements for expired access tokens. The refresh token presented by a client app must be valid in order to replace an expired access token.
+Client apps use UAA provided refresh tokens to request replacements for expired access tokens. The refresh token presented by a client app must be valid in order to replace an expired access token.
 
 Refresh tokens are valid for a long period of time.
 
