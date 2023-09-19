@@ -32,7 +32,7 @@ The major features of UAA include:
 * Support for **JWT** and **opaque** as a token format
 * Token revocation
 * Operational flexibility
-	* Operate and run as a [BOSH release](http://bosh.io/releases/github.com/cloudfoundry/uaa-release?all=1), which uses multi cloud deployment capabilities
+	* Operate and run as a [BOSH release](http://bosh.io/releases/github.com/cloudfoundry/uaa-release?all=1), which uses multi-cloud deployment capabilities
 	* Push as an app to <%= vars.app_runtime_abbr %>
 * Database flexibility, including support for MySQL and Postgres
 * Auditing, logging, and monitoring
@@ -86,7 +86,7 @@ The following table describes the client-side tools and libraries UAA uses:
 
 ## <a id="securing"></a> The role of UAA in securing <%= vars.app_runtime_abbr %>
 
-<%= vars.app_runtime_abbr %> relies on UAA for its identity and access management requirements. UAA secures user and system access to <%= vars.app_runtime_abbr %> installations.
+<%= vars.app_runtime_abbr %> relies on UAA for identity and access management requirements. UAA secures user and system access to <%= vars.app_runtime_abbr %> installations.
 
 Since <%= vars.app_runtime_abbr %> is primarily used in the enterprise context, UAA supports enterprise SSO workflows. If you have already
 authenticated against the enterprise IDP, you can access <%= vars.app_runtime_abbr %> without entering credentials again.
@@ -127,11 +127,11 @@ Client apps use UAA provided access tokens to request access to API endpoints, r
 
 Access tokens are valid for a short period of time.
 
-After a UAA provided access token has expired, a client app can request UAA provide a replacement. To request a replacement access token from UAA, a client app must present a valid refresh token.
+After a UAA-provided access token has expired, a client app can request UAA provide a replacement. To request a replacement access token from UAA, a client app must present a valid refresh token.
 
 ### <a id="refresh-tokens"></a> Refresh tokens
 
-Client apps use UAA provided refresh tokens to request replacements for expired access tokens. The refresh token presented by a client app must be valid in order to replace an expired access token.
+Client apps use UAA-provided refresh tokens to request replacements for expired access tokens. The refresh token presented by a client app must be valid in order to replace an expired access token.
 
 Refresh tokens are valid for a long period of time.
 

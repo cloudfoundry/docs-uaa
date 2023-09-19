@@ -3,7 +3,8 @@ title: Identity providers in UAA
 owner: UAA
 ---
 
-You can configure identity providers (IDPs) with your Cloud Foundry User Account and Authentication (UAA) server.
+You can configure identity providers (IDPs) with your Cloud Foundry User Account and Authentication (UAA)
+server.
 
 
 ## <a id="ldap"></a> LDAP providers
@@ -59,7 +60,8 @@ The following sections describe each workflow.
 
 ### <a id='sp-initiated'></a> SAML SP-initiated
 
-If you go to the UAA login page and click a link to authenticate using your organization's SAML provider, you are using an SP initiated flow.
+If you go to the UAA login page and click a link to authenticate using your organization's SAML provider,
+you are using an SP-initiated flow.
 
 The SP sends an authentication request to the IDP. See the following example:
 
@@ -82,7 +84,8 @@ The SP sends an authentication request to the IDP. See the following example:
 <<span>/s</span>aml2p:AuthnRequest>
 </pre>
 
-After the IDP has authenticated the user, it sends an assertion back to the user. This step takes place in both SP initiated and IDP initiated flows. For information about the SAML response, see [IDP-Initiated](#idp-initiated).
+After the IDP has authenticated the user, it sends an assertion back to the user. This step takes place in both
+SP-initiated and IDP-initiated flows. For information about the SAML response, see [IDP-Initiated](#idp-initiated).
 
 ![alt-text=""](./images/sp-flow.png)
 
@@ -338,7 +341,8 @@ This is an example of the XML metadata configuration:
 
 ### <a id='showsamlloginlink'></a> showSamlLoginLink
 
-The `showSamlLoginLink` shows the login link on the UAA home page. This appears when `showSamlLoginLink` is set to `true`. When you click this link, it starts the SP-initiated flow. This is frequently set to `false` when you use the IDP-initiated flow.
+The `showSamlLoginLink` shows the login link on the UAA home page. This appears when `showSamlLoginLink` is set to `true`. When you click this link,
+it starts the SP-initiated flow. This is frequently set to `false` when you use the IDP-initiated flow.
 
 This is an example of a SAML login link text configuration:
 

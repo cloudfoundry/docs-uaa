@@ -16,7 +16,7 @@ There are six main components of the Cloud Foundry User Accounts and Authenticat
 
 ## <a id="iz"></a> Identity zones
 
-UAA is built to support a multi tenant architecture. Each tenant is referred to as an _identity zone_.
+UAA is built to support a multi-tenant architecture. Each tenant is referred to as an _identity zone_.
 
 Identity zones are configured with JSON payloads using a REST API. For examples, see [Creating an identity zone](https://docs.cloudfoundry.org/api/uaa/index.html#creating-an-identity-zone) in the UAA API documentation.
 
@@ -58,7 +58,7 @@ In its capacity as a user account store, UAA can provide unique attributes that 
 
 You can make additional attributes available if UAA is configured to use custom attribute mappings from an external IDP, such as an existing LDAP or SAML provider. For more information about IDP options, see [Identity Providers in UAA](identity-providers.html).
 
-External IDPs are read only, as are attributes from those providers. Any change to the external user account can be performed on the external IDP directly. These read-only attributes are refreshed each time the user authenticates with the external IDP.
+External IDPs are read-only, as are attributes from those providers. Any change to the external user account can be performed on the external IDP directly. These read-only attributes are refreshed each time the user authenticates with the external IDP.
 
 UAA can be used as an authorization server, which allows client apps to interact with resources on a user's behalf using the four standard OAuth2 authorization grant flows for obtaining access tokens:
 
@@ -89,7 +89,7 @@ For more information, see [Shadow Users](#shadow).
 
 ### <a id="name"></a> user.userName
 
-A `user.userName` is a user readable string that refers to the user, typically an email address. The user enters their username when authenticating against UAA.
+A `user.userName` is a user-readable string that refers to the user, typically an email address. The user enters their username when authenticating against UAA.
 
 If the user authenticates against an external IDP, the username is transferred from that IDP to the shadow user in UAA. An individual user can be uniquely identified by the combination of the username and the origin values.
 
