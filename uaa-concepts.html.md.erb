@@ -56,7 +56,7 @@ In its capacity as a user account store, UAA can provide unique attributes that 
 
 You can make additional attributes available if UAA is configured to use custom attribute mappings from an external IDP, such as an existing LDAP or SAML provider. For more information about IDP options, see [Identity Providers in UAA](identity-providers.html).
 
-External IDPs are read-only, as are attributes from those providers. Any change to the external user account should be performed on the external IDP directly. These read-only attributes are refreshed each time the user authenticates with the external IDP.
+External IDPs are read-only, as are attributes from those providers. Any change to the external user account can be performed on the external IDP directly. These read-only attributes are refreshed each time the user authenticates with the external IDP.
 
 UAA can be used as an authorization server, which allows client apps to interact with resources on a user's behalf using the four standard OAuth2 authorization grant flows for obtaining access tokens:
 
@@ -190,7 +190,7 @@ To help you choose a grant type for your use case, see the table below:
     <td>Developers building a single page web app with no server back end</td>
     <td>The user is taken to a page on UAA where they are asked to grant approvals to the client. After doing so, they
       are redirected to the <code>redirect_uri</code> with the access token in the URI fragment.</td>
-  </td>		
+  </td>
   <tr>
     <td><code>client_credentials</code></td>
     <td>Developers when the client app needs to perform actions in UAA on its own behalf</td>

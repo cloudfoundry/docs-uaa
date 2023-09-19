@@ -5,13 +5,19 @@ owner: Identity
 
 
 
-Using the Cloud Foundry User Account and Authentication Command Line Interface (UAAC), you can create users in the UAA server.
+Using the Cloud Foundry User Account and Authentication Command Line Interface (UAAC), you can create
+users in the UAA server.
 
-<p class="note"><strong>Note:</strong> The UAAC only creates users in UAA, and does not assign roles in the Cloud Controller database (CCDB). In general, admins create users using the Cloud Foundry Command Line Interface (cf CLI). The cf CLI both creates user records in the UAA and associates them with org and space roles in the CCDB. Before admins can assign roles to the user, the user must log in through Apps Manager or the cf CLI for the user record to populate the CCDB. For more information, see <a href="../adminguide/cli-user-management.html">Creating and Managing Users with the cf CLI</a>.</p></p>
+<p> The UAAC only creates users in UAA, and does not assign roles in the Cloud Controller database
+(CCDB). In general, admins create users using the Cloud Foundry Command Line Interface (cf CLI). The cf CLI both creates user records in
+the UAA and associates them with org and space roles in the CCDB. Before admins can assign roles to the
+user, the user must log in through Apps Manager or the cf CLI for the user record to populate the CCDB.
+
+For more information on creating and managing users, see <a href="../adminguide/cli-user-management.html">Creating and Managing Users with the cf CLI</a>.</p></p>
 
 For more information, see [UAA Overview](../concepts/architecture/uaa.html), [UAA Sysadmin Guide](https://github.com/cloudfoundry/uaa/blob/master/docs/Sysadmin-Guide.rst) in the UAA repository on GitHub, and [Docs](https://github.com/cloudfoundry/uaa/tree/master/docs) in the UAA repository on GitHub.
 
-<p class="note"><strong>Note:</strong> UAAC requires Ruby v2.3.1 or later. If you have an earlier version of Ruby installed, install Ruby v2.3.1 or later before using the UAAC.</p>
+<p> UAAC requires Ruby v2.3.1 or later. If you have an earlier version of Ruby installed, install Ruby v2.3.1 or later before using the UAAC.</p>
 
 For more information about which roles can perform various operations in <%= vars.platform_name %>, see [User roles](../concepts/roles.html#roles) in _Orgs, Spaces, Roles, and Permissions_.
 
