@@ -221,9 +221,9 @@ The IDP sends a SAML assertion to the SP, which in this case is UAA, similar to 
 UAA provides a limited set of attributes to configure when setting up an external IDP. You configure these attributes for each individual SAML IDP you set up in UAA.
 
 A SAML IDP responds to requests from UAA with signed SAML assertions. These signatures are validated using a public key provided by the SAML provider.
-This public key can either be provided as a raw RSA public key, or encapsulated in an X.509 certificate. When dealing with the X.509 certificate, as per the
+This public key can be provided as a raw RSA public key or encapsulated in an X.509 certificate. When dealing with the X.509 certificate, as per the
 [SAML V2.0 Metadata Interoperability Profile](https://docs.oasis-open.org/security/saml/Post2.0/sstc-metadata-iop-os.html#__RefHeading___Toc7851_782679371),
-UAA will not do any validation of the certificate (including validating its expiry date), but will only get the public key from it.
+UAA will not validate the certificate (including validating its expiry date), but will only get the public key from it.
 
 ### <a id='nameid'></a> nameID
 
