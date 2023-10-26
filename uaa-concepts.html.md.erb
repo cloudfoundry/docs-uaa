@@ -171,10 +171,12 @@ For increased security, use only the grant types your app requires. However, you
 
 To help you choose a grant type for your use case, see the following table:
 
-<table class="nice">
-  <th width="30%">Grant type</th>
+<table class="table">
+  <thead>
+  <th >Grant type</th>
   <th>User</th>
   <th>Details</th>
+  </thead>
   <tr>
     <td><code>authorization_code</code></td>
     <td>Developers building web apps</td>
@@ -276,9 +278,11 @@ The value can also be a comma-separated list of selected scopes that do not requ
 Clients can store custom attributes in a field called `additional_information`. This is a simple key value store.
 The following table describes these custom attributes:
 
-<table class="nice">
-  <th width="25%">Key</th>
+<table class="table">
+  <thead>
+  <th>Key</th>
   <th>Value</th>
+  </thead>
   <tr>
     <td><code>allowed providers</code></td>
     <td>You can limit which users can use which apps. For example, in a <%= vars.platform_name %> deployment, you may
