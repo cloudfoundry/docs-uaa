@@ -171,10 +171,15 @@ For increased security, use only the grant types your app requires. However, you
 
 To help you choose a grant type for your use case, see the following table:
 
-<table class="nice">
-  <th width="30%">Grant type</th>
-  <th>User</th>
-  <th>Details</th>
+<table>
+<thead>
+  <tr>
+    <th width="30%">Grant type</th>
+    <th>User</th>
+    <th>Details</th>
+  </tr>
+</thead>
+<tbody>
   <tr>
     <td><code>authorization_code</code></td>
     <td>Developers building web apps</td>
@@ -211,6 +216,7 @@ To help you choose a grant type for your use case, see the following table:
       <code>grant_type=refresh_token</code>. A refresh token is only issued to clients that have
 		<code>refresh_token</code> in their list of <code>authorized_grant_types</code>.</td>
   </tr>
+</tbody>
 </table>
 
 ### <a id="clientid"></a> client.client_id
@@ -276,9 +282,14 @@ The value can also be a comma-separated list of selected scopes that do not requ
 Clients can store custom attributes in a field called `additional_information`. This is a simple key value store.
 The following table describes these custom attributes:
 
-<table class="nice">
-  <th width="25%">Key</th>
-  <th>Value</th>
+<table>
+<thead>
+  <tr>
+    <th width="25%">Key</th>
+    <th>Value</th>
+  </tr>
+</thead>
+<tbody>
   <tr>
     <td><code>allowed providers</code></td>
     <td>You can limit which users can use which apps. For example, in a <%= vars.platform_name %> deployment, you may
@@ -313,4 +324,5 @@ The following table describes these custom attributes:
       this by changing the <code>token_salt</code>. <code>token_salt</code> is an arbitrary string value that is used
       to generate a hash.</td>
   </tr>
+</tbody>
 </table>
