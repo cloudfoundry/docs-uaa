@@ -1,0 +1,170 @@
+---
+title: Deploying UAA locally
+owner: UAA
+---
+
+This topic describes how to deploy and run User Account and Authentication (UAA) locally, and how to use remote UAA.
+
+To deploy and run UAA locally:
+
+1. In a terminal window, clone the UAA GitHub repository by running:
+
+    ```
+    git clone git://github.com/cloudfoundry/uaa.git
+    ```
+
+1. Go to the directory where you cloned the UAA GitHub repository.
+
+1. To build and run all the components that comprise UAA and the example programs `uaa`, `samples/api`, and `samples/app`, run:
+
+    ```
+    ./gradlew run
+    ```
+
+1. If successful, the three apps run together on a single instance of Tomcat listening on port 8080, with endpoints `/uaa`, `/app`, and `/api`. Tomcat is a library of Java code used by UAA to create its features. For more information, see the [Apache Tomcat](http://tomcat.apache.org/) website.
+
+## <a id='demo-local'></a> Using local UAA
+
+To access and use a locally deployed UAA server:
+
+1. Run the UAA server as described in [Deploy Locally](#local).
+
+1. Open another terminal window. From the project base directory, run `curl localhost:8080/uaa/info -H "Accept: application/json"` to confirm the UAA is running. You can see basic information about the system. For example:
+
+    <pre class="terminal">
+    $ curl localhost:8080/uaa/info -H "Accept: application/json"
+    {
+      "app": {
+        "version": "4.19.0"
+      },
+      "links": {
+        "uaa": "http://localhost:8080/uaa",
+        "passwd": "/forgot_password",
+        "login": "http://localhost:8080/uaa",
+        "register": "/create_account"
+      },
+      "zone_name": "uaa",
+      "entityID": "cloudfoundry-saml-login",
+      "commit_id": "af93628",
+      "idpDefinitions": {},
+      "prompts": {
+        "username": [
+          "text",
+          "Email"
+        ],
+        "password": [
+          "password",
+          "Password"
+        ]
+      },
+      "timestamp": "2018-05-25T15:34:31-0700"
+    }
+    </pre>
+
+1. To install the <%= vars.app_runtime_abbr %> UAA Command Line Client (UAAC) Ruby gem, run:
+
+    ```
+    gem install cf-uaac
+    ```
+
+1. To target the local UAA server endpoint, run:
+
+    ```
+    uaac target http://localhost:8080/uaa
+    ```
+
+1. Run `uaac token client get CLIENT_NAME -s CLIENT_SECRET` to obtain an access token. Replace `CLIENT_NAME` and `CLIENT_SECRET` with actual values. For example, when starting up the UAA locally for development, you must have a predefined admin client to use:
+
+    ```
+    uaac token client get admin -s adminsecret
+    ```
+    If you run the command without `-s CLIENT_SECRET`, UAAC shows an interactive prompt where you must create the client secret value. The `uaac token client get` command requests an access token from the server using the OAuth2 client credentials grant type. For more information about the OAuth2 client credentials, see [Client Credentials](https://tools.ietf.org/html/rfc6749#section-1.3.4) in the OAuth 2.0 Authorization Framework.
+
+1. View your UAAC token context. When UAAC obtains a token, the token and other metadata is stored in the `~/.uaac.yml` file on your local machine. To view the token you have obtained, run `uaac context`. For example:
+
+    <pre class="terminal">
+    $ uaac context
+    [0]*[http://localhost:8080/uaa]
+
+    [0]*[admin]
+      client_id: admin
+      access_token: eyJhbGciOiJIUzI1NiIsImtpZCI6ImxlZ2FjeS10b2tlbi1rZXkiLCJ0eXAiOiJKV1QifQ.eyJqdGkiOiIxOWYyNWU2Y2E5Y2M0ZWIyYTdmNTAxNmU0NDFjZThkNCIsInN1YiI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiY2xpZW50cy5yZWFkIiwiY2xpZW50cy5zZWNyZXQiLCJjbGllbnRzLndyaXRlIiwidWFhLmFkbWluIiwiY2xpZW50cy5hZG1pbiIsInNjaW0ud3JpdGUiLCJzY2ltLnJlYWQiXSwic2NvcGUiOlsiY2xpZW50cy5yZWFkIiwiY2xpZW50cy5zZWNyZXQiLCJjbGllbnRzLndyaXRlIiwidWFhLmFkbWluIiwiY2xpZW50cy5hZG1pbiIsInNjaW0ud3JpdGUiLCJzY2ltLnJlYWQiXSwiY2xpZW50X2lkIjoiYWRtaW4iLCJjaWQiOiJhZG1pbiIsImF6cCI6ImFkbWluIiwiZ3JhbnRfdHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsInJldl9zaWciOiIyNjcxOTlkMSIsImlhdCI6MTUyODIzMjAxNywiZXhwIjoxNTI4Mjc1MjE3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvdWFhL29hdXRoL3Rva2VuIiwiemlkIjoidWFhIiwiYXVkIjpbInNjaW0iLCJjbGllbnRzIiwidWFhIiwiYWRtaW4iXX0.L2cn6HqLQAEyqTrYYkL9Al_8JyfwB330er7DshUb9wg
+      token_type: bearer
+      expires_in: 43199
+      scope: clients.read clients.secret clients.write uaa.admin clients.admin scim.write scim.read
+      jti: 19f25e6ca9cc4eb2a7f5016e441ce8d4
+    </pre>
+    Copy the access token from this output for the next step.
+
+1. Run `uaac token decode ACCESS-TOKEN-VALUE` to view information in the token, which is encoded using the JSON Web Token (JWT) format. Replace `ACCESS-TOKEN-VALUE` with your access token, copied from the `uaac context` output. The UAAC displays all the claims inside the token body. For example:
+
+    <pre class="terminal">
+    $ uaac token decode eyJhbGciOiJIUzI1NiIsImtpZCI6ImxlZ2FjeS10b2tlbi1rZXkiLCJ0eXAiOiJKV1QifQ.eyJqdGkiOiIxOWYyNWU2Y2E5Y2M0ZWIyYTdmNTAxNmU0NDFjZThkNCIsInN1YiI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiY2xpZW50cy5yZWFkIiwiY2xpZW50cy5zZWNyZXQiLCJjbGllbnRzLndyaXRlIiwidWFhLmFkbWluIiwiY2xpZW50cy5hZG1pbiIsInNjaW0ud3JpdGUiLCJzY2ltLnJlYWQiXSwic2NvcGUiOlsiY2xpZW50cy5yZWFkIiwiY2xpZW50cy5zZWNyZXQiLCJjbGllbnRzLndyaXRlIiwidWFhLmFkbWluIiwiY2xpZW50cy5hZG1pbiIsInNjaW0ud3JpdGUiLCJzY2ltLnJlYWQiXSwiY2xpZW50X2lkIjoiYWRtaW4iLCJjaWQiOiJhZG1pbiIsImF6cCI6ImFkbWluIiwiZ3JhbnRfdHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsInJldl9zaWciOiIyNjcxOTlkMSIsImlhdCI6MTUyODIzMjAxNywiZXhwIjoxNTI4Mjc1MjE3LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvdWFhL29hdXRoL3Rva2VuIiwiemlkIjoidWFhIiwiYXVkIjpbInNjaW0iLCJjbGllbnRzIiwidWFhIiwiYWRtaW4iXX0.L2cn6HqLQAEyqTrYYkL9Al_8JyfwB330er7DshUb9wg
+
+    Note: no key given to validate token signature
+
+      jti: 19f25e6ca9cc4eb2a7f5016e441ce8d4
+      sub: admin
+      authorities: clients.read clients.secret clients.write uaa.admin clients.admin scim.write scim.read
+      scope: clients.read clients.secret clients.write uaa.admin clients.admin scim.write scim.read
+      client_id: admin
+      cid: admin
+      azp: admin
+      grant_type: client_credentials
+      rev_sig: 267199d1
+      iat: 1528232017
+      exp: 1528275217
+      iss: http://localhost:8080/uaa/oauth/token
+      zid: uaa
+      aud: scim clients uaa admin
+    </pre>
+
+## <a id='demo-hosted'></a> Using remote UAA
+
+You use a UAA server that you pushed as an app to <%= vars.app_runtime_abbr %> in a similar way to one you run locally. You do not need app token encoding because you do not have the client secret.
+
+To access and use a UAA server that you pushed as an app to <%= vars.app_runtime_abbr %>:
+
+1. Follow the procedure in [Deploy UAA to <%= vars.app_runtime_abbr %>](#cf).
+
+1. From the project base directory, run `curl -H "Accept: application/json" APP-FQDN/login` to query the external login endpoint about the system. Replace `APP-FQDN` with the fully qualified domain name (FQDN) of your app. For example:
+
+    <pre class="terminal">
+    $ curl -H "Accept: application/json" uaa.example.org/login
+    {
+      "timestamp":"2014-09-15T18:25:04+0000",
+      "app":{"version":"1.8.3"},
+      "commit_id":"git-metadata-not-found",
+      "prompts":{"username":["text","Email"],
+          "password":["password","Password"]
+      }
+    }
+    </pre>
+
+1. Install the UAA Command Line Client (UAAC) Ruby gem by running:
+
+    ```
+    gem install cf-uaac
+    ```
+
+1. Target the remote UAA Server endpoint by running:
+
+    ```
+    uaac target APP-FQDN
+    ```
+    Where `APP-FQDN` is the FQDN of your app.
+
+1. Log in by running:
+
+    ```
+    uaac token get USERNAME PASSWORD
+    ```
+
+    Where:
+    <ul>
+      <li><code>USERNAME</code> is your username.</li>
+      <li><code>PASSWORD</code> is your password. If you do not specify a username and password, the UAAC prompts you to supply them.</li>
+    </ul>
+
+
+    The `uaac token client get` command authenticates and obtains an access token from the server using the OAuth2 implicit grant, similar to the approach intended for a standalone client like the cf CLI.
