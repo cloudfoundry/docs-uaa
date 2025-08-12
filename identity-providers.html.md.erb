@@ -3,13 +3,13 @@ title: Identity providers in Tanzu UAA
 owner: UAA
 ---
 
-You can configure identity providers (IDPs) with your Tanzu User Account and Authentication (UAA)
+You can configure identity providers (IDPs) with your Tanzu User Account and Authentication (Tanzu UAA)
 server.
 
 
 ## <a id="ldap"></a> LDAP providers
 
-The [Lightweight Directory Access Protocol](https://tools.ietf.org/html/rfc4511) communicates with directory servers. Compared with the other external IDPs, LDAP is a very simple integration. It only requires configuration on UAA. Other types of provider require that you make configuration changes on both UAA and on the external provider.
+The [Lightweight Directory Access Protocol](https://tools.ietf.org/html/rfc4511) communicates with directory servers. Compared with the other external IDPs, LDAP is a very simple integration. It only requires configuration on Tanzu UAA. Other types of provider require that you make configuration changes on both Tanzu UAA and on the external provider.
 
 LDAP supports three different connection types:
 
@@ -19,40 +19,41 @@ LDAP supports three different connection types:
 
 * `ldap://` with StartTLS: A TLS handshake performed on a cleartext LDAP connection, typically over port 389
 
-For more information, see [User Account and Authentication LDAP Integration](https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-LDAP.md) in the UAA repository on GitHub.
+For more information, see [User Account and Authentication LDAP Integration](https://github.com/cloudfoundry/uaa/blob/master/docs/UAA-LDAP.md) in the Tanzu UAA repository on GitHub.
 
 
 ## <a id="saml"></a> SAML providers
 
-The [SAML v2 standard](http://saml.xml.org/saml-specifications) is a dominant player in the federated authentication space. It is one of the harder integrations to configure. When configuring SAML integration on UAA, you must configure both UAA and the SAML IDP. A mistake on either side causes assertions to be rejected and authentication to fail.
+The [SAML v2 standard](http://saml.xml.org/saml-specifications) is a dominant player in the federated authentication space. It is one of the harder integrations to configure. When configuring SAML integration on Tanzu UAA, you must configure both Tanzu UAA and the SAML IDP. A mistake on either side causes assertions to be rejected and authentication to fail.
 
 ## <a id="oidc"></a> OpenID Connect providers
 
-The [OpenID Connect standard](https://openid.net/developers/specs/) is a simple identity layer on top of the OAuth 2.0 protocol. Clients can verify the identity of the end-user based on the authentication performed by the OIDC IDP, as well as to obtain basic profile information about the end-User in an interoperable and REST-like manner. When configuring OIDC integration on UAA, you must configure both UAA and the OIDC IDP. A mistake on either side causes tokens to be rejected and authentication to fail.
+The [OpenID Connect standard](https://openid.net/developers/specs/) is a simple identity layer on top of the OAuth 2.0 protocol. Clients can verify the identity of the end-user based on the authentication performed by the OIDC IDP, as well as to obtain basic profile information about the end-User in an interoperable and REST-like manner. When configuring OIDC integration on Tanzu UAA, you must configure both Tanzu UAA and the OIDC IDP. A mistake on either side causes tokens to be rejected and authentication to fail.
 
 
 ## <a id="service-identity"></a> Service provider versus identity provider
 
 The SAML and OIDC specifications define two players in their protocol interaction:
 
-* **Service provider (SP)**, the server that receives the assertion. This is typically UAA.
+* **Service provider (SP)**, the server that receives the assertion. This is typically Tanzu UAA.
 
 * **Identity provider (IDP)**, the server that receives the authentication request, authenticates the user and sends the assertion or token to the SP.
 
-UAA can be configured to act as an SP or IDP. In most scenarios, UAA is the SP, and an external provider, such as Okta or Azure Directory or SAP Cloud Identity Services, is the IDP.
+Tanzu UAA can be configured to act as an SP or IDP. In most scenarios, Tanzu UAA is the SP, and an external provider, such as Okta or Azure Directory or SAP Cloud Identity Services, is the IDP.
 
 ### <a id='metadata'></a> View metadata
 
 A SAML provider, either the SP or the IDP, presents a set of metadata. This metadata contains information about the server and is used to configure the opposing provider.
 
-If you use UAA as an SP, you can download metadata through the `/saml/metadata` endpoint of your SAML provider. For example, http://login.example.com/saml/metadata. Metadata is in XML format. Using this information, you can configure the IDP.
+If you use Tanzu UAA as an SP, you can download metadata through the `/saml/metadata` endpoint of your SAML provider; for example, http://login.example.com/saml/metadata. Metadata is in XML format. Using this information, you can configure the IDP.
 
-If you use UAA as an IDP, fetch the metadata from the `/saml/idp/metadata` endpoint. For example, http://login.example.com/saml/idp/metadata.
+If you use Tanzu UAA as an IDP, fetch the metadata from the `/saml/idp/metadata` endpoint; for example, http://login.example.com/saml/idp/metadata.
 
 
 ## <a id="id-flow"></a> SAML IDP workflow
 
 SAML provides two commonly used workflows:
+
 * SP-initiated
 * IDP-initiated.
 
@@ -60,7 +61,7 @@ The following sections describe each workflow.
 
 ### <a id='sp-initiated'></a> SAML SP-initiated
 
-If you go to the UAA login page and click a link to authenticate using your organization's SAML provider,
+If you go to the Tanzu UAA login page and click a link to authenticate using your organization's SAML provider,
 you are using an SP-initiated flow.
 
 The SP sends an authentication request to the IDP. See the following example:
@@ -93,7 +94,7 @@ SP-initiated and IDP-initiated flows. For information about the SAML response, s
 
 You can start your authentication process with the IDP.
 
-The IDP sends a SAML assertion to the SP, which in this case is UAA, similar to the following example:
+The IDP sends a SAML assertion to the SP, which in this case is Tanzu UAA, similar to the following example:
 
 <pre class="terminal">
 <<span>?x</span>ml version="1.0" encoding="UTF-8"?>
@@ -218,16 +219,16 @@ The IDP sends a SAML assertion to the SP, which in this case is UAA, similar to 
 
 ## <a id="config"></a> SAML configuration
 
-UAA provides a limited set of attributes to configure when setting up an external IDP. You configure these attributes for each individual SAML IDP you set up in UAA.
+Tanzu UAA provides a limited set of attributes to configure when setting up an external IDP. You configure these attributes for each individual SAML IDP you set up in Tanzu UAA.
 
-A SAML IDP responds to requests from UAA with signed SAML assertions. These signatures are validated using a public key provided by the SAML provider.
+A SAML IDP responds to requests from Tanzu UAA with signed SAML assertions. These signatures are validated using a public key provided by the SAML provider.
 This public key can be provided as a raw RSA public key or encapsulated in an X.509 certificate. When dealing with the X.509 certificate, as per the
 [SAML V2.0 Metadata Interoperability Profile](https://docs.oasis-open.org/security/saml/Post2.0/sstc-metadata-iop-os.html#__RefHeading___Toc7851_782679371),
-UAA will not validate the certificate (including validating its expiry date), but will only get the public key from it.
+Tanzu UAA does not validate the certificate (including validating its expiry date), but only gets the public key from it.
 
 ### <a id='nameid'></a> nameID
 
-The `nameID` attribute is the element that provides the user name in the SAML assertion. This is sometimes called the _subject_ of the assertion. UAA links the external user to the internal shadow user record by matching the `nameID` to the `user.username`.
+The `nameID` attribute is the element that provides the user name in the SAML assertion. This is sometimes called the _subject_ of the assertion. Tanzu UAA links the external user to the internal shadow user record by matching the `nameID` to the `user.username`.
 
 For example:
 
@@ -305,15 +306,15 @@ The following example is a SAML request to the IDP with the correct assertion co
 
 ### <a id='idpmetadata'></a> idpMetadata
 
-The `idpMetadata` attribute holds either an XML string or an URL.
+The `idpMetadata` attribute holds either an XML string or a URL.
 
-This is an example of IDP metadata configuration in UAA:
+This is an example of IDP metadata configuration in Tanzu UAA:
 
 <pre class="terminal">idpMetadata: \http://simplesamlphp.identity.cf-app.com/saml2/idp/metadata.php</pre>
 
-If the IDP is configured using a URL, UAA refreshes the metadata content from that URL every 10 minutes. This is useful for providers that rotate their keys frequently.
+If the IDP is configured using a URL, Tanzu UAA refreshes the metadata content from that URL every 10 minutes. This is useful for providers that rotate their keys frequently.
 
-If the IDP is configured using metadata as an XML string, the metadata remains static. Rotating keys on the IDP requires you to reconfigure UAA with the new data.
+If the IDP is configured using metadata as an XML string, the metadata remains static. Rotating keys on the IDP requires you to reconfigure Tanzu UAA with the new data.
 
 This is an example of the XML metadata configuration:
 
@@ -346,7 +347,7 @@ This is an example of the XML metadata configuration:
 
 ### <a id='showsamlloginlink'></a> showSamlLoginLink
 
-The `showSamlLoginLink` shows the login link on the UAA home page. This appears when `showSamlLoginLink` is set to `true`. When you click this link,
+The `showSamlLoginLink` shows the login link on the Tanzu UAA home page. This appears when `showSamlLoginLink` is set to `true`. When you click this link,
 it starts the SP-initiated flow. This is frequently set to `false` when you use the IDP-initiated flow.
 
 This is an example of a SAML login link text configuration:
@@ -355,7 +356,7 @@ This is an example of a SAML login link text configuration:
 
 ### <a id='linktext'></a> linkText
 
-You can use the `linkText` attribute to specify the text on a link on the UAA home page. This appears when `showSamlLoginLink` is set to `true`.
+You can use the `linkText` attribute to specify the text on a link on the Tanzu UAA home page. This appears when `showSamlLoginLink` is set to `true`.
 
 This is an example of a link text configuration:
 
@@ -363,7 +364,7 @@ This is an example of a link text configuration:
 
 ### <a id='metadatatrustcheck'></a> metadataTrustCheck
 
-The `metadataTrustCheck` attribute requires UAA to verify signatures of incoming messages. This requirement exists when `metadataTrustCheck` is set to `true`.
+The `metadataTrustCheck` attribute requires Tanzu UAA to verify signatures of incoming messages. This requirement exists when `metadataTrustCheck` is set to `true`.
 
 This is an example of a metadata trust check configuration:
 

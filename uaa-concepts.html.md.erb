@@ -1,10 +1,10 @@
 ---
-title: User Accounts and Authentication concepts
+title: Tanzu User Accounts and Authentication concepts
 owner: UAA
 ---
 
 
-There are six main components of the Cloud Foundry User Accounts and Authentication (UAA) architecture:
+There are six main components of the Tanzu User Accounts and Authentication (Tanzu UAA) architecture:
 
 * [Identity zones](#iz)
 * [Subdomains](#subdomains)
@@ -16,11 +16,11 @@ There are six main components of the Cloud Foundry User Accounts and Authenticat
 
 ## <a id="iz"></a> Identity zones
 
-UAA is built to support a multi-tenant architecture. Each tenant is referred to as an _identity zone_.
+Tanzu UAA is built to support a multi-tenant architecture. Each tenant is referred to as an _identity zone_.
 
 Identity zones are configured with JSON payloads using a REST API. For examples, see [Creating an identity zone](https://docs.cloudfoundry.org/api/uaa/index.html#creating-an-identity-zone) in the UAA API documentation.
 
-An identity zone is a logical boundary around the entities UAA manages. The entities in a zone include, but are not limited to:
+An identity zone is a logical boundary around the entities Tanzu UAA manages. The entities in a zone include, but are not limited to:
 
 * Client registrations
 * Users
@@ -30,13 +30,13 @@ An identity zone is a logical boundary around the entities UAA manages. The enti
 * Identity providers (IDPs) and access
 * ID and refresh tokens
 
-Having two identity zones is equivalent to standing up two separate UAA deployments, but using fewer resources. This type of resource
+Having two identity zones is equivalent to standing up two separate Tanzu UAA deployments, but using fewer resources. This type of resource
 management can reduce operational and maintenance overhead.
 
 
 ## <a id="subdomains"></a> Subdomains
 
-An identity zone is uniquely identified by a subdomain identifier in UAA. If a UAA deployment is hosted on the URL `https://login.EXAMPLE-CF-DOMAIN.com`, identity zones are hosted as _subdomains_ of that same deployment.
+An identity zone is uniquely identified by a subdomain identifier in Tanzu UAA. If a Tanzu UAA deployment is hosted on the URL `https://login.EXAMPLE-CF-DOMAIN.com`, identity zones are hosted as _subdomains_ of that same deployment.
 
 For example:
 
@@ -44,71 +44,71 @@ For example:
 
 * `zone2`: `https://ZONE2.login.EXAMPLE-CF-DOMAIN.com`
 
-A UAA deployment always has one zone referred to as the _default zone_. You configure and bootstrap a default zone using a YAML
+A Tanzu UAA deployment always has one zone referred to as the _default zone_. You configure and bootstrap a default zone using a YAML
 configuration file.
 
 
 ## <a id="users"></a> Users
 
-A _user_ is the central domain object of the UAA server. Because UAA acts as both an account store and an authorization server, many different types of information are linked to users and can be accessed through user-centric API calls.
+A _user_ is the central domain object of the Tanzu UAA server. Because Tanzu UAA acts as both an account store and an authorization server, many different types of information are linked to users and can be accessed through user-centric API calls.
 
-In its capacity as a user account store, UAA can provide unique attributes that describe an individual user, such as email, name, phone number, and group memberships. In addition to these attributes, UAA also tracks some dynamic user metadata, such as the last successful logon time and last updated time.
+In its capacity as a user account store, Tanzu UAA can provide unique attributes that describe an individual user, such as email, name, phone number, and group memberships. In addition to these attributes, Tanzu UAA also tracks some dynamic user metadata, such as the last successful logon time and last updated time.
 
-You can make additional attributes available if UAA is configured to use custom attribute mappings from an external IDP, such as an existing LDAP or SAML provider. For more information about IDP options, see [Identity Providers in UAA](identity-providers.html).
+You can make additional attributes available if Tanzu UAA is configured to use custom attribute mappings from an external IDP, such as an existing LDAP or SAML provider. For more information about IDP options, see [Identity Providers in Tanzu UAA](identity-providers.html).
 
 External IDPs are read-only, as are attributes from those providers. Any change to the external user account can be performed on the external IDP directly. These read-only attributes are refreshed each time the user authenticates with the external IDP.
 
-UAA can be used as an authorization server, which allows client apps to interact with resources on a user's behalf using the four standard OAuth2 authorization grant flows for obtaining access tokens:
+Tanzu UAA can be used as an authorization server, which allows client apps to interact with resources on a user's behalf using the four standard OAuth2 authorization grant flows for obtaining access tokens:
 
 * Authorization code
 * Implicit
 * Resource owner password credentials
 * Client credentials
 
-A UAA user is the _resource owner_ of the OAuth2 protocol. Access tokens issued to the user contain scopes at the intersection of the requesting client's allowed scopes and a user's group memberships.
+A Tanzu UAA user is the _resource owner_ of the OAuth2 protocol. Access tokens issued to the user contain scopes at the intersection of the requesting client's allowed scopes and a user's group memberships.
 
 ### <a name="id"></a> user.id
 
-A `user.id` is a string used to identify a user in APIs. This universally unique identifier is randomly generated at the time of user creation and does not change. It is guaranteed to be unique across all identity zones in the UAA deployment. The `user.id` is a 128-bit number formatted as a UUID. This is also expressed as a "sub" claim in the tokens generated by UAA.
+A `user.id` is a string used to identify a user in APIs. This universally unique identifier is randomly generated at the time of user creation and does not change. It is guaranteed to be unique across all identity zones in the Tanzu UAA deployment. The `user.id` is a 128-bit number formatted as a UUID. This is also expressed as a "sub" claim in the tokens generated by Tanzu UAA.
 
 ### <a id="origin"></a> user.origin
 
-A user in UAA always belongs to a user store with an alias called an `origin`. For example, users that are authenticated by the UAA with a user name and password have their origin set to the value `uaa`.
+A user in Tanzu UAA always belongs to a user store with an alias called an `origin`. For example, users that are authenticated by the Tanzu UAA with a user name and password have their origin set to the value `uaa`.
 
 The fixed origin values are:
 
-* `uaa` for users that are authenticated by the UAA deployment
+* `uaa` for users that are authenticated by the Tanzu UAA deployment
 * `ldap` for users that are authenticated by the LDAP provider
 * {OIDC provider alias} for users authenticated through an OIDC provider
 * {SAML provider alias} for users authenticated through a SAML IDP
 
-Users that are authenticated with an external IDP are often referred to as shadow users in UAA.
+Users that are authenticated with an external IDP are often referred to as shadow users in Tanzu UAA.
 For more information, see [Shadow Users](#shadow-users).
 
 ### <a id="name"></a> user.userName
 
-A `user.userName` is a user-readable string that refers to the user, typically an email address. The user enters their user name when authenticating against UAA.
+A `user.userName` is a user-readable string that refers to the user, typically an email address. The user enters their user name when authenticating against Tanzu UAA.
 
-If the user authenticates against an external IDP, the user name is transferred from that IDP to the shadow user in UAA. An individual user can be uniquely identified by the combination of the user name and the origin values.
+If the user authenticates against an external IDP, the user name is transferred from that IDP to the shadow user in Tanzu UAA. An individual user can be uniquely identified by the combination of the user name and the origin values.
 
-The user name alone is not a unique value. Because user names can change, UAA provides user IDs as unchanging references to a single user. For more information, see [user.id](#id).
+The user name alone is not a unique value. Because user names can change, Tanzu UAA provides user IDs as unchanging references to a single user. For more information, see [user.id](#id).
 
-Users that create accounts through the UAA UI use their email address as their user name. The administration API can create user accounts that specify arbitrary user names.
+Users that create accounts through the Tanzu UAA UI use their email address as their user name. The administration API can create user accounts that specify arbitrary user names.
 
-For external IDPs, the user name is mapped from the assertion received by UAA.
+For external IDPs, the user name is mapped from the assertion received by Tanzu UAA.
 
-* **SAML:** UAA retrieves the user name from the `nameID` claim. For example:
+* **SAML:** Tanzu UAA retrieves the user name from the `nameID` claim. For example:
 
     ```
     <saml2:NameID> Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">
     SAML-USERNAME
     </saml2:NameID>
     ```
-    Where `SAML-USERNAME` is the user name UAA retrieves.
+    Where `SAML-USERNAME` is the user name Tanzu UAA retrieves.
 
-* **LDAP:** UAA derives the user name from user input.
+* **LDAP:** Tanzu UAA derives the user name from user input.
 
-* **OIDC1.0/OAuth2:** UAA derives user names from OpenID Connect and OAuth2 providers from the `id_token`, userinfo endpoint, or the access token. The user names are returned in JSON Web Token (JWT) format. The name of the claim holding the user name value can be configured; it defaults to `preferred_username`.
+* **OIDC1.0/OAuth2:** Tanzu UAA derives user names from OpenID Connect and OAuth2 providers from the `id_token`, userinfo endpoint, or the access token. The user names are returned in JSON Web Token (JWT) format. The name of the claim holding the user name value can be configured; it defaults to `preferred_username`.
 
 
 ## <a id="#user-groups"></a> User groups
@@ -126,24 +126,24 @@ UAA API documentation. To add a user or group to a group, see <a href="https://d
 
 ### <a id="default-groups"></a> Default user groups
 
-You can configure UAA to have one or more default groups. These are groups that every user in the system is a member of, even if there is no direct relationship between user and group in the database.
+You can configure Tanzu UAA to have one or more default groups. These are groups that every user in the system is a member of, even if there is no direct relationship between user and group in the database.
 
 ### <a id="#shadow"></a> Shadow users
 
-Users that have authenticated through an external IDP still get assigned a record in the users table in the UAA database. These users are frequently called _shadow users_.
+Users that have authenticated through an external IDP still get assigned a record in the users table in the Tanzu UAA database. These users are frequently called _shadow users_.
 
-UAA internal users have a `user.origin` of `uaa`. Shadow users are differentiated from internal users with a different origin that corresponds to the external IDP. Each time an external user is authenticated and the assertion is passed to UAA, UAA refreshes the user information. This means that the information about a shadow user in UAA is accurate up to the last time UAA received an assertion with user information.
+Tanzu UAA internal users have a `user.origin` of `uaa`. Shadow users are differentiated from internal users with a different origin that corresponds to the external IDP. Each time an external user is authenticated and the assertion is passed to Tanzu UAA, Tanzu UAA refreshes the user information. This means that the information about a shadow user in Tanzu UAA is accurate up to the last time Tanzu UAA received an assertion with user information.
 
 Shadow users have a different type of group membership. A shadow user can be associated with a group through its origin. This membership may also change each time a new assertion is received.
 
-A shadow user can also have a group membership defined using `group_membership.origin='uaa'`. These are memberships that remain persistent and do not change when assertions report a change in external group memberships. It also allows UAA operators to assign privileges to users that are not known by external providers or cannot be mapped to external groups.
+A shadow user can also have a group membership defined using `group_membership.origin='uaa'`. These are memberships that remain persistent and do not change when assertions report a change in external group memberships. It also allows Tanzu UAA operators to assign privileges to users that are not known by external providers or cannot be mapped to external groups.
 
 
 ## <a id="client"></a> Client
 
-Tanzu UAA is an OAuth2 authorization server. Before apps can obtain access tokens, developers must perform a one-time registration process to create a _client_ in the UAA.
+Tanzu UAA is an OAuth2 authorization server. Before apps can obtain access tokens, developers must perform a one-time registration process to create a _client_ in the Tanzu UAA.
 
-A client usually represents an app with its own set of permissions and configurations. Clients are protected by simple credentials, such as client ID and secret, that apps use to authenticate themselves to the UAA to obtain tokens.
+A client usually represents an app with its own set of permissions and configurations. Clients are protected by simple credentials, such as client ID and secret, that apps use to authenticate themselves to the Tanzu UAA to obtain tokens.
 
 There are two types of clients:
 
