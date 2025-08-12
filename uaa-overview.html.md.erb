@@ -1,19 +1,19 @@
 ---
-title: User Accounts and Authentication overview
+title: Tanzu User Accounts and Authentication overview
 owner: UAA
 ---
 
-Cloud Foundry User Account and Authentication (UAA) is a commercial version of the open-source identity server project under the Cloud Foundry Foundation.
+Tanzu User Account and Authentication (Tanzu UAA) is a commercial version of the open-source identity server project under the Cloud Foundry Foundation.
 
-UAA provides enterprise-scale identity management features. It is used by this commercial services, for example:
+Tanzu UAA provides enterprise-scale identity management features. It is used by this commercial services, for example:
 
 * [Single sign-on for VMware Tanzu](https://support.broadcom.com/group/ecx/productdownloads?subfamily=Single%20Sign-On%20for%20VMware%20Tanzu%20Application%20Service): Identity services for apps and
 APIs running on VMware Tanzu Platform for Cloud Foundry
 
 
-## <a id="overview"></a> What is UAA?
+## <a id="overview"></a> What is Tanzu UAA?
 
-UAA provides identity-based security for apps and APIs. It supports open standards for authentication and authorization, including:
+Tanzu UAA provides identity-based security for apps and APIs. It supports open standards for authentication and authorization, including:
 
 * OAuth
 * OpenID Connect
@@ -21,7 +21,7 @@ UAA provides identity-based security for apps and APIs. It supports open standar
 * LDAP
 * SCIM
 
-The major features of UAA include:
+The major features of Tanzu UAA include:
 
 * User Single Sign-On (SSO) using federated identity protocols
 * API security with OAuth
@@ -38,23 +38,23 @@ The major features of UAA include:
 * Rest APIs for authentication, authorization, and configuration management
 
 
-## <a id="securing"></a> The role of UAA in securing <%= vars.app_runtime_abbr %>
+## <a id="securing"></a> The role of Tanzu UAA in securing <%= vars.app_runtime_abbr %>
 
-<%= vars.app_runtime_abbr %> relies on UAA for identity and access management requirements. UAA secures user and system access to <%= vars.app_runtime_abbr %> installations.
+<%= vars.app_runtime_abbr %> relies on Tanzu UAA for identity and access management requirements. Tanzu UAA secures user and system access to <%= vars.app_runtime_abbr %> installations.
 
-<%= vars.app_runtime_abbr %> is primarily used in the enterprise context, and UAA supports enterprise SSO workflows. If you have already
+<%= vars.app_runtime_abbr %> is primarily used in the enterprise context, and Tanzu UAA supports enterprise SSO workflows. If you have already
 authenticated against the enterprise IDP, you can access <%= vars.app_runtime_abbr %> without entering credentials again.
 
-Some of the major components of <%= vars.app_runtime_abbr %> that use UAA are:
+Some of the major components of <%= vars.app_runtime_abbr %> that use Tanzu UAA are:
 
 * Cloud Controller
 * Gorouter
 * Loggregator
 * Container networking
 
-Each of these components expose APIs for user and system interaction. UAA uses OAuth to secure the APIs exposed by core <%= vars.app_runtime_abbr %> components.
+Each of these components expose APIs for user and system interaction. Tanzu UAA uses OAuth to secure the APIs exposed by core <%= vars.app_runtime_abbr %> components.
 
-UAA secures many different <%= vars.app_runtime_abbr %> components, including:
+Tanzu UAA secures many different <%= vars.app_runtime_abbr %> components, including:
 
 * Tanzu Command Line Interface (cf CLI)
 * Cloud Controller
@@ -69,27 +69,27 @@ UAA secures many different <%= vars.app_runtime_abbr %> components, including:
 
 ## <a id="tokens"></a> Token management
 
-After authenticating, client apps access resources and services using tokens rather than account authentication credentials. UAA generates, manages, distributes, and validates these tokens. UAA provides new tokens only to client apps with valid authentication credentials.
+After authenticating, client apps access resources and services using tokens rather than account authentication credentials. Tanzu UAA generates, manages, distributes, and validates these tokens. Tanzu UAA provides new tokens only to client apps with valid authentication credentials.
 
 Once granted, token validity is unchallenged until the token expires due to timeout.
 
-UAA distributes two types of tokens: access tokens and refresh tokens.
+Tanzu UAA distributes two types of tokens: access tokens and refresh tokens.
 
 ### <a id="access-tokens"></a> Access tokens
 
-Client apps use UAA-provided access tokens to request access to API endpoints, resources, and services. The access token presented by a client app must be valid to access a resource.
+Client apps use Tanzu UAA-provided access tokens to request access to API endpoints, resources, and services. The access token presented by a client app must be valid to access a resource.
 
 Access tokens are valid for a short period of time.
 
-After a UAA-provided access token has expired, a client app can request UAA provide a replacement. To request a replacement access token from UAA, a client app must present a valid refresh token.
+After a Tanzu UAA-provided access token has expired, a client app can request Tanzu UAA provide a replacement. To request a replacement access token from Tanzu UAA, a client app must present a valid refresh token.
 
 ### <a id="refresh-tokens"></a> Refresh tokens
 
-Client apps use UAA-provided refresh tokens to request replacements for expired access tokens. The refresh token presented by a client app must be valid to replace an expired access token.
+Client apps use Tanzu UAA-provided refresh tokens to request replacements for expired access tokens. The refresh token presented by a client app must be valid to replace an expired access token.
 
 Refresh tokens are valid for a long period of time.
 
-UAA does not provide replacement refresh tokens. To obtain a new refresh token, a client app must re-authenticate.
+Tanzu UAA does not provide replacement refresh tokens. To obtain a new refresh token, a client app must re-authenticate.
 
 ### <a id="token-timeouts"></a> Token timeouts
 
@@ -99,10 +99,10 @@ Authenticated client apps are running and interacting with services using tokens
 
 * The refresh token timeout is the maximum period during which a client app can access services without re-authentication.
 
-The default access and refresh token timeout values are the UAA token timeout values <%= vars.company_name %> recommends. Before altering token timeout settings, consider:
+The default access and refresh token timeout values are the Tanzu UAA token timeout values <%= vars.company_name %> recommends. Before altering token timeout settings, consider:
 
 * Short default token timeout periods create overhead within your system.
-    * A short access token timeout requires a client app to frequently request a replacement access token from the UAA server.
+    * A short access token timeout requires a client app to frequently request a replacement access token from the Tanzu UAA server.
     * A short refresh token timeout requires frequent re-authentication, which might be impossible at the designated timeout frequency.
     * Setting a short token timeout period, such as `0`, can render all associated services and resources inaccessible.
 
