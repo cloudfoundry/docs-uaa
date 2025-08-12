@@ -1,9 +1,9 @@
 ---
-title: Identity providers in UAA
+title: Identity providers in Tanzu UAA
 owner: UAA
 ---
 
-You can configure identity providers (IDPs) with your Cloud Foundry User Account and Authentication (UAA)
+You can configure identity providers (IDPs) with your Tanzu User Account and Authentication (UAA)
 server.
 
 
@@ -227,7 +227,7 @@ UAA will not validate the certificate (including validating its expiry date), bu
 
 ### <a id='nameid'></a> nameID
 
-The `nameID` attribute is the element that provides the username in the SAML assertion. This is sometimes called the _subject_ of the assertion. UAA links the external user to the internal shadow user record by matching the `nameID` to the `user.username`.
+The `nameID` attribute is the element that provides the user name in the SAML assertion. This is sometimes called the _subject_ of the assertion. UAA links the external user to the internal shadow user record by matching the `nameID` to the `user.username`.
 
 For example:
 
@@ -237,9 +237,9 @@ For example:
 
 * `nameID: urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress`
 
-The most common configuration is `unspecified`, where the IDP decides which attribute is the username.
+The most common configuration is `unspecified`, where the IDP decides which attribute is the user name.
 
-The following example is what the subject element looks like in an assertion, with the username `EXAMPLE@test.org`:
+The following example is what the subject element looks like in an assertion, with the user name `EXAMPLE@test.org`:
 
 <pre class="terminal">
 <<span>s</span>aml:Subject>

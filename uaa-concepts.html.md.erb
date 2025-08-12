@@ -44,8 +44,6 @@ For example:
 
 * `zone2`: `https://ZONE2.login.EXAMPLE-CF-DOMAIN.com`
 
-### <a id="default-zones"></a> Default zones
-
 A UAA deployment always has one zone referred to as the _default zone_. You configure and bootstrap a default zone using a YAML
 configuration file.
 
@@ -75,7 +73,7 @@ A `user.id` is a string used to identify a user in APIs. This universally unique
 
 ### <a id="origin"></a> user.origin
 
-A user in UAA always belongs to a user store with an alias called an `origin`. For example, users that are authenticated by the UAA itself with a username and password have their origin set to the value `uaa`.
+A user in UAA always belongs to a user store with an alias called an `origin`. For example, users that are authenticated by the UAA with a user name and password have their origin set to the value `uaa`.
 
 The fixed origin values are:
 
@@ -85,32 +83,32 @@ The fixed origin values are:
 * {SAML provider alias} for users authenticated through a SAML IDP
 
 Users that are authenticated with an external IDP are often referred to as shadow users in UAA.
-For more information, see [Shadow Users](#shadow).
+For more information, see [Shadow Users](#shadow-users).
 
 ### <a id="name"></a> user.userName
 
-A `user.userName` is a user-readable string that refers to the user, typically an email address. The user enters their username when authenticating against UAA.
+A `user.userName` is a user-readable string that refers to the user, typically an email address. The user enters their user name when authenticating against UAA.
 
-If the user authenticates against an external IDP, the username is transferred from that IDP to the shadow user in UAA. An individual user can be uniquely identified by the combination of the username and the origin values.
+If the user authenticates against an external IDP, the user name is transferred from that IDP to the shadow user in UAA. An individual user can be uniquely identified by the combination of the user name and the origin values.
 
-The username alone is not a unique value. Because usernames can change, UAA provides user IDs as unchanging references to a single user. For more information, see [user.id](#id).
+The user name alone is not a unique value. Because user names can change, UAA provides user IDs as unchanging references to a single user. For more information, see [user.id](#id).
 
-Users that create accounts through the UAA UI use their email address as their username. The administrative API can create user accounts that specify arbitrary usernames.
+Users that create accounts through the UAA UI use their email address as their user name. The administration API can create user accounts that specify arbitrary user names.
 
-For external IDPs, the username is mapped from the assertion received by UAA.
+For external IDPs, the user name is mapped from the assertion received by UAA.
 
-* **SAML:** UAA retrieve the username from the `nameID` claim. For example:
+* **SAML:** UAA retrieves the user name from the `nameID` claim. For example:
 
     ```
     <saml2:NameID> Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">
     SAML-USERNAME
     </saml2:NameID>
     ```
-    Where `SAML-USERNAME` is the username UAA retrieves.
+    Where `SAML-USERNAME` is the user name UAA retrieves.
 
-* **LDAP:** UAA derives the username from user input.
+* **LDAP:** UAA derives the user name from user input.
 
-* **OIDC1.0/OAuth2:** UAA derives usernames from OpenID Connect and OAuth2 providers from the `id_token`, userinfo endpoint, or the access token. The usernames are returned in JSON Web Token (JWT) format. The name of the claim holding the username value can be configured and defaults to `preferred_username`.
+* **OIDC1.0/OAuth2:** UAA derives user names from OpenID Connect and OAuth2 providers from the `id_token`, userinfo endpoint, or the access token. The user names are returned in JSON Web Token (JWT) format. The name of the claim holding the user name value can be configured; it defaults to `preferred_username`.
 
 
 ## <a id="#user-groups"></a> User groups
@@ -123,8 +121,8 @@ The common group attributes are:
 
 * `display`: The `displayName` of the group the user or the group belongs to. The `displayName` is an identifier that is unique to a given identity zone and is a representation of the access given to the user.
 
-<p> To create a group, see <a href="https://docs.cloudfoundry.org/api/uaa/version/73.7.0/index.html#groups">Groups</a> in the
-UAA API documentation. To add a user or group to a group, see <a href="https://docs.cloudfoundry.org/api/uaa/version/73.7.0/index.html#add-member">Add Member</a> in the UAA API documentation.</p>
+<p> To create a group, see <a href="https://docs.cloudfoundry.org/api/uaa/version/77.34.0/index.html#groups">Groups</a> in the
+UAA API documentation. To add a user or group to a group, see <a href="https://docs.cloudfoundry.org/api/uaa/version/77.34.0/index.html#add-member">Add Member</a> in the UAA API documentation.</p>
 
 ### <a id="default-groups"></a> Default user groups
 
@@ -134,7 +132,7 @@ You can configure UAA to have one or more default groups. These are groups that 
 
 Users that have authenticated through an external IDP still get assigned a record in the users table in the UAA database. These users are frequently called _shadow users_.
 
-UAA internal users have a `user.origin` of `uaa`. Shadow users are differentiated from internal users with a different origin corresponding to the external IDP. Each time an external user is authenticated and the assertion is passed to UAA, UAA refreshes the user information. This means that the information about a shadow user in UAA is accurate up to the last time UAA received an assertion with user information.
+UAA internal users have a `user.origin` of `uaa`. Shadow users are differentiated from internal users with a different origin that corresponds to the external IDP. Each time an external user is authenticated and the assertion is passed to UAA, UAA refreshes the user information. This means that the information about a shadow user in UAA is accurate up to the last time UAA received an assertion with user information.
 
 Shadow users have a different type of group membership. A shadow user can be associated with a group through its origin. This membership may also change each time a new assertion is received.
 
@@ -143,22 +141,22 @@ A shadow user can also have a group membership defined using `group_membership.o
 
 ## <a id="client"></a> Client
 
-UAA is an OAuth2 authorization server. Before apps can obtain access tokens, developers must perform a one-time registration process to create a _client_ in the UAA.
+Tanzu UAA is an OAuth2 authorization server. Before apps can obtain access tokens, developers must perform a one-time registration process to create a _client_ in the UAA.
 
-A client usually represents an app with its own set of permissions and configurations. Clients are protected by simple credentials, such as client ID and secret, that apps use to authenticate themselves to the UAA in order to obtain tokens.
+A client usually represents an app with its own set of permissions and configurations. Clients are protected by simple credentials, such as client ID and secret, that apps use to authenticate themselves to the UAA to obtain tokens.
 
 There are two types of clients:
 
-* Clients that access resources and request tokens from UAA with which to do so
+* Clients that access resources and request tokens from Tanzu UAA with which to do so
 * Clients that represent resources and accept and validate access tokens
 
-Clients are created in UAA through _client registration_. You can define clients in UAA using the UAA configuration files or create them using the UAA API.
+Clients are created in Tanzu UAA through _client registration_. You can define clients in Tanzu UAA using the UAA configuration files or you can create them using the UAA API.
 
 ### <a id="auth-grant-types"></a> Choosing authorization grant types
 
-To create a client, the developer must specify which grant types should be permitted using their client. The grant type determines how your client can interact with UAA. Each grant types corresponds to one of the four different authorization flows defined in the OAuth2 2.0 Authorization Framework. For more information, see the [Authorization Code](https://tools.ietf.org/html/rfc6749#section-1.3.1) section of the OAuth2 2.0 Authorization Framework.
+To create a client, the developer must specify which grant types should be permitted using their client. The grant type determines how your client can interact with Tanzu UAA. Each grant types corresponds to one of the four different authorization flows defined in the OAuth2 2.0 Authorization Framework. For more information, see the [Authorization Code](https://tools.ietf.org/html/rfc6749#section-1.3.1) section of the OAuth2 2.0 Authorization Framework.
 
-The available grant types on UAA include:
+The available grant types on Tanzu UAA include:
 
 * `authorization_code`
 * `password`
@@ -183,21 +181,21 @@ To help you choose a grant type for your use case, see the following table:
   <tr>
     <td><code>authorization_code</code></td>
     <td>Developers building web apps</td>
-    <td>In the authorization code grant flow, the user is directed to a UAA page where they grant approvals to the
+    <td>In the authorization code grant flow, the user is directed to a Tanzu UAA page where they grant approvals to the
       client. After the user approves the requested scopes, they are redirected back to the client app with an
-      authorization code in the URL parameters. The client app may then exchange the authorization code with UAA to
+      authorization code in the URL parameters. The client app may then exchange the authorization code with Tanzu UAA to
       obtain an access token.</td>
   </tr>
   <tr>
     <td><code>password</code></td>
     <td>Developers building native desktop or mobile apps</td>
     <td>The name <code>password</code> refers to the resource owner password grant type. The user provides their
-      username and password to the client app, which may then use them to obtain an <code>access_token</code>.</td>
+      user name and password to the client app, which may then use them to obtain an <code>access_token</code>.</td>
   </tr>
   <tr>
     <td><code>implicit</code></td>
     <td>Developers building a single page web app with no server back end</td>
-    <td>The user is taken to a page on UAA where they are asked to grant approvals to the client. After doing so, they
+    <td>The user is taken to a page on Tanzu UAA where they are asked to grant approvals to the client. After doing this, they
       are redirected to the <code>redirect_uri</code> with the access token in the URI fragment.</td>
   </td>
   <tr>
@@ -227,9 +225,9 @@ A client is identified with a value up to 255 characters, called the `client_id`
 
 Client authentication occurs through a password mechanism called a `client_secret`.
 
-UAA allows client credentials to be asserted in two different ways:
+Tanzu UAA allows client credentials to be asserted in two different ways:
 
-* With an HTTP authorization header using Basic authentication.
+* With an HTTP authorization header, using Basic authentication.
 
 * By passing the `client_id` and `client_secret` as request parameters as part of an HTTP POST body using content type `application/x-www-form-urlencoded`.
 
@@ -237,7 +235,7 @@ For more information, see the [Client Password](https://tools.ietf.org/html/rfc6
 
 ### <a id="redirect-uri"></a> client.redirect-uri
 
-The `authorization_code` and implicit grant types rely on a user agent. A user agent like a web browser is responsible for performing HTTP redirects to UAA and receiving a response from UAA. That response can be in the form of an access token or a code that is exchanged for an access token later.
+The `authorization_code` and implicit grant types rely on a user agent. A user agent like a web browser is responsible for performing HTTP redirects to Tanzu UAA and receiving a response from Tanzu UAA. That response can be in the form of an access token or a code that is exchanged for an access token later.
 
 A client that supports either of these two flows must have at least one URL in the client configuration. Alternatively, you can use multiple URLs and wildcards (*) for ant path matching. For more information, see the [Class AntPathMatcher](http://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/AntPathMatcher.html) section of the Spring Framework documentation.
 
@@ -245,18 +243,18 @@ URLs are registered using a comma-separated string.
 
 ### <a id="access-token-validity"></a> client.access-token-validity
 
-UAA validates access tokens up to the time those tokens expire. Clients do the same, if they can validate tokens offline. The access token validity is the value in seconds from the time the token was created to when it expires.
+Tanzu UAA validates access tokens up to the time those tokens expire. Clients do the same, if they can validate tokens offline. The access token validity is the value in seconds from the time the token was created to when it expires.
 
 ### <a id="refresh-token-validity"></a> client.refresh-token-validity
 
-UAA validates refresh tokens up to the time those tokens expire. Clients do the same, if they can validate tokens offline. The refresh token validity is the value in seconds from the time the token was created to when it expires.
+Tanzu UAA validates refresh tokens up to the time those tokens expire. Clients do the same, if they can validate tokens offline. The refresh token validity is the value in seconds from the time the token was created to when it expires.
 
 
 ## <a id="scopes"></a> Choosing scopes and authorities
 
 Client scopes are used to populate the scope claim when constructing an access token where the client acts on behalf of the user.
 
-When an access token is created, UAA takes the user groups and intersects them with the client scopes. The intersection of these two fields are scopes that are eligible to be populated in the access token. There are two more validations that can further limit the scopes that get populated in the access token after the intersection has been decided:
+When an access token is created, Tanzu UAA takes the user groups and intersects them with the client scopes. The intersection of these two fields are scopes that are eligible to be populated in the access token. There are two more validations that can further limit the scopes that get populated in the access token after the intersection has been decided:
 
 1. Did the user approve these scopes?
 1. Did the client request these scopes in the authorization request?
@@ -292,34 +290,34 @@ The following table describes these custom attributes:
 <tbody>
   <tr>
     <td><code>allowed providers</code></td>
-    <td>You can limit which users can use which apps. For example, in a <%= vars.platform_name %> deployment, you may
+    <td>You can limit which users can use which apps. For example, in a <%= vars. app_runtime_full %> deployment, you may
       have set up multiple IDPs. Or, you could be using Facebook and your organization's LDAP system.<br/><br/>
-      You can limit UAA to only issue an app tokens if the users are from a certain provider. To do this, configure the
+      You can limit Tanzu UAA to only issue an app tokens if the users are from a certain provider. To do this, configure the
       app's client with <code>allowed providers="ldap"</code>. The value is a comma-separated string of
       <code>Identity Provider.origin</code> values.</td>
   </tr>
   <tr>
     <td><code>created with</code></td>
-    <td>UAA stores the scope <code>zones.write</code> in this field if the client was created using the
-      <code>/identity-zones</code> endpoint. UAA uses this field to allow clients to be deleted by the same endpoint.
+    <td>Tanzu UAA stores the scope <code>zones.write</code> in this field if the client was created using the
+      <code>/identity-zones</code> endpoint. Tanzu UAA uses this field to allow clients to be deleted by the same endpoint.
       This is not a configurable field.</td>
   </tr>
   <tr>
     <td><code>name</code></td>
-    <td>Various tooling in the <%= vars.platform_name %> ecosystem creates clients with generated
+    <td>Various tooling in the <%= vars.app_runtime_full %> ecosystem creates clients with generated
       <code>Client.client_id</code> values. These tools often store a human-readable name in this field. For more
       information, see <a href="#clientid">client.client_id</a>.</td>
   </tr>
   <tr>
     <td><code>approvals_deleted</code></td>
     <td>Contains a boolean value if performing an operation on the client resulted in all the client's user approvals
-      were deleted. For example, changing the <code>client.client_secret</code> value causes UAA to delete all the
-      approvals. UAA then stores a value of <code>true</code> in this field.</td>
+      were deleted. For example, changing the <code>client.client_secret</code> value causes Tanzu UAA to delete all the
+      approvals. Tanzu UAA then stores a value of <code>true</code> in this field.</td>
   </tr>
   <tr>
     <td><code>token_salt</code></td>
-    <td>Tokens, even stateless JWT, can be revoked. Revoked tokens do not pass a UAA token validation when the token is
-      passed to the <code>/introspect</code> endpoint. UAA revokes a token if the client's secret has changed. There
+    <td>Tokens, even stateless JWT, can be revoked. Revoked tokens do not pass a Tanzu UAA token validation when the token is
+      passed to the <code>/introspect</code> endpoint. Tanzu UAA revokes a token if the client's secret has changed. There
       may be occasions to revoke all tokens for a certain client without having to change the client secret. You can do
       this by changing the <code>token_salt</code>. <code>token_salt</code> is an arbitrary string value that is used
       to generate a hash.</td>
