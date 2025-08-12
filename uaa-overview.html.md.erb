@@ -3,19 +3,17 @@ title: User Accounts and Authentication overview
 owner: UAA
 ---
 
-Cloud Foundry User Account and Authentication (UAA) is an open-source identity server project under the Cloud Foundry Foundation.
+Cloud Foundry User Account and Authentication (UAA) is a commercial version of the open-source identity server project under the Cloud Foundry Foundation.
 
-UAA provides enterprise-scale identity management features. It is used by these commercial services, for example:
+UAA provides enterprise-scale identity management features. It is used by this commercial services, for example:
 
 * [Single sign-on for VMware Tanzu](https://support.broadcom.com/group/ecx/productdownloads?subfamily=Single%20Sign-On%20for%20VMware%20Tanzu%20Application%20Service): Identity services for apps and
 APIs running on VMware Tanzu Platform for Cloud Foundry
 
-* [SAP Cloud Identity Services](https://help.sap.com/docs/IDENTITY_AUTHENTICATION)
-
 
 ## <a id="overview"></a> What is UAA?
 
-UAA provides identity based security for apps and APIs. It supports open standards for authentication and authorization, including:
+UAA provides identity-based security for apps and APIs. It supports open standards for authentication and authorization, including:
 
 * OAuth
 * OpenID Connect
@@ -44,10 +42,10 @@ The major features of UAA include:
 
 <%= vars.app_runtime_abbr %> relies on UAA for identity and access management requirements. UAA secures user and system access to <%= vars.app_runtime_abbr %> installations.
 
-Since <%= vars.app_runtime_abbr %> is primarily used in the enterprise context, UAA supports enterprise SSO workflows. If you have already
+<%= vars.app_runtime_abbr %> is primarily used in the enterprise context, and UAA supports enterprise SSO workflows. If you have already
 authenticated against the enterprise IDP, you can access <%= vars.app_runtime_abbr %> without entering credentials again.
 
-Some of the major components of <%= vars.app_runtime_abbr %> that use UAA include:
+Some of the major components of <%= vars.app_runtime_abbr %> that use UAA are:
 
 * Cloud Controller
 * Gorouter
@@ -58,7 +56,7 @@ Each of these components expose APIs for user and system interaction. UAA uses O
 
 UAA secures many different <%= vars.app_runtime_abbr %> components, including:
 
-* Cloud Foundry Command Line Interface (cf CLI)
+* Tanzu Command Line Interface (cf CLI)
 * Cloud Controller
 * Loggregator
 * Notifications
@@ -79,7 +77,7 @@ UAA distributes two types of tokens: access tokens and refresh tokens.
 
 ### <a id="access-tokens"></a> Access tokens
 
-Client apps use UAA provided access tokens to request access to API endpoints, resources, and services. The access token presented by a client app must be valid in order to access a resource.
+Client apps use UAA-provided access tokens to request access to API endpoints, resources, and services. The access token presented by a client app must be valid to access a resource.
 
 Access tokens are valid for a short period of time.
 
@@ -87,15 +85,13 @@ After a UAA-provided access token has expired, a client app can request UAA prov
 
 ### <a id="refresh-tokens"></a> Refresh tokens
 
-Client apps use UAA-provided refresh tokens to request replacements for expired access tokens. The refresh token presented by a client app must be valid in order to replace an expired access token.
+Client apps use UAA-provided refresh tokens to request replacements for expired access tokens. The refresh token presented by a client app must be valid to replace an expired access token.
 
 Refresh tokens are valid for a long period of time.
 
 UAA does not provide replacement refresh tokens. To obtain a new refresh token, a client app must re-authenticate.
 
 ### <a id="token-timeouts"></a> Token timeouts
-
-The token interactions that are listed previously produce certain end results.
 
 Authenticated client apps are running and interacting with services using tokens, not the service account's authentication. An admin can revoke a service account's access and privileges, but a client app running under that service account can continue to interact with the environment, unchallenged, as long as its token is valid. Therefore:
 
@@ -108,11 +104,9 @@ The default access and refresh token timeout values are the UAA token timeout va
 * Short default token timeout periods create overhead within your system.
     * A short access token timeout requires a client app to frequently request a replacement access token from the UAA server.
     * A short refresh token timeout requires frequent re-authentication, which might be impossible at the designated timeout frequency.
-
-    Setting a short token timeout period, such as `0`, can render all associated services and resources inaccessible.
+    * Setting a short token timeout period, such as `0`, can render all associated services and resources inaccessible.
 
 * Long timeout periods represent a security risk.
     * A long access token timeout allows an authenticated process to continue accessing services and resources for a long period after an admin has revoked privileges from the service account used by the process.
-    * A long refresh token timeout allows an already authenticated app to continue running for a long period of time on stale authentication credentials without being challenged to re-authenticate.
-
-    Setting a long timeout period, such as one lasting days, can result in a client app running unchallenged for days.
+    * A long refresh token timeout allows an already authenticated app to continue running for a long time on stale authentication credentials without being challenged to re-authenticate.
+    * Setting a long timeout period, such as one lasting days, can result in a client app running unchallenged for days.

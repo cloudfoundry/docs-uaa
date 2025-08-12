@@ -162,15 +162,15 @@ To access and use a UAA server that you pushed as an app to <%= vars.app_runtime
 
     Where:
     <ul>
-      <li><code>USERNAME</code> is your username.</li>
-      <li><code>PASSWORD</code> is your password. If you do not specify a username and password, the UAAC prompts you to supply them.</li>
+      <li><code>USERNAME</code> is your user names.</li>
+      <li><code>PASSWORD</code> is your password. If you do not specify a user name and password, the UAAC prompts you to supply them.</li>
     </ul>
 
-    The `uaac token client get` command authenticates and obtains an access token from the server using the OAuth2 implicit grant, similar to the approach intended for a standalone client like the cf CLI.
+    The `uaac token client get` command authenticates and obtains an access token from the server using the OAuth2 implicit grant, similar to the approach intended for a standalone client like the Tanzu cf CLI.
 
 ### <a id='cf'></a> Deploying UAA to <%= vars.app_runtime_abbr %>
 
-To build the UAA as an app and push it to <%= vars.app_runtime_abbr %> using the Cloud Foundry Command Line Interface (cf CLI):
+To build the UAA as an app and push it to <%= vars.app_runtime_abbr %> using the Tanzu cf CLI:
 
 1. Clone the UAA GitHub repository by running:
 
@@ -186,7 +186,7 @@ To build the UAA as an app and push it to <%= vars.app_runtime_abbr %> using the
     ./gradlew :cloudfoundry-identity-uaa:war
     ```
 
-1. Run the cf CLI `cf push APP-NAME -m 512M -p PATH-TO-WAR-FILE --no-start` command to push the app to <%= vars.app_runtime_abbr %>. Replace `APP-NAME` with a name for your UAA app, and `PATH-TO-WAR-FILE` with the path to the WAR file you created in the previous step. For example:
+1. Run the Tanzu cf CLI `cf push APP-NAME -m 512M -p PATH-TO-WAR-FILE --no-start` command to push the app to <%= vars.app_runtime_abbr %>. Replace `APP-NAME` with a name for your UAA app, and `PATH-TO-WAR-FILE` with the path to the WAR file you created in the previous step. For example:
 
     ```
     cf push MYUAA -m 512M -p uaa/build/libs/cloudfoundry-identity-uaa-1.8.0.war --no-start
@@ -340,7 +340,7 @@ echo "spring_profiles: postgresql,default" > src/main/resources/uaa.yml
 
 To bootstrap a microcloud-type environment, you need an admin client. During the bootstrapping process, the database creates a database initializer component that inserts an admin client.
 
-If the default profile is active, the bootstrapping process creates a cf CLI client so that the Gem login works with no additional configuration required. You can override the default settings and add additional clients in the `uaa.yml` file, as in the following example:
+If the default profile is active, the bootstrapping process creates a Tanzu cf CLI client so that the Gem login works with no additional configuration required. You can override the default settings and add additional clients in the `uaa.yml` file, as in the following example:
 
 ```
 oauth:
@@ -467,7 +467,7 @@ The following table describes the scopes of privilege in UAA.
 | `scim.write` | This scope gives admin write access to all SCIM endpoints, `/Users`, and `/Groups`. |
 | `scim.read` | This scope gives admin read access to all SCIM endpoints, `/Users`, and `/Groups`. |
 | `scim.create` | This scope gives the ability to create a user with a POST request to the `/Users` endpoint, but not to modify, read, or delete users. |
-| `scim.userids` | This scope is required to convert a username and origin into a user ID and vice versa. |
+| `scim.userids` | This scope is required to convert a user name and origin into a user ID and vice versa. |
 | `scim.invite` | This scope is required to participate in invitations using the `/invite_users` endpoint. |
 | `groups.update` | This scope gives the ability to update a group. This ability can also be provided by the broader `scim.write` scope. |
 | `password.write` | This admin scope gives the ability to change a user's password. |
