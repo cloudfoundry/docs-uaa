@@ -1,24 +1,24 @@
 ---
-title: Creating and managing users with the UAA CLI (UAAC)
+title: Creating and managing users with the Tanzu UAA CLI (UAAC)
 owner: Identity
 ---
 
 
 
 Using the Cloud Foundry User Account and Authentication Command Line Interface (UAAC), you can create
-users in the UAA server.
+users in the Tanzu UAA server.
 
-The UAAC only creates users in UAA, and does not assign roles in the Cloud Controller database
+The UAAC only creates users in Tanzu UAA, and does not assign roles in the Cloud Controller database
 (CCDB). In general, admins create users using the Tanzu Command Line Interface (cf CLI). The Tanzu cf CLI both creates user records in
-the UAA and associates them with org and space roles in the CCDB. Before admins can assign roles to the
+the Tanzu UAA and associates them with org and space roles in the CCDB. Before admins can assign roles to the
 user, the user must log in through Apps Manager or the Tanzu cf CLI for the user record to populate the CCDB.
 
 For more information on creating and managing users, see <a href="../adminguide/cli-user-management.html">Creating and Managing Users with the Tanzu cf CLI</a>.
 
-For more information, see [UAA Overview](../concepts/architecture/uaa.html), [UAA Sysadmin Guide](https://github.com/cloudfoundry/uaa/blob/master/docs/Sysadmin-Guide.rst) in the UAA repository on GitHub, and [Docs](https://github.com/cloudfoundry/uaa/tree/master/docs) in the UAA repository on GitHub.
+For more information, see [Tanzu UAA Overview](../concepts/architecture/uaa.html).
 
 <p class="note important">
-UAAC requires Ruby v2.3.1 or later. If you have an earlier version of Ruby installed, install
+Tanzu UAAC requires Ruby v2.3.1 or later. If you have an earlier version of Ruby installed, install
 Ruby v2.3.1 or later before using the UAAC.</p>
 
 For more information about which roles can perform various operations in <%= vars.app_runtime_full %>, see [User roles](../concepts/roles.html#roles) in _Orgs, Spaces, Roles, and Permissions_.
@@ -26,7 +26,7 @@ For more information about which roles can perform various operations in <%= var
 
 ## <a id='creating-admin-users'></a> Create an admin user
 
-To create an admin user for UAA:
+To create an admin user for Tanzu UAA:
 
 1. Install the UAAC by running:
 
@@ -34,16 +34,16 @@ To create an admin user for UAA:
     gem install cf-uaac
     ```
 
-1. Target your UAA server by running:
+1. Target your Tanzu UAA server by running:
 
     ```
     uaac target uaa.UAA-DOMAIN
     ```
-    Where `UAA-DOMAIN` is the domain of your UAA server.
+    Where `UAA-DOMAIN` is the domain of your Tanzu UAA server.
 
 1. Record the `uaa:admin:client_secret` from your deployment manifest.
 
-1. Authenticate and obtain an access token for the admin client from the UAA server by running:
+1. Authenticate and obtain an access token for the admin client from the Tanzu UAA server by running:
 
     ```
     uaac token client get admin -s ADMIN-CLIENT-SECRET
@@ -53,7 +53,7 @@ To create an admin user for UAA:
     <br>
     UAAC stores the token in `~/.uaac.yml`.
 
-1. Display the users and apps authorized by the UAA server, as well as the permissions granted to each user and app, by running:
+1. Display the users and apps authorized by the Tanzu UAA server, as well as the permissions granted to each user and app, by running:
 
     ```
     uaac contexts
@@ -62,7 +62,7 @@ To create an admin user for UAA:
 1. In the output from `uaac contexts`, check the `scope` section of the `client_id: admin` user for `scim.write`. The value `scim.write` represents sufficient permissions to create accounts.
 
 1. If the admin user lacks permissions to create accounts, add the permissions:
-    1. Add the necessary permissions to the admin user account on the UAA server by running:
+    1. Add the necessary permissions to the admin user account on the Tanzu UAA server by running:
 
         ```
         uaac client update admin --authorities "EXISTING-PERMISSIONS scim.write"
@@ -73,7 +73,7 @@ To create an admin user for UAA:
         ```
         uaac token delete
         ```
-    1. Obtain an updated access token from the UAA server by running:
+    1. Obtain an updated access token from the Tanzu UAA server by running:
 
         ```
         uaac token client get admin
@@ -113,7 +113,7 @@ To create an admin read-only user account:
 
 1. Obtain the credentials of the admin client you created in [Create an Admin User](#creating-admin-users), or see the `uaa: scim` section of your deployment manifest for the user name and password of an admin user.
 
-1. Authenticate and obtain an access token for the admin client from the UAA server by running:
+1. Authenticate and obtain an access token for the admin client from the Tanzu UAA server by running:
 
     ```
     uaac token client get admin -s ADMIN-CLIENT-SECRET
@@ -158,7 +158,7 @@ To create a global auditor account:
 
 1. Obtain the credentials of the admin client you created in [Create an admin user](#creating-admin-users), or see the `uaa: scim` section of your deployment manifest for the user name and password of an admin user.
 
-1. Authenticate and obtain an access token for the admin client from the UAA server by running:
+1. Authenticate and obtain an access token for the admin client from the Tanzu UAA server by running:
 
     ```
     uaac token client get admin -s ADMIN-CLIENT-SECRET
@@ -205,7 +205,7 @@ To grant all users under an external group admin permissions:
 
 1. Obtain the credentials of the admin client you created in [Create an Admin User](#creating-admin-users), or see the `uaa: scim` section of your deployment manifest for the user name and password of an admin user.
 
-1. Authenticate and obtain an access token for the admin client from the UAA server by running:
+1. Authenticate and obtain an access token for the admin client from the Tanzu UAA server by running:
 
     ```
     uaac token client get admin -s ADMIN-CLIENT-SECRET
@@ -309,7 +309,7 @@ To change the password of a user:
 
 1. Obtain the credentials of the admin client you created in [Create an Admin User](#creating-admin-users), or see the `uaa: scim` section of your deployment manifest for the user name and password of an admin user.
 
-1. Authenticate and obtain an access token for the admin client from the UAA server by running:
+1. Authenticate and obtain an access token for the admin client from the Tanzu UAA server by running:
 
     ```
     uaac token client get admin -s ADMIN-CLIENT-SECRET
@@ -319,7 +319,7 @@ To change the password of a user:
     <br>
     UAAC stores the token in `~/.uaac.yml`.
 
-1. Display the users and apps authorized by the UAA server, as well as the permissions granted to each user and app, by running:
+1. Display the users and apps authorized by the Tanzu UAA server, as well as the permissions granted to each user and app, by running:
 
     ```
     uaac contexts
@@ -328,7 +328,7 @@ To change the password of a user:
 1. In the output from `uaac contexts`, check the `scope` section of the `client_id: admin` user for `password.write`. The value `password.write` represents sufficient permissions to change passwords.
 
 1. If the admin user lacks permissions to change passwords, add the permissions:
-    1. Add the necessary permissions to the admin user account on the UAA server by running:
+    1. Add the necessary permissions to the admin user account on the Tanzu UAA server by running:
 
         ```
         uaac client update admin --authorities "EXISTING-PERMISSIONS password.write"
@@ -339,7 +339,7 @@ To change the password of a user:
         ```
         uaac token delete
         ```
-    1. Obtain an updated access token from the UAA server by running:
+    1. Obtain an updated access token from the Tanzu UAA server by running:
 
         ```
         uaac token client get admin
@@ -368,7 +368,7 @@ To change the password of a user:
 
     Where:
     <ul>
-      <li><code>UAA-DOMAIN</code> is the domain of your UAA server.</li>
+      <li><code>UAA-DOMAIN</code> is the domain of your Tanzu UAA server.</li>
       <li><code>USERNAME</code> is the user name of the user.</li>
       <li><code>TEMP-PASSWORD</code> is the temporary password you provided the user.</li>
     </ul>
@@ -378,18 +378,18 @@ To change the password of a user:
 
 ## <a id='retrieving-email-addresses'></a> Retrieve user email addresses
 
-Some <%= vars.app_runtime_full %> components, like Cloud Controller, only use GUIDs for user identification. You can use UAA to retrieve the emails of your <%= vars.app_runtime_full %> instance users either as a list or, for a specific user, with that user's GUID.
+Some <%= vars.app_runtime_full %> components, like Cloud Controller, only use GUIDs for user identification. You can use Tanzu UAA to retrieve the emails of your <%= vars.app_runtime_full %> instance users either as a list or, for a specific user, with that user's GUID.
 
-1. Target your UAA server by running:
+1. Target your Tanzu UAA server by running:
 
     ```
     uaac target uaa.UAA-DOMAIN
     ```
-    Where `UAA-DOMAIN` is the domain of your UAA server.
+    Where `UAA-DOMAIN` is the domain of your Tanzu UAA server.
 
 1. Record the `uaa:admin:client_secret` from your deployment manifest.
 
-1. Authenticate and obtain an access token for the admin client from the UAA server by running:
+1. Authenticate and obtain an access token for the admin client from the Tanzu UAA server by running:
 
     ```
     uaac token client get admin -s ADMIN-CLIENT-SECRET
@@ -399,16 +399,16 @@ Some <%= vars.app_runtime_full %> components, like Cloud Controller, only use GU
     <br>
     UAAC stores the token in `~/.uaac.yml`.
 
-1. Display the users and apps authorized by the UAA server, as well as the permissions granted to each user and app, by running:
+1. Display the users and apps authorized by the Tanzu UAA server, as well as the permissions granted to each user and app, by running:
 
     ```
     uaac contexts
     ```
 
-1. In the output from `uaac contexts`, check the `scope` section of the `client_id: admin` user for `scim.write`. The value `scim.write` represents sufficient permissions to query the UAA server for user information.
+1. In the output from `uaac contexts`, check the `scope` section of the `client_id: admin` user for `scim.write`. The value `scim.write` represents sufficient permissions to query the Tanzu UAA server for user information.
 
 1. If the admin user lacks permissions to change passwords, add the permissions:
-    1. Add the necessary permissions to the admin user account on the UAA server by running:
+    1. Add the necessary permissions to the admin user account on the Tanzu UAA server by running:
 
         ```
         uaac client update admin --authorities "EXISTING-PERMISSIONS scim.write"
@@ -419,7 +419,7 @@ Some <%= vars.app_runtime_full %> components, like Cloud Controller, only use GU
         ```
         uaac token delete
         ```
-    1. Obtain an updated access token from the UAA server by running:
+    1. Obtain an updated access token from the Tanzu UAA server by running:
 
         ```
         uaac token client get admin
