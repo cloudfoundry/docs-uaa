@@ -1,6 +1,6 @@
 # docs-uaa
 
-This guide explains Cloud Foundry User Accounts and Authenticatio (UAA).
+This guide explains Cloud Foundry User Accounts and Authentication (UAA).
 
 This repo is one of several doc repositories that go into a complete documentation set.
 
