@@ -85,7 +85,7 @@ The fixed origin values are:
 * {SAML provider alias} for users authenticated through a SAML IDP
 
 Users that are authenticated with an external IDP are often referred to as shadow users in UAA.
-For more information, see [Shadow Users](#shadow).
+For more information, see [Shadow Users](#shadow-users).
 
 ### <a id="name"></a> user.userName
 
@@ -113,7 +113,7 @@ For external IDPs, the username is mapped from the assertion received by UAA.
 * **OIDC1.0/OAuth2:** UAA derives usernames from OpenID Connect and OAuth2 providers from the `id_token`, userinfo endpoint, or the access token. The usernames are returned in JSON Web Token (JWT) format. The name of the claim holding the username value can be configured and defaults to `preferred_username`.
 
 
-## <a id="#user-groups"></a> User groups
+## <a id="user-groups"></a> User groups
 
 A user can belong to one or more groups. A group is a way to express a common group-based or role-based access control model. A group has a display name. This name is an arbitrary string that corresponds directly to a scope in a JWT access token and is used for access control by OAuth2 resource servers.
 
@@ -130,7 +130,7 @@ UAA API documentation. To add a user or group to a group, see <a href="https://d
 
 You can configure UAA to have one or more default groups. These are groups that every user in the system is a member of, even if there is no direct relationship between user and group in the database.
 
-### <a id="#shadow"></a> Shadow users
+### <a id="shadow-users"></a> Shadow users
 
 Users that have authenticated through an external IDP still get assigned a record in the users table in the UAA database. These users are frequently called _shadow users_.
 
