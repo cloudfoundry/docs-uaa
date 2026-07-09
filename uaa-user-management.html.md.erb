@@ -215,8 +215,8 @@ To grant all users under an external group admin permissions:
     * [Grant Admin Permissions for LDAP](#grant-admin-ldap)
     * [Grant Admin Permissions for SAML and OIDC](#grant-admin-saml)
 
-<p> The UAA does not grant scopes for users in external groups until the next time the user logs in. This means that users granted
-scopes from external group mappings must log out from <%= vars.platform_name %> and log back in before their new scope takes effect.</p>
+The UAA does not grant scopes for users in external groups until the next time the user logs in. This means that users granted
+scopes from external group mappings must log out from <%= vars.platform_name %> and log back in before their new scope takes effect.
 
 ### <a id='grant-admin-ldap'></a> Grant admin permissions for LDAP
 
@@ -262,8 +262,8 @@ To grant admin permissions to all users under the mapped SAML or OIDC group:
       <li><code>PROVIDER-NAME</code> is the name of your SAML or OIDC IDP.</li>
     </ul>
 
-<p> For OIDC, make sure you configure the IDP's attribute mappings and map <code>external_groups</code> to the groups field in the
-OIDC ID Token issued by the IDP.</p>
+For OIDC, make sure you configure the IDP's attribute mappings and map `external_groups` to the groups field in the
+OIDC ID Token issued by the IDP.
 
 ## <a id='creating-users'></a> Create users
 
